@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 14:24:32 by jmanani           #+#    #+#             */
-/*   Updated: 2026/04/24 16:57:37 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/04/24 17:08:50 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	*routine(void)
 	int	i;
 
 	i = 0;
-	while (i < 1000000)
+	while (i < 10000000)
 	{
 		pthread_mutex_lock(&g_mutex);
 		g_mails++;
@@ -40,18 +40,32 @@ void	*routine(void)
 
 int	main(void)
 {
-	pthread_t	t1;
-	pthread_t	t2;
+	pthread_t	th[4];
+	int			i;
+	int			j;
+	int			k;
 
+	k = 8;
+	i = 0;
+	j = 0;
 	pthread_mutex_init(&g_mutex, NULL);
-	if (pthread_create(&t1, NULL, &routine, NULL) != 0)
-		return (1);
-	if (pthread_create(&t2, NULL, &routine, NULL) != 0)
-		return (2);
-	if (pthread_join(t1, NULL) != 0)
-		return (3);
-	if (pthread_join(t2, NULL) != 0)
-		return (4);
+	while (i < k)
+	{
+		if (pthread_create(th + i, NULL, &routine, NULL) != 0)
+		{
+			printf("Failed to create thread");
+			return (1);
+		}
+		printf("Thread %d is started\n", i);
+		i++;
+	}
+	while (j < k)
+	{
+		if (pthread_join(th[j], NULL) != 0)
+			return (4);
+		printf("Thread %d is finished\n", j);
+		j++;
+	}
 	pthread_mutex_destroy(&g_mutex);
 	printf("No. of mails: %d\n", g_mails);
 	return (0);
