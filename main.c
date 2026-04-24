@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 14:24:32 by jmanani           #+#    #+#             */
-/*   Updated: 2026/04/24 14:54:07 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/04/24 16:24:55 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,19 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+int		x = 2;
+
 void	*routine(void)
 {
-	printf("Calling the routine\n");
+	x++;
 	sleep(2);
-	printf("End of Routine");
+	printf("R1 Value of x: %d\n", x);
+}
+
+void	*routine2(void)
+{
+	sleep(2);
+	printf("R2 Value of x: %d\n", x);
 }
 
 int	main(void)
@@ -29,7 +37,7 @@ int	main(void)
 
 	if (pthread_create(&t1, NULL, &routine, NULL) != 0)
 		return (1);
-	if (pthread_create(&t2, NULL, &routine, NULL) != 0)
+	if (pthread_create(&t2, NULL, &routine2, NULL) != 0)
 		return (2);
 	if (pthread_join(t1, NULL) != 0)
 		return (3);
