@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/12 15:12:08 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/12 15:42:16 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ typedef struct s_args
 
 // Other Prototypes from different files
 void					error_exit(const char *error);
+void					parse_input(t_args *coding_data, char **argv);
 
 #endif

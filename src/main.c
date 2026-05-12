@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:09:49 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/12 15:13:59 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/12 15:42:28 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,15 @@ int	main(int argc, char **argv)
 	if (argc == 9)
 	{
 		parse_input(&coding_data, argv);
-		data_init(&coding_data);
-		coding_start(&coding_data);
-		clean(&coding_data);
+		// data_init(&coding_data);
+		// coding_start(&coding_data);
+		// clean_all(&coding_data);
 	}
 	else
 	{
-		printf("Fix the input: The input is not as desired!");
+		printf("Fix the input: The input is not as desired!\n");
+		printf("Example: ./codexion n_coders t_burnout t_compile ");
+		printf("t_debug t_refactor n_compiles cooldown scheduler\n");
 	}
 	return (0);
 }

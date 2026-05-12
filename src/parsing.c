@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:14:31 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/12 15:34:55 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/12 15:52:21 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,24 +59,17 @@ static long	ft_atol(const char *s)
 
 void	parse_input(t_args *coding_data, char **argv)
 {
-	coding_data->coders = ft_atol(argv[1]);
+	coding_data->n_coders = ft_atol(argv[1]);
 	coding_data->burn_time = ft_atol(argv[2]) * 1e3;
 	coding_data->compile_time = ft_atol(argv[3]) * 1e3;
 	coding_data->debug_time = ft_atol(argv[4]) * 1e3;
 	coding_data->refactor_time = ft_atol(argv[5]) * 1e3;
-	coding_data->n_compiles = ft_atol(argv[6]) * 1e3;
+	coding_data->n_compiles = ft_atol(argv[6]);
 	coding_data->cooldown_time = ft_atol(argv[7]) * 1e3;
-	if (argv[8] == "EDF" || argv[8] == "edf")
-	{
+	if (!strcmp(argv[8], "EDF") || !strcmp(argv[8], "edf"))
 		coding_data->scheduler = EDF;
-	}
-	else if (argv[8] == "fifo" || argv[8] == "FIFO")
-	{
+	else if (!strcmp(argv[8], "FIFO") || !strcmp(argv[8], "fifo"))
 		coding_data->scheduler = FIFO;
-	}
 	else
-	{
-		error_exit("Please give proper Scheduler Algorithm");
-	}
-	return ;
+		error_exit("Algorithm can be 'edf' or 'fifo' or 'EDF' or 'FIFO'");
 }
