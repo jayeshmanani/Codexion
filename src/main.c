@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:09:49 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/12 15:42:28 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/12 15:54:22 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 int	main(int argc, char **argv)
 {
-	t_args	coding_data;
+	t_coding_data	coding_data;
 
 	if (argc == 9)
 	{

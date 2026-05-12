@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:14:31 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/12 15:52:21 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/12 15:57:25 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,19 +57,19 @@ static long	ft_atol(const char *s)
 	return (num);
 }
 
-void	parse_input(t_args *coding_data, char **argv)
+void	parse_input(t_coding_data *cd, char **argv)
 {
-	coding_data->n_coders = ft_atol(argv[1]);
-	coding_data->burn_time = ft_atol(argv[2]) * 1e3;
-	coding_data->compile_time = ft_atol(argv[3]) * 1e3;
-	coding_data->debug_time = ft_atol(argv[4]) * 1e3;
-	coding_data->refactor_time = ft_atol(argv[5]) * 1e3;
-	coding_data->n_compiles = ft_atol(argv[6]);
-	coding_data->cooldown_time = ft_atol(argv[7]) * 1e3;
+	cd->n_coders = ft_atol(argv[1]);
+	cd->burn_time = ft_atol(argv[2]) * 1e3;
+	cd->compile_time = ft_atol(argv[3]) * 1e3;
+	cd->debug_time = ft_atol(argv[4]) * 1e3;
+	cd->refactor_time = ft_atol(argv[5]) * 1e3;
+	cd->n_compiles = ft_atol(argv[6]);
+	cd->cooldown_time = ft_atol(argv[7]) * 1e3;
 	if (!strcmp(argv[8], "EDF") || !strcmp(argv[8], "edf"))
-		coding_data->scheduler = EDF;
+		cd->scheduler = EDF;
 	else if (!strcmp(argv[8], "FIFO") || !strcmp(argv[8], "fifo"))
-		coding_data->scheduler = FIFO;
+		cd->scheduler = FIFO;
 	else
 		error_exit("Algorithm can be 'edf' or 'fifo' or 'EDF' or 'FIFO'");
 }
