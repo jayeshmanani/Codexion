@@ -6,13 +6,14 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/12 15:01:50 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/12 15:12:08 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CODEXION_H
 # define CODEXION_H
 
+// Default Libs
 # include <limits.h>
 # include <pthread.h>
 # include <stdbool.h>
@@ -23,6 +24,7 @@
 # include <time.h>
 # include <unistd.h>
 
+// Customized Structs
 typedef pthread_mutex_t	t_mtx;
 
 typedef struct s_args	t_args;
@@ -70,5 +72,8 @@ typedef struct s_args
 	t_coder				*coders;
 	t_dongle			*dongles;
 }						t_args;
+
+// Other Prototypes from different files
+void					error_exit(const char *error);
 
 #endif
