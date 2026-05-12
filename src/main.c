@@ -6,14 +6,28 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:09:49 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/12 14:18:21 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/12 14:34:32 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	printf("Hello, World!\n");
+	int	i;
+
+	i = 1;
+	if (argc < 2 || argc != 9)
+	{
+		return (0);
+	}
+	else
+	{
+		while (i < argc)
+		{
+			printf("%d argument is : %s\n", i, argv[i]);
+			i++;
+		}
+	}
 	return (0);
 }
