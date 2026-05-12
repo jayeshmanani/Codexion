@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/12 14:29:41 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/12 14:49:50 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,18 @@ typedef struct s_coder
 	t_dongle		*right;
 
 }					t_coder;
+
+typedef struct s_args
+{
+	int				n_coders;
+	long			burn_time;
+	long			compile_time;
+	long			debug_time;
+	long			refactor_time;
+	long			n_compiles;
+	long			cooldown_time;
+	t_scheduler		scheduler;
+
+}					t_args;
 
 #endif
