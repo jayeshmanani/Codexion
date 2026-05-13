@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 16:38:53 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 17:00:04 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/13 17:30:52 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*malloc_safe_create(size_t bytes)
 	return (mem_malloced);
 }
 
-static void	handle_mutex_return(int status, t_mutex_ops ops)
+static void	handle_mutex_return(int status, t_pthread_ops ops)
 {
 	if (0 == status)
 		return ;
@@ -40,7 +40,7 @@ static void	handle_mutex_return(int status, t_mutex_ops ops)
 		err_and_exit("Mutex is already locked");
 }
 
-void	mutex_safe(t_mtx *mutex, t_mutex_ops ops)
+void	mutex_safe(t_mtx *mutex, t_pthread_ops ops)
 {
 	if (INIT == ops)
 		handle_mutex_return(pthread_mutex_init(mutex, NULL), ops);
@@ -52,4 +52,34 @@ void	mutex_safe(t_mtx *mutex, t_mutex_ops ops)
 		handle_mutex_return(pthread_mutex_destroy(mutex), ops);
 	else
 		err_and_exit("Wrong Ops for Mutex Handling");
+}
+
+static void	handle_thread_return(int status, t_pthread_ops ops)
+{
+	if (0 == status)
+		return ;
+	if (EAGAIN == status)
+		err_and_exit("Resource limits for threads exceeded");
+	else if (EPERM == status)
+		err_and_exit("No permission to set attribute for thread");
+	else if (EINVAL == status && CREATE == ops)
+		err_and_exit("Invalid value as attribute");
+	else if (EINVAL == status && (JOIN == ops))
+		err_and_etxit("Thread is not joinable");
+	else if (ESRCH == status)
+		err_and_exit("No thread could be found with the ID specified");
+	else if (EDEADLK == status)
+		err_and_exit("A deadlock was detected or the thread is already joined");
+}
+
+void	thread_safe(pthread_t *thread, t_pthread_ops ops,
+		void *(*start_routine)(void *), void *arg)
+{
+	if (CREATE == ops)
+		handle_thread_return(pthread_create(thread, NULL, start_routine, arg),
+			ops);
+	else if (JOIN == ops)
+		handle_thread_return(pthread_join(*thread, NULL), ops);
+	else
+		err_and_exit("Wrong Ops for Thread Handling use CREATE or JOIN");
 }
