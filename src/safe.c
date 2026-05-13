@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 16:38:53 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 17:30:52 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/13 17:44:11 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	handle_thread_return(int status, t_pthread_ops ops)
 	else if (EINVAL == status && CREATE == ops)
 		err_and_exit("Invalid value as attribute");
 	else if (EINVAL == status && (JOIN == ops))
-		err_and_etxit("Thread is not joinable");
+		err_and_exit("Thread is not joinable");
 	else if (ESRCH == status)
 		err_and_exit("No thread could be found with the ID specified");
 	else if (EDEADLK == status)

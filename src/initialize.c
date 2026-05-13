@@ -6,15 +6,49 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:55:33 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 17:04:28 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/13 18:16:47 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
+static void	assign_dongles(t_coder *coder, t_dongle *dongles, int coder_pos)
+{
+	int	total_coders;
+
+	total_coders = coder->cd->n_coders;
+	coder->left_dongle = &dongles[(coder_pos + 1) % total_coders];
+	coder->right_dongle = &dongles[coder_pos];
+	if (coder->coder_id % 2)
+	{
+		coder->left_dongle = &dongles[coder_pos];
+		coder->right_dongle = &dongles[(coder_pos + 1) % total_coders];
+	}
+}
+
 void	data_init(t_coding_data *cd)
 {
+	int	i;
+
+	i = -1;
 	cd->end_simulation = false;
-	cd->coders = malloc_safe_create(cd->n_coders);
-	return ;
+	cd->coders = malloc_safe_create(sizeof(t_coder) * cd->n_coders);
+	cd->dongles = malloc_safe_create(sizeof(t_dongle) * cd->n_coders);
+	while (++i < cd->n_coders)
+	{
+		mutex_safe(&cd->dongles[i].dongle, INIT);
+		cd->dongles[i].dongle_id = i;
+	}
+	i = -1;
+	while (++i < cd->n_coders)
+	{
+		cd->coders[i].coder_id = i + 1;
+		cd->coders[i].compile_count = 0;
+		cd->coders[i].debug_count = 0;
+		cd->coders[i].refactor_count = 0;
+		cd->coders[i].coder_work_done = false;
+		cd->coders[i].last_compile_start = 0;
+		cd->coders[i].cd = cd;
+		assign_dongles(&cd->coders[i], cd->dongles, i);
+	}
 }
