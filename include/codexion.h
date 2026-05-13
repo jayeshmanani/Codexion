@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 23:25:49 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 00:05:49 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ typedef enum e_pthread_ops
 	TIMEDWAIT,
 	BROADCAST
 }								t_pthread_ops;
+
+typedef enum e_time_unit
+{
+	S,
+	miniS,
+	microS
+}								t_time_unit;
 
 typedef enum e_scheduler
 {
@@ -116,5 +123,8 @@ bool							get_bool(t_mtx *mtx, bool *src);
 void							set_long(t_mtx *mtx, long *dst, long value);
 long							get_long(t_mtx *mtx, long *src);
 bool							coding_finished(t_coding_data *cd);
+
+// sync.c
+void							waiting_for_coders(t_coding_data *cd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 19:16:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 23:25:50 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/13 23:44:10 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ long	get_long(t_mtx *mtx, long *src)
 bool	coding_finished(t_coding_data *cd)
 {
 	t_mtx	*mtx;
-	bool	end_coding;
+	bool	*end_coding;
 
 	mtx = &cd->cd_mutex;
 	end_coding = &cd->end_coding;

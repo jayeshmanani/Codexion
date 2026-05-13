@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   coding.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 19:00:53 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 00:04:10 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,12 @@ void	data_print(t_coding_data *cd)
 	}
 }
 
-void	*coding_sim(void *arg)
+void	*coding_sim(void *args)
 {
 	t_coder	*coder;
 
-	coder = (t_coder *)arg;
+	coder = (t_coder *)args;
+	waiting_for_coders(coder->cd);
 	printf("Coder: %d\n", coder->coder_id);
 	return (NULL);
 }
@@ -42,9 +43,12 @@ void	coding_start(t_coding_data *cd)
 		err_and_exit("Error: coding_data is NULL or 0 Compile needed\n");
 	else if (1 == cd->n_coders)
 		err_and_exit("Error: one coders only\n");
-	data_print(cd);
-	while (++i < cd->n_coders)
-		thread_safe(&cd->coders[i].coder_thread_id, CREATE, coding_sim,
-			&cd->coders[i]);
-	data_print(cd);
+	else
+	{
+		printf("Coders: %ld\n", cd->n_coders);
+		while (++i < cd->n_coders)
+			thread_safe(&cd->coders[i].coder_thread_id, CREATE, coding_sim,
+				&cd->coders[i]);
+	}
+	set_bool(&cd->cd_mutex, &cd->coders_ready, true);
 }

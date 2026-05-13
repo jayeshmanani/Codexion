@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:14:31 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 19:06:49 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/13 23:41:51 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	parse_input(t_coding_data *cd, char **argv)
 	else
 		err_and_exit("Algorithm can be 'edf' or 'fifo' or 'EDF' or 'FIFO'");
 	cd->coders_ready = false;
-	cd->end_simulation = false;
+	cd->end_coding = false;
 }
 
 // printf("%ld, %ld, %ld, %ld\n", cd->n_coders, cd->burn_time,
