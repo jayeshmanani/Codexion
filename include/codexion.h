@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 18:29:07 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/13 19:08:16 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,11 @@ typedef struct s_coding_data
 
 	long						start_simulation;
 	bool						end_simulation;
+	bool						coders_ready;
 
 	t_coder						*coders;
 	t_dongle					*dongles;
+	t_mtx						cd_mutex;
 }								t_coding_data;
 
 // Other Prototypes from different files
@@ -95,8 +97,8 @@ void							parse_input(t_coding_data *coding_data,
 void							*malloc_safe_create(size_t bytes);
 void							mutex_safe(t_mtx *mutex, t_pthread_ops ops);
 void							thread_safe(pthread_t *thread,
-									t_pthread_ops ops,
-									void *(*start_routine)(void *), void *arg);
+									t_pthread_ops ops, void *(*routine)(void *),
+									void *arg);
 void							data_init(t_coding_data *cd);
 void							coding_start(t_coding_data *cd);
 

@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 16:38:53 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 18:32:40 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/13 19:00:52 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ static void	handle_thread_return(int status, t_pthread_ops ops)
 }
 
 void	thread_safe(pthread_t *thread, t_pthread_ops ops,
-		void *(*start_routine)(void *), void *arg)
+		void *(*routine)(void *), void *arg)
 {
 	if (NULL == thread)
 		err_and_exit("Thread Error: Thread is NULL");
 	if (CREATE == ops)
-		handle_thread_return(pthread_create(thread, NULL, start_routine, arg),
+		handle_thread_return(pthread_create(thread, NULL, routine, arg),
 			ops);
 	else if (JOIN == ops)
 		handle_thread_return(pthread_join(*thread, NULL), ops);

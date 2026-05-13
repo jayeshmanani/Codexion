@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:14:31 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 18:33:38 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/13 19:06:49 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,11 @@ void	parse_input(t_coding_data *cd, char **argv)
 		cd->scheduler = FIFO;
 	else
 		err_and_exit("Algorithm can be 'edf' or 'fifo' or 'EDF' or 'FIFO'");
-	printf("%ld, %ld, %ld, %ld\n", cd->n_coders, cd->burn_time,
-		cd->compile_time, cd->debug_time);
-	printf("%ld, %ld, %ld, %d\n", cd->refactor_time, cd->n_compiles,
-		cd->cooldown_time, cd->scheduler);
+	cd->coders_ready = false;
+	cd->end_simulation = false;
 }
+
+// printf("%ld, %ld, %ld, %ld\n", cd->n_coders, cd->burn_time,
+// 	cd->compile_time, cd->debug_time);
+// printf("%ld, %ld, %ld, %d\n", cd->refactor_time, cd->n_compiles,
+// 	cd->cooldown_time, cd->scheduler);

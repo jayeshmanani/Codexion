@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:55:33 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 18:31:35 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/13 19:12:44 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,15 @@ void	data_init(t_coding_data *cd)
 	i = -1;
 	if (NULL == cd)
 		err_and_exit("Error: coding_data is NULL in data_init\n");
-	cd->end_simulation = false;
 	cd->coders = malloc_safe_create(sizeof(t_coder) * cd->n_coders);
 	cd->dongles = malloc_safe_create(sizeof(t_dongle) * cd->n_coders);
+	mutex_safe(&cd->cd_mutex, INIT);
 	while (++i < cd->n_coders)
 	{
 		mutex_safe(&cd->dongles[i].dongle, INIT);
 		cd->dongles[i].dongle_id = i;
 	}
-	i = -1;
-	while (++i < cd->n_coders)
+	while (--i > -1)
 	{
 		cd->coders[i].coder_id = i + 1;
 		cd->coders[i].compile_count = 0;
