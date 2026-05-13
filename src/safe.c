@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   safe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 16:38:53 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 19:00:52 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/13 23:26:26 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,7 @@ void	thread_safe(pthread_t *thread, t_pthread_ops ops,
 	if (NULL == thread)
 		err_and_exit("Thread Error: Thread is NULL");
 	if (CREATE == ops)
-		handle_thread_return(pthread_create(thread, NULL, routine, arg),
-			ops);
+		handle_thread_return(pthread_create(thread, NULL, routine, arg), ops);
 	else if (JOIN == ops)
 		handle_thread_return(pthread_join(*thread, NULL), ops);
 	else

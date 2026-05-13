@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 19:08:16 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/13 23:25:49 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ typedef struct s_coding_data
 	long						cooldown_time;
 	t_scheduler					scheduler;
 
-	long						start_simulation;
-	bool						end_simulation;
+	long						start_coding;
+	bool						end_coding;
 	bool						coders_ready;
 
 	t_coder						*coders;
@@ -90,16 +90,31 @@ typedef struct s_coding_data
 	t_mtx						cd_mutex;
 }								t_coding_data;
 
-// Other Prototypes from different files
+// Other Prototypes
+// utils.c
 void							err_and_exit(const char *error);
-void							parse_input(t_coding_data *coding_data,
-									char **argv);
+
+// parsing.c
+void							parse_input(t_coding_data *cd, char **argv);
+
+// safe.c
 void							*malloc_safe_create(size_t bytes);
 void							mutex_safe(t_mtx *mutex, t_pthread_ops ops);
 void							thread_safe(pthread_t *thread,
 									t_pthread_ops ops, void *(*routine)(void *),
 									void *arg);
+
+// initialize.c
 void							data_init(t_coding_data *cd);
+
+// coding.c
 void							coding_start(t_coding_data *cd);
+
+// set_get.c
+void							set_bool(t_mtx *mtx, bool *dst, bool value);
+bool							get_bool(t_mtx *mtx, bool *src);
+void							set_long(t_mtx *mtx, long *dst, long value);
+long							get_long(t_mtx *mtx, long *src);
+bool							coding_finished(t_coding_data *cd);
 
 #endif
