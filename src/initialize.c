@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:55:33 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 18:16:47 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/13 18:31:35 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static void	assign_dongles(t_coder *coder, t_dongle *dongles, int coder_pos)
 {
 	int	total_coders;
 
+	if (NULL == coder || NULL == dongles)
+		err_and_exit("Error: coder or dongles is NULL in assign_dongles\n");
 	total_coders = coder->cd->n_coders;
 	coder->left_dongle = &dongles[(coder_pos + 1) % total_coders];
 	coder->right_dongle = &dongles[coder_pos];
@@ -31,6 +33,8 @@ void	data_init(t_coding_data *cd)
 	int	i;
 
 	i = -1;
+	if (NULL == cd)
+		err_and_exit("Error: coding_data is NULL in data_init\n");
 	cd->end_simulation = false;
 	cd->coders = malloc_safe_create(sizeof(t_coder) * cd->n_coders);
 	cd->dongles = malloc_safe_create(sizeof(t_dongle) * cd->n_coders);

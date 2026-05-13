@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 18:09:21 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/13 18:29:07 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,7 @@ void							mutex_safe(t_mtx *mutex, t_pthread_ops ops);
 void							thread_safe(pthread_t *thread,
 									t_pthread_ops ops,
 									void *(*start_routine)(void *), void *arg);
+void							data_init(t_coding_data *cd);
+void							coding_start(t_coding_data *cd);
+
 #endif

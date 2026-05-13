@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:14:31 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 17:15:25 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/13 18:33:38 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static const char	*valid_input(const char *s)
 	const char	*num;
 
 	len = 0;
+	if (NULL == s)
+		err_and_exit("Input is NULL, Fix the input");
 	while (is_space(*s))
 		++s;
 	if (*s == '+')
@@ -49,6 +51,8 @@ static long	ft_atol(const char *s)
 	long	num;
 
 	num = 0;
+	if (NULL == s)
+		err_and_exit("Input is NULL, Fix the input");
 	s = valid_input(s);
 	while (is_digit(*s))
 		num = (num * 10) + (*s++ - '0');
@@ -61,6 +65,8 @@ static long	ft_atol(const char *s)
 
 void	parse_input(t_coding_data *cd, char **argv)
 {
+	if (NULL == cd || NULL == argv)
+		err_and_exit("Coding Data or Input is NULL, Fix the input");
 	cd->n_coders = ft_atol(argv[1]);
 	cd->burn_time = ft_atol(argv[2]) * 1e3;
 	cd->compile_time = ft_atol(argv[3]) * 1e3;

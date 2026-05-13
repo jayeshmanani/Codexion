@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 16:38:53 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 17:44:11 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/13 18:32:40 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ static void	handle_mutex_return(int status, t_pthread_ops ops)
 
 void	mutex_safe(t_mtx *mutex, t_pthread_ops ops)
 {
+	if (NULL == mutex)
+		err_and_exit("Mutex Error: Mutex is NULL");
 	if (INIT == ops)
 		handle_mutex_return(pthread_mutex_init(mutex, NULL), ops);
 	else if (LOCK == ops)
@@ -75,6 +77,8 @@ static void	handle_thread_return(int status, t_pthread_ops ops)
 void	thread_safe(pthread_t *thread, t_pthread_ops ops,
 		void *(*start_routine)(void *), void *arg)
 {
+	if (NULL == thread)
+		err_and_exit("Thread Error: Thread is NULL");
 	if (CREATE == ops)
 		handle_thread_return(pthread_create(thread, NULL, start_routine, arg),
 			ops);
