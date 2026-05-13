@@ -1,3 +1,5 @@
 .vscode
 main
 main-processes
+*.o
+codexion

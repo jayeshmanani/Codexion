@@ -4,7 +4,7 @@ RM = rm -f
 
 NAME = codexion
 
-SRCS = src/main.c src/utils.c src/parsing.c src/initialize.c
+SRCS = src/main.c src/utils.c src/parsing.c src/initialize.c src/safe.c
 
 OBJS = $(SRCS:.c=.o)
 

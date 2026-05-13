@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:14:31 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/12 15:57:25 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/13 17:15:25 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ static const char	*valid_input(const char *s)
 	if (*s == '+')
 		++s;
 	else if (*s == '-')
-		error_exit("Negative Values Detected: Give only ++++sitive");
+		err_and_exit("Negative Values Detected: Give only ++++sitive");
 	if (!is_digit(*s))
-		error_exit("Input is not Correct Digit, Update the input");
+		err_and_exit("Input is not Correct Digit, Update the input");
 	num = s;
 	while (is_digit(*s++))
 		++len;
 	if (len > 10)
-		error_exit("vlaue is not fitting in Int Range");
+		err_and_exit("vlaue is not fitting in Int Range");
 	return (num);
 }
 
@@ -52,8 +52,10 @@ static long	ft_atol(const char *s)
 	s = valid_input(s);
 	while (is_digit(*s))
 		num = (num * 10) + (*s++ - '0');
+	if (*s)
+		err_and_exit("Invalid input, something other than digit is included");
 	if (num > INT_MAX)
-		error_exit("The Value is too big, No. within INT_MAX is good number");
+		err_and_exit("The Value is too big, No. within INT_MAX is good number");
 	return (num);
 }
 
@@ -71,5 +73,9 @@ void	parse_input(t_coding_data *cd, char **argv)
 	else if (!strcmp(argv[8], "FIFO") || !strcmp(argv[8], "fifo"))
 		cd->scheduler = FIFO;
 	else
-		error_exit("Algorithm can be 'edf' or 'fifo' or 'EDF' or 'FIFO'");
+		err_and_exit("Algorithm can be 'edf' or 'fifo' or 'EDF' or 'FIFO'");
+	printf("%ld, %ld, %ld, %ld\n", cd->n_coders, cd->burn_time,
+		cd->compile_time, cd->debug_time);
+	printf("%ld, %ld, %ld, %d\n", cd->refactor_time, cd->n_compiles,
+		cd->cooldown_time, cd->scheduler);
 }

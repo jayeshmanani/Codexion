@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/13 16:36:54 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/13 17:02:20 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,10 @@ typedef struct s_coding_data
 }								t_coding_data;
 
 // Other Prototypes from different files
-void							error_exit(const char *error);
+void							err_and_exit(const char *error);
 void							parse_input(t_coding_data *coding_data,
 									char **argv);
 void							*malloc_safe_create(size_t bytes);
-void							*mutex_safe(t_mtx *mutex, t_mutex_ops ops);
+void							mutex_safe(t_mtx *mutex, t_mutex_ops ops);
 
 #endif
