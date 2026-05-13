@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 00:04:10 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 00:22:34 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	*coding_sim(void *args)
 	t_coder	*coder;
 
 	coder = (t_coder *)args;
-	waiting_for_coders(coder->cd);
-	printf("Coder: %d\n", coder->coder_id);
+	// waiting_for_coders(coder->cd);
+	printf("Coder %d is starting to code\n", coder->coder_id);
 	return (NULL);
 }
 
@@ -50,5 +50,11 @@ void	coding_start(t_coding_data *cd)
 			thread_safe(&cd->coders[i].coder_thread_id, CREATE, coding_sim,
 				&cd->coders[i]);
 	}
+	cd->start_coding = get_time(milliS);
 	set_bool(&cd->cd_mutex, &cd->coders_ready, true);
+	data_print(cd);
+	i = -1;
+	while (++i < cd->n_coders)
+		thread_safe(&cd->coders[i].coder_thread_id, JOIN, NULL, NULL);
+	data_print(cd);
 }

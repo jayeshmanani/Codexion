@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:06:25 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 00:05:58 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 00:11:46 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	err_and_exit(const char *error)
 	exit(EXIT_FAILURE);
 }
 
-long	gettime(t_time_unit time_unit)
+long	get_time(t_time_unit time_unit)
 {
 	struct timeval	time_val;
 	long			time_in_unit;
@@ -29,7 +29,7 @@ long	gettime(t_time_unit time_unit)
 		err_and_exit("Error: gettimeofday failed");
 	if (time_unit == S)
 		time_in_unit = (time_val.tv_sec) + (time_val.tv_usec / 1e6);
-	else if (time_unit == miniS)
+	else if (time_unit == milliS)
 		time_in_unit = (time_val.tv_sec * 1e3) + (time_val.tv_usec / 1e3);
 	else if (time_unit == microS)
 		time_in_unit = (time_val.tv_sec * 1e6) + (time_val.tv_usec);

@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 00:05:49 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 00:22:11 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef enum e_pthread_ops
 typedef enum e_time_unit
 {
 	S,
-	miniS,
+	milliS,
 	microS
 }								t_time_unit;
 
@@ -100,6 +100,7 @@ typedef struct s_coding_data
 // Other Prototypes
 // utils.c
 void							err_and_exit(const char *error);
+long							get_time(t_time_unit time_unit);
 
 // parsing.c
 void							parse_input(t_coding_data *cd, char **argv);
