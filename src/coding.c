@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 16:31:42 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 16:38:26 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,6 @@ void	coding_start(t_coding_data *cd)
 	i = -1;
 	while (++i < cd->n_coders)
 		thread_safe(&cd->coders[i].coder_thread_id, JOIN, NULL, NULL);
+	set_bool(&cd->cd_mutex, &cd->end_coding, true);
+	thread_safe(&cd->analyzer, JOIN, NULL, NULL);
 }

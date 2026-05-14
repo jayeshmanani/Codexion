@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 16:31:44 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 16:42:46 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void							err_and_exit(const char *error);
 long							get_time(t_time_unit time_unit);
 void							updated_usleep(t_coding_data *cd,
 									long microsec);
+void							clean_all(t_coding_data *cd);
 
 // parsing.c
 void							parse_input(t_coding_data *cd, char **argv);

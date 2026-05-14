@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 12:05:49 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 16:30:37 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 17:11:55 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,15 @@ void	print_data(t_coder_ops ops, t_coder *coder, bool debug)
 	{
 		if ((TOOK_DONGLE_1 == ops || TOOK_DONGLE_2 == ops)
 			&& !coding_finished(coder->cd))
-			printf("%ld %d has taken a dongle\n", elapsed_t, coder->coder_id);
+			printf("%6ld %3d has taken a dongle\n", elapsed_t, coder->coder_id);
 		else if (COMPILING == ops && !coding_finished(coder->cd))
-			printf("%ld %d is compiling\n", elapsed_t, coder->coder_id);
+			printf("%6ld %3d is compiling\n", elapsed_t, coder->coder_id);
 		else if (DEBUGGING == ops && !coding_finished(coder->cd))
-			printf("%ld %d is debugging\n", elapsed_t, coder->coder_id);
+			printf("%6ld %3d is debugging\n", elapsed_t, coder->coder_id);
 		else if (REFACTORING == ops && !coding_finished(coder->cd))
-			printf("%ld %d is refactoring\n", elapsed_t, coder->coder_id);
+			printf("%6ld %3d is refactoring\n", elapsed_t, coder->coder_id);
 		else if (BURNED_OUT == ops)
-			printf("%ld %d burned out\n", elapsed_t, coder->coder_id);
+			printf("%6ld %3d burned out\n", elapsed_t, coder->coder_id);
 	}
 	mutex_safe(&coder->cd->op_mutex, UNLOCK);
 }

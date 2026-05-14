@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:09:49 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 16:03:21 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 16:46:01 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv)
 		parse_input(&coding_data, argv);
 		data_init(&coding_data);
 		coding_start(&coding_data);
-		// clean_all(&coding_data);
+		clean_all(&coding_data);
 	}
 	else
 	{
