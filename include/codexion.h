@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 15:02:54 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 15:28:00 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ typedef struct s_coding_data
 	t_dongle					*dongles;
 	t_mtx						cd_mutex;
 	t_mtx						op_mutex;
+
+	pthread_t					analyzer;
 }								t_coding_data;
 
 // Other Prototypes
@@ -148,5 +150,8 @@ void							waiting_for_coders(t_coding_data *cd);
 // data_op.c
 void							print_data(t_coder_ops ops, t_coder *coder,
 									bool debug);
+
+// analyser.c
+void							*coding_analyser(void *args);
 
 #endif
