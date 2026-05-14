@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 15:50:14 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 16:31:42 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	*lone_vibe_coder(void *args)
 
 	coder = (t_coder *)args;
 	waiting_for_coders(coder->cd);
+	increase_long(&coder->cd->cd_mutex, &coder->cd->active_coders);
 	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));
 	print_data(TOOK_DONGLE_1, coder, DEBUG_MODE);
 	while (!coding_finished(coder->cd))
@@ -55,6 +56,7 @@ void	*coding_sim(void *args)
 
 	coder = (t_coder *)args;
 	waiting_for_coders(coder->cd);
+	increase_long(&coder->cd->cd_mutex, &coder->cd->active_coders);
 	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));
 	while (!coding_finished(coder->cd))
 	{
@@ -88,8 +90,8 @@ void	coding_start(t_coding_data *cd)
 			thread_safe(&cd->coders[i].coder_thread_id, CREATE, coding_sim,
 				&cd->coders[i]);
 	}
+	set_long(&cd->cd_mutex, &cd->start_coding_t, get_time(MILLISEC));
 	thread_safe(&cd->analyzer, CREATE, coding_analyser, cd);
-	cd->start_coding_time = get_time(MILLISEC);
 	set_bool(&cd->cd_mutex, &cd->coders_ready, true);
 	i = -1;
 	while (++i < cd->n_coders)

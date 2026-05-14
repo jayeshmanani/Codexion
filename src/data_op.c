@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 12:05:49 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 15:46:29 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 16:30:37 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,10 @@ static void	write_ops_debug(t_coder_ops ops, t_coder *coder, long elapsed_t)
 void	print_data(t_coder_ops ops, t_coder *coder, bool debug)
 {
 	long	elapsed_t;
+	long	start_t;
 
-	elapsed_t = get_time(MILLISEC) - coder->cd->start_coding_time;
+	start_t = get_long(&coder->cd->cd_mutex, &coder->cd->start_coding_t);
+	elapsed_t = get_time(MILLISEC) - start_t;
 	if (coder->coder_work_done)
 		return ;
 	mutex_safe(&coder->cd->op_mutex, LOCK);
