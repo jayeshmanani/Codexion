@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 13:28:13 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 15:02:46 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,10 @@ void	*coding_sim(void *args)
 
 	coder = (t_coder *)args;
 	waiting_for_coders(coder->cd);
-	printf("Coder %d is starting to code\n", coder->coder_id);
 	while (!coding_finished(coder->cd))
 	{
+		if (get_bool(&coder->coder_mutex, &coder->coder_work_done))
+			break ;
 		compile(coder);
 		print_data(DEBUGGING, coder, DEBUG_MODE);
 		updated_usleep(coder->cd, coder->cd->debug_time);

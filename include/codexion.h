@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 13:25:36 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 15:02:54 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <time.h>
 # include <unistd.h>
 
-// Define DEBUG_MODe
+// Define DEBUG_MODE
 # define DEBUG_MODE 0
 
 // Customized Structs
