@@ -6,11 +6,35 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 12:21:01 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 13:28:13 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
+
+static void	refactor(t_coder *coder)
+{
+	print_data(REFACTORING, coder, DEBUG_MODE);
+	updated_usleep(coder->cd, coder->cd->refactor_time);
+	coder->refactor_count++;
+}
+
+static void	compile(t_coder *coder)
+{
+	mutex_safe(&coder->left_dongle->dongle_mutex, LOCK);
+	print_data(TOOK_DONGLE_1, coder, DEBUG_MODE);
+	mutex_safe(&coder->right_dongle->dongle_mutex, LOCK);
+	print_data(TOOK_DONGLE_2, coder, DEBUG_MODE);
+	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));
+	coder->compile_count++;
+	print_data(COMPILING, coder, DEBUG_MODE);
+	updated_usleep(coder->cd, coder->cd->compile_time);
+	if (coder->cd->n_compiles > 0
+		&& coder->compile_count == coder->cd->n_compiles)
+		set_bool(&coder->coder_mutex, &coder->coder_work_done, true);
+	mutex_safe(&coder->left_dongle->dongle_mutex, UNLOCK);
+	mutex_safe(&coder->right_dongle->dongle_mutex, UNLOCK);
+}
 
 void	*coding_sim(void *args)
 {
@@ -21,11 +45,11 @@ void	*coding_sim(void *args)
 	printf("Coder %d is starting to code\n", coder->coder_id);
 	while (!coding_finished(coder->cd))
 	{
-		if (coder->coder_work_done) // to do mutex
-			break ;
-		// compile
-		// debug
-		// refractor
+		compile(coder);
+		print_data(DEBUGGING, coder, DEBUG_MODE);
+		updated_usleep(coder->cd, coder->cd->debug_time);
+		coder->debug_count++;
+		refactor(coder);
 	}
 	return (NULL);
 }

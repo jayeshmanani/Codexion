@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 12:30:46 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 13:25:36 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@
 # include <sys/time.h>
 # include <time.h>
 # include <unistd.h>
+
+// Define DEBUG_MODe
+# define DEBUG_MODE 0
 
 // Customized Structs
 typedef pthread_mutex_t			t_mtx;
@@ -55,12 +58,6 @@ typedef enum e_scheduler
 	EDF
 }								t_scheduler;
 
-typedef struct s_dongle
-{
-	int							dongle_id;
-	t_mtx						dongle;
-}								t_dongle;
-
 typedef enum e_coder_ops
 {
 	COMPILING,
@@ -71,20 +68,27 @@ typedef enum e_coder_ops
 	BURNED_OUT
 }								t_coder_ops;
 
+typedef struct s_dongle
+{
+	int							dongle_id;
+	t_mtx						dongle_mutex;
+}								t_dongle;
+
 typedef struct s_coder
 {
 	int							coder_id;
-	int							compile_count;
-	int							debug_count;
-	int							refactor_count;
+	long						compile_count;
+	long						debug_count;
+	long						refactor_count;
 	bool						coder_work_done;
-	long						last_compile_start;
+	long						last_compile_t;
 
 	pthread_t					coder_thread_id;
 	t_dongle					*left_dongle;
 	t_dongle					*right_dongle;
 
 	t_coding_data				*cd;
+	t_mtx						coder_mutex;
 }								t_coder;
 
 typedef struct s_coding_data
@@ -142,5 +146,7 @@ bool							coding_finished(t_coding_data *cd);
 void							waiting_for_coders(t_coding_data *cd);
 
 // data_op.c
+void							print_data(t_coder_ops ops, t_coder *coder,
+									bool debug);
 
 #endif

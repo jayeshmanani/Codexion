@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:55:33 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 12:21:25 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 13:29:32 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,33 @@ static void	assign_dongles(t_coder *coder, t_dongle *dongles, int coder_pos)
 	}
 }
 
+static void	coder_init(t_coding_data *cd)
+{
+	int		i;
+	t_coder	*coder;
+
+	i = -1;
+	while (++i < cd->n_coders)
+	{
+		coder = &cd->coders[i];
+		coder->coder_id = i + 1;
+		coder->compile_count = 0;
+		coder->debug_count = 0;
+		coder->refactor_count = 0;
+		coder->coder_work_done = false;
+		coder->last_compile_t = 0;
+		mutex_safe(&coder->coder_mutex, INIT);
+		assign_dongles(coder, cd->dongles, i);
+		coder->cd = cd;
+	}
+}
+
 void	data_init(t_coding_data *cd)
 {
 	int	i;
 
 	i = -1;
+	printf("Initializing data...\n");
 	if (NULL == cd)
 		err_and_exit("Error: coding_data is NULL in data_init\n");
 	cd->coders = malloc_safe_create(sizeof(t_coder) * cd->n_coders);
@@ -40,18 +62,9 @@ void	data_init(t_coding_data *cd)
 	mutex_safe(&cd->cd_mutex, INIT);
 	while (++i < cd->n_coders)
 	{
-		mutex_safe(&cd->dongles[i].dongle, INIT);
+		mutex_safe(&cd->dongles[i].dongle_mutex, INIT);
 		cd->dongles[i].dongle_id = i;
 	}
-	while (--i > -1)
-	{
-		cd->coders[i].coder_id = i + 1;
-		cd->coders[i].compile_count = 0;
-		cd->coders[i].debug_count = 0;
-		cd->coders[i].refactor_count = 0;
-		cd->coders[i].coder_work_done = false;
-		cd->coders[i].last_compile_start = 0;
-		cd->coders[i].cd = cd;
-		assign_dongles(&cd->coders[i], cd->dongles, i);
-	}
+	coder_init(cd);
+	printf("Data initialization complete.\n");
 }
