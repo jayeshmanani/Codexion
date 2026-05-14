@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 12:05:49 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 15:00:51 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 15:46:29 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	print_data(t_coder_ops ops, t_coder *coder, bool debug)
 			printf("%ld %d is debugging\n", elapsed_t, coder->coder_id);
 		else if (REFACTORING == ops && !coding_finished(coder->cd))
 			printf("%ld %d is refactoring\n", elapsed_t, coder->coder_id);
-		else if (BURNED_OUT == ops && !coding_finished(coder->cd))
+		else if (BURNED_OUT == ops)
 			printf("%ld %d burned out\n", elapsed_t, coder->coder_id);
 	}
 	mutex_safe(&coder->cd->op_mutex, UNLOCK);
