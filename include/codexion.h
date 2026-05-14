@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 00:22:11 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/14 12:14:50 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ typedef enum e_pthread_ops
 
 typedef enum e_time_unit
 {
-	S,
-	milliS,
-	microS
+	SEC,
+	MILLISEC,
+	MICROSEC
 }								t_time_unit;
 
 typedef enum e_scheduler
@@ -60,6 +60,16 @@ typedef struct s_dongle
 	int							dongle_id;
 	t_mtx						dongle;
 }								t_dongle;
+
+typedef enum e_coder_ops
+{
+	COMPILING,
+	DEBUGGING,
+	REFACTORING,
+	TOOK_DONGLE_1,
+	TOOK_DONGLE_2,
+	BURNED_OUT
+}								t_coder_ops;
 
 typedef struct s_coder
 {
@@ -88,19 +98,22 @@ typedef struct s_coding_data
 	long						cooldown_time;
 	t_scheduler					scheduler;
 
-	long						start_coding;
+	long						start_coding_time;
 	bool						end_coding;
 	bool						coders_ready;
 
 	t_coder						*coders;
 	t_dongle					*dongles;
 	t_mtx						cd_mutex;
+	t_mtx						op_mutex;
 }								t_coding_data;
 
 // Other Prototypes
 // utils.c
 void							err_and_exit(const char *error);
 long							get_time(t_time_unit time_unit);
+void							updated_usleep(t_coding_data *cd,
+									long microsec);
 
 // parsing.c
 void							parse_input(t_coding_data *cd, char **argv);
@@ -127,5 +140,7 @@ bool							coding_finished(t_coding_data *cd);
 
 // sync.c
 void							waiting_for_coders(t_coding_data *cd);
+
+// data_op.c
 
 #endif
