@@ -6,13 +6,13 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 16:38:26 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 15:03:45 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-void	*lone_vibe_coder(void *args)
+static void	*lone_vibe_coder(void *args)
 {
 	t_coder	*coder;
 

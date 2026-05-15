@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 16:42:46 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 15:04:45 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,10 @@ typedef enum e_coder_ops
 typedef struct s_dongle
 {
 	int							dongle_id;
+	long						next_available_t;
+
+	pthread_cond_t				dongle_cond;
+	t_mtx						dongle_state_mutex;
 	t_mtx						dongle_mutex;
 }								t_dongle;
 
@@ -116,12 +120,16 @@ typedef struct s_coding_data
 }								t_coding_data;
 
 // Other Prototypes
-// utils.c
+// end_utils.c
 void							err_and_exit(const char *error);
+void							clean_all(t_coding_data *cd);
+
+// time_utils.c
+void							abs_time_from_usec(long abs_usec,
+									struct timespec *ts);
 long							get_time(t_time_unit time_unit);
 void							updated_usleep(t_coding_data *cd,
 									long microsec);
-void							clean_all(t_coding_data *cd);
 
 // parsing.c
 void							parse_input(t_coding_data *cd, char **argv);

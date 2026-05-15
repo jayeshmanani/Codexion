@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:55:33 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 16:18:39 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 15:04:55 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,11 @@ void	data_init(t_coding_data *cd)
 	while (++i < cd->n_coders)
 	{
 		mutex_safe(&cd->dongles[i].dongle_mutex, INIT);
+		mutex_safe(&cd->dongles[i].dongle_state_mutex, INIT);
+		if (pthread_cond_init(&cd->dongles[i].dongle_cond, NULL) != 0)
+			err_and_exit("Error: data_init: pthread_cond_init failed\n");
 		cd->dongles[i].dongle_id = i;
+		cd->dongles[i].next_available_t = 0;
 	}
 	coder_init(cd);
 }

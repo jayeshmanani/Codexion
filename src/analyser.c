@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 15:09:28 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 16:31:42 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 15:04:40 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,13 @@ void	*coding_analyser(void *args)
 	int				i;
 
 	cd = (t_coding_data *)args;
-	while (!all_coders_ready(&cd->cd_mutex, &cd->active_coders,
-			cd->n_coders))
+	while (!all_coders_ready(&cd->cd_mutex, &cd->active_coders, cd->n_coders))
 		;
 	while (!coding_finished(cd))
 	{
 		i = -1;
 		while (++i < cd->n_coders && !coding_finished(cd))
 		{
-			// printf("coder %d\n", i + 1);
-            // printf("Coder: %p\n", (void *)(cd->coders + i)); // Debug statement
 			if (coder_burned_out(cd->coders + i))
 			{
 				set_bool(&cd->cd_mutex, &cd->end_coding, true);
