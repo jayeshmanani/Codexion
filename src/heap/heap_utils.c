@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 16:01:46 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 16:58:53 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 17:23:18 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,12 @@ bool	heap_is_empty(t_heap *heap)
 	return (heap->size == 0);
 }
 
-// void	heap_destroy(t_heap *heap)
-// {
-// 	if (!heap)
-// 		return ;
-// 	free(heap->arr);
-// 	heap->arr = NULL;
-// 	heap->size = 0;
-// 	heap->capacity = 0;
-// Will check later if need to free separately or will handle from comming
-// clean_all function
-// }
+void	heap_destroy(t_heap *heap)
+{
+	if (!heap)
+		return ;
+	free(heap->arr);
+	heap->arr = NULL;
+	heap->size = 0;
+	heap->capacity = 0;
+}

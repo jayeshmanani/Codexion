@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:06:25 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 16:58:12 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 17:19:13 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void	clean_all(t_coding_data *cd)
 	}
 	mutex_safe(&cd->cd_mutex, DESTROY);
 	mutex_safe(&cd->op_mutex, DESTROY);
+	heap_destroy(&cd->algo_heap);
 	free(cd->coders);
 	free(cd->dongles);
-	// free(cd->heap.arr);
 }
 
 void	err_and_exit(const char *error)

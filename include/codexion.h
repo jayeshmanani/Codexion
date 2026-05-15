@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 16:52:22 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 17:11:05 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ typedef struct s_coding_data
 	bool						end_coding;
 	bool						coders_ready;
 
-	t_heap						heap;
+	t_heap						algo_heap;
 	t_coder						*coders;
 	t_dongle					*dongles;
 	t_mtx						cd_mutex;
@@ -204,12 +204,16 @@ long							heap_left(long i);
 long							heap_right(long i);
 
 // heap_utils.c
-void							up_shift(t_heap *heap, long index);
-void							down_shift(t_heap *heap, long index);
 void							heap_init(t_heap *heap, long capacity,
 									t_scheduler scheduler);
 void							heap_destroy(t_heap *heap);
 bool							heap_is_empty(t_heap *heap);
 
 // heap_ops.c
+void							up_shift(t_heap *heap, long index);
+void							down_shift(t_heap *heap, long index);
+void							heap_push(t_heap *heap, t_req req);
+t_req							heap_peek(t_heap *heap);
+t_req							heap_pop(t_heap *heap);
+
 #endif
