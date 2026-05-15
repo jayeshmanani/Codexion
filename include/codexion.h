@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 15:48:52 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 16:04:04 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 typedef pthread_mutex_t			t_mtx;
 typedef struct s_coding_data	t_coding_data;
 
+// Threading and Synchronization Structs
 typedef enum e_pthread_ops
 {
 	CREATE,
@@ -68,6 +69,23 @@ typedef enum e_coder_ops
 	BURNED_OUT
 }								t_coder_ops;
 
+// Heap Structs
+typedef struct s_req
+{
+	int							coder_id;
+	long						arrival_time;
+	long						deadline;
+}								t_req;
+
+typedef struct s_heap
+{
+	t_req						*arr;
+	long						size;
+	long						capacity;
+	t_scheduler					scheduler;
+}								t_heap;
+
+// Dongle and Coder Structs
 typedef struct s_dongle
 {
 	int							dongle_id;
@@ -95,6 +113,7 @@ typedef struct s_coder
 	t_mtx						coder_mutex;
 }								t_coder;
 
+// Input Data Struct
 typedef struct s_coding_data
 {
 	long						n_coders;
@@ -173,5 +192,7 @@ void							acquire_dongle(t_coding_data *cd,
 
 void							release_dongle(t_coding_data *cd,
 									t_dongle *dongle);
+
+// heap Folder Prototypes
 
 #endif
