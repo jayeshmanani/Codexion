@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 15:04:45 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 15:48:52 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,5 +166,12 @@ void							print_data(t_coder_ops ops, t_coder *coder,
 
 // analyser.c
 void							*coding_analyser(void *args);
+
+// dongle_sync.c
+void							acquire_dongle(t_coding_data *cd,
+									t_dongle *dongle);
+
+void							release_dongle(t_coding_data *cd,
+									t_dongle *dongle);
 
 #endif

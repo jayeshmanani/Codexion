@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 15:03:45 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 15:48:53 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ static void	refactor(t_coder *coder)
 
 static void	compile(t_coder *coder)
 {
-	mutex_safe(&coder->left_dongle->dongle_mutex, LOCK);
+	acquire_dongle(coder->cd, coder->left_dongle);
 	print_data(TOOK_DONGLE_1, coder, DEBUG_MODE);
-	mutex_safe(&coder->right_dongle->dongle_mutex, LOCK);
+	acquire_dongle(coder->cd, coder->right_dongle);
 	print_data(TOOK_DONGLE_2, coder, DEBUG_MODE);
 	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));
 	coder->compile_count++;
@@ -46,8 +46,8 @@ static void	compile(t_coder *coder)
 	if (coder->cd->n_compiles > 0
 		&& coder->compile_count == coder->cd->n_compiles)
 		set_bool(&coder->coder_mutex, &coder->coder_work_done, true);
-	mutex_safe(&coder->left_dongle->dongle_mutex, UNLOCK);
-	mutex_safe(&coder->right_dongle->dongle_mutex, UNLOCK);
+	release_dongle(coder->cd, coder->left_dongle);
+	release_dongle(coder->cd, coder->right_dongle);
 }
 
 void	*coding_sim(void *args)
