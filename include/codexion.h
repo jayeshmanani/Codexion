@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 18:06:28 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 19:05:39 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ typedef struct s_coder
 	long						deadline_t;
 
 	pthread_cond_t				coder_req_cond;
-	pthread_t					coder_thread_id;
+	pthread_t					c_thread_id;
 	t_mtx						coder_mutex;
 
 	t_dongle					*left_dongle;
@@ -145,6 +145,8 @@ typedef struct s_coding_data
 	t_mtx						op_mutex;
 
 	pthread_t					analyzer;
+	pthread_t					arbiter;
+	pthread_cond_t				arbiter_cond;
 }								t_coding_data;
 
 // Other Prototypes
@@ -223,5 +225,13 @@ void							down_shift(t_heap *heap, long index);
 void							heap_push(t_heap *heap, t_req req);
 t_req							heap_peek(t_heap *heap);
 t_req							heap_pop(t_heap *heap);
+
+// coding_utils.c
+void							compile(t_coder *coder);
+void							refactor(t_coder *coder);
+void							*lone_vibe_coder(void *args);
+
+// arbiter.c
+void							*arbiter_thread(void *args);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:06:25 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 18:10:07 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 19:00:21 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	clean_all(t_coding_data *cd)
 		if (pthread_cond_destroy(&cd->dongles[i].dongle_cond) != 0)
 			err_and_exit("Error: clean_all: pthread_cond_destroy failed\n");
 	}
+	if (pthread_cond_destroy(&cd->arbiter_cond) != 0)
+		err_and_exit("Error: clean_all: pthread_cond_destroy failed\n");
 	mutex_safe(&cd->cd_mutex, DESTROY);
 	mutex_safe(&cd->op_mutex, DESTROY);
 	heap_destroy(&cd->algo_heap);

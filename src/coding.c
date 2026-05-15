@@ -6,49 +6,11 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 15:48:53 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 19:07:52 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-
-static void	*lone_vibe_coder(void *args)
-{
-	t_coder	*coder;
-
-	coder = (t_coder *)args;
-	waiting_for_coders(coder->cd);
-	increase_long(&coder->cd->cd_mutex, &coder->cd->active_coders);
-	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));
-	print_data(TOOK_DONGLE_1, coder, DEBUG_MODE);
-	while (!coding_finished(coder->cd))
-		usleep(200);
-	return (NULL);
-}
-
-static void	refactor(t_coder *coder)
-{
-	coder->refactor_count++;
-	print_data(REFACTORING, coder, DEBUG_MODE);
-	updated_usleep(coder->cd, coder->cd->refactor_time);
-}
-
-static void	compile(t_coder *coder)
-{
-	acquire_dongle(coder->cd, coder->left_dongle);
-	print_data(TOOK_DONGLE_1, coder, DEBUG_MODE);
-	acquire_dongle(coder->cd, coder->right_dongle);
-	print_data(TOOK_DONGLE_2, coder, DEBUG_MODE);
-	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));
-	coder->compile_count++;
-	print_data(COMPILING, coder, DEBUG_MODE);
-	updated_usleep(coder->cd, coder->cd->compile_time);
-	if (coder->cd->n_compiles > 0
-		&& coder->compile_count == coder->cd->n_compiles)
-		set_bool(&coder->coder_mutex, &coder->coder_work_done, true);
-	release_dongle(coder->cd, coder->left_dongle);
-	release_dongle(coder->cd, coder->right_dongle);
-}
 
 void	*coding_sim(void *args)
 {
@@ -71,6 +33,23 @@ void	*coding_sim(void *args)
 	return (NULL);
 }
 
+void	coding_helper(t_coding_data *cd)
+{
+	int	i;
+
+	i = -1;
+	set_long(&cd->cd_mutex, &cd->start_coding_t, get_time(MILLISEC));
+	thread_safe(&cd->analyzer, CREATE, coding_analyser, cd);
+	set_bool(&cd->cd_mutex, &cd->coders_ready, true);
+	i = -1;
+	while (++i < cd->n_coders)
+		thread_safe(&cd->coders[i].c_thread_id, JOIN, NULL, NULL);
+	set_bool(&cd->cd_mutex, &cd->end_coding, true);
+	pthread_cond_broadcast(&cd->arbiter_cond);
+	thread_safe(&cd->arbiter, JOIN, NULL, NULL);
+	thread_safe(&cd->analyzer, JOIN, NULL, NULL);
+}
+
 void	coding_start(t_coding_data *cd)
 {
 	int	i;
@@ -81,21 +60,15 @@ void	coding_start(t_coding_data *cd)
 	else if (0 == cd->n_compiles)
 		return ;
 	else if (1 == cd->n_coders)
-		thread_safe(&cd->coders[0].coder_thread_id, CREATE, lone_vibe_coder,
+		thread_safe(&cd->coders[0].c_thread_id, CREATE, lone_vibe_coder,
 			&cd->coders[0]);
 	else
 	{
+		thread_safe(&cd->arbiter, CREATE, arbiter_thread, cd);
 		printf("Coders: %ld\n", cd->n_coders);
 		while (++i < cd->n_coders)
-			thread_safe(&cd->coders[i].coder_thread_id, CREATE, coding_sim,
+			thread_safe(&cd->coders[i].c_thread_id, CREATE, coding_sim,
 				&cd->coders[i]);
 	}
-	set_long(&cd->cd_mutex, &cd->start_coding_t, get_time(MILLISEC));
-	thread_safe(&cd->analyzer, CREATE, coding_analyser, cd);
-	set_bool(&cd->cd_mutex, &cd->coders_ready, true);
-	i = -1;
-	while (++i < cd->n_coders)
-		thread_safe(&cd->coders[i].coder_thread_id, JOIN, NULL, NULL);
-	set_bool(&cd->cd_mutex, &cd->end_coding, true);
-	thread_safe(&cd->analyzer, JOIN, NULL, NULL);
+	coding_helper(cd);
 }

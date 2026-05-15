@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:55:33 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 18:08:00 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 18:53:38 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ void	data_init(t_coding_data *cd)
 	heap_init(&cd->algo_heap, cd->n_coders, cd->scheduler);
 	mutex_safe(&cd->cd_mutex, INIT);
 	mutex_safe(&cd->op_mutex, INIT);
+	if (pthread_cond_init(&cd->arbiter_cond, NULL) != 0)
+		err_and_exit("Error: data_init: pthread_cond_init failed\n");
 	while (++i < cd->n_coders)
 	{
 		mutex_safe(&cd->dongles[i].dongle_mutex, INIT);

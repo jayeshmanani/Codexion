@@ -7,7 +7,7 @@ NAME = codexion
 SRCS = src/main.c src/end_utils.c src/parsing.c src/initialize.c src/safe.c\
 		src/coding.c src/set_get.c src/sync.c src/data_op.c src/analyser.c\
 		src/time_utils.c src/dongle_sync.c src/heap/heap_ops.c src/heap/heap_cmp.c\
-		src/heap/heap_utils.c
+		src/heap/heap_utils.c src/coding_utils.c src/arbiter.c
 
 OBJS = $(SRCS:.c=.o)
 
