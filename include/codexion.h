@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 16:04:04 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 16:09:56 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ typedef enum e_coder_ops
 typedef struct s_req
 {
 	int							coder_id;
-	long						arrival_time;
-	long						deadline;
+	long						arrival_t;
+	long						deadline_t;
 }								t_req;
 
 typedef struct s_heap
@@ -194,5 +194,7 @@ void							release_dongle(t_coding_data *cd,
 									t_dongle *dongle);
 
 // heap Folder Prototypes
-
+// heap_cmp.c
+bool							find_preference(t_req a, t_req b,
+									t_scheduler scheduler);
 #endif
