@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:06:25 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 17:19:13 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 18:10:07 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	clean_all(t_coding_data *cd)
 	while (++i < cd->n_coders)
 	{
 		mutex_safe(&cd->coders[i].coder_mutex, DESTROY);
+		if (pthread_cond_destroy(&cd->coders[i].coder_req_cond) != 0)
+			err_and_exit("Error: clean_all: pthread_cond_destroy failed\n");
 		mutex_safe(&cd->dongles[i].dongle_mutex, DESTROY);
 		mutex_safe(&cd->dongles[i].dongle_state_mutex, DESTROY);
 		if (pthread_cond_destroy(&cd->dongles[i].dongle_cond) != 0)

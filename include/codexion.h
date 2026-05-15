@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 17:11:05 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 18:06:28 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,18 +99,26 @@ typedef struct s_dongle
 typedef struct s_coder
 {
 	int							coder_id;
+
 	long						compile_count;
 	long						debug_count;
 	long						refactor_count;
-	bool						coder_work_done;
-	long						last_compile_t;
 
+	bool						coder_work_done;
+	bool						req_pending;
+
+	long						last_compile_t;
+	long						arrival_t;
+	long						deadline_t;
+
+	pthread_cond_t				coder_req_cond;
 	pthread_t					coder_thread_id;
+	t_mtx						coder_mutex;
+
 	t_dongle					*left_dongle;
 	t_dongle					*right_dongle;
-
 	t_coding_data				*cd;
-	t_mtx						coder_mutex;
+
 }								t_coder;
 
 // Input Data Struct

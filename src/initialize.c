@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:55:33 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 17:22:11 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 18:08:00 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,11 @@ static void	coder_init(t_coding_data *cd)
 		coder->coder_work_done = false;
 		coder->last_compile_t = 0;
 		mutex_safe(&coder->coder_mutex, INIT);
+		if (pthread_cond_init(&coder->coder_req_cond, NULL) != 0)
+			err_and_exit("Error: coder_init: pthread_cond_init failed\n");
+		coder->arrival_t = 0;
+		coder->deadline_t = 0;
+		coder->req_pending = false;
 		assign_dongles(coder, cd->dongles, i);
 	}
 }
