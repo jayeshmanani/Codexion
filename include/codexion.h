@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 16:09:56 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/15 16:52:22 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ typedef struct s_coding_data
 	bool						end_coding;
 	bool						coders_ready;
 
+	t_heap						heap;
 	t_coder						*coders;
 	t_dongle					*dongles;
 	t_mtx						cd_mutex;
@@ -197,4 +198,18 @@ void							release_dongle(t_coding_data *cd,
 // heap_cmp.c
 bool							find_preference(t_req a, t_req b,
 									t_scheduler scheduler);
+void							req_swap(t_req *a, t_req *b);
+long							heap_parent(long i);
+long							heap_left(long i);
+long							heap_right(long i);
+
+// heap_utils.c
+void							up_shift(t_heap *heap, long index);
+void							down_shift(t_heap *heap, long index);
+void							heap_init(t_heap *heap, long capacity,
+									t_scheduler scheduler);
+void							heap_destroy(t_heap *heap);
+bool							heap_is_empty(t_heap *heap);
+
+// heap_ops.c
 #endif
