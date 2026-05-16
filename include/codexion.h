@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 19:05:39 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 16:56:32 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ void							abs_time_from_usec(long abs_usec,
 									struct timespec *ts);
 long							get_time(t_time_unit time_unit);
 void							updated_usleep(t_coding_data *cd,
-									long microsec);
+									long millisec);
 
 // parsing.c
 void							parse_input(t_coding_data *cd, char **argv);

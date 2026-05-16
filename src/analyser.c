@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyser.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 15:09:28 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 15:04:40 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 16:49:17 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static bool	coder_burned_out(t_coder *coder)
 {
 	long	elapsed_time;
-	long	t_to_die;
 
 	if (NULL == coder)
 		err_and_exit("Error: coder is NULL in coder_burned_out\n");
@@ -23,8 +22,7 @@ static bool	coder_burned_out(t_coder *coder)
 		return (false);
 	elapsed_time = get_time(MILLISEC) - get_long(&coder->coder_mutex,
 			&coder->last_compile_t);
-	t_to_die = coder->cd->burn_time / 1e3;
-	return (elapsed_time > t_to_die);
+	return (elapsed_time > coder->cd->burn_time);
 }
 
 void	*coding_analyser(void *args)
@@ -46,6 +44,7 @@ void	*coding_analyser(void *args)
 				print_data(BURNED_OUT, cd->coders + i, DEBUG_MODE);
 			}
 		}
+		usleep(1000);
 	}
 	return (NULL);
 }

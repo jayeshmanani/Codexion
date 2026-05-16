@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 14:54:11 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 15:11:07 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 16:34:53 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,24 @@ long	get_time(t_time_unit time_unit)
 	return (time_in_unit);
 }
 
-void	updated_usleep(t_coding_data *cd, long microsec)
+void	updated_usleep(t_coding_data *cd, long millisec)
 {
 	long	start_t;
 	long	elapsed_t;
 	long	rem_t;
 
 	start_t = get_time(MICROSEC);
-	while (get_time(MICROSEC) - start_t < microsec)
+	while (get_time(MICROSEC) - start_t < millisec*1e3)
 	{
 		if (coding_finished(cd))
 			break ;
 		elapsed_t = get_time(MICROSEC) - start_t;
-		rem_t = microsec - elapsed_t;
+		rem_t = (millisec*1e3) - elapsed_t;
 		if (rem_t > 1e3)
 			usleep(rem_t / 2);
 		else
 		{
-			while (get_time(MICROSEC) - start_t < microsec)
+			while (get_time(MICROSEC) - start_t < (millisec*1e3))
 				;
 		}
 	}

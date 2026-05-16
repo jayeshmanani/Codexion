@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:14:31 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/14 16:31:42 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 16:35:59 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ void	parse_input(t_coding_data *cd, char **argv)
 	if (NULL == cd || NULL == argv)
 		err_and_exit("Coding Data or Input is NULL, Fix the input");
 	cd->n_coders = ft_atol(argv[1]);
-	cd->burn_time = ft_atol(argv[2]) * 1e3;
-	cd->compile_time = ft_atol(argv[3]) * 1e3;
-	cd->debug_time = ft_atol(argv[4]) * 1e3;
-	cd->refactor_time = ft_atol(argv[5]) * 1e3;
+	cd->burn_time = ft_atol(argv[2]);
+	cd->compile_time = ft_atol(argv[3]);
+	cd->debug_time = ft_atol(argv[4]);
+	cd->refactor_time = ft_atol(argv[5]);
 	cd->n_compiles = ft_atol(argv[6]);
-	cd->cooldown_time = ft_atol(argv[7]) * 1e3;
+	cd->cooldown_time = ft_atol(argv[7]);
 	if (!strcmp(argv[8], "EDF") || !strcmp(argv[8], "edf"))
 		cd->scheduler = EDF;
 	else if (!strcmp(argv[8], "FIFO") || !strcmp(argv[8], "fifo"))
