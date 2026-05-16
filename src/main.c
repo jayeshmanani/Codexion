@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:09:49 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 22:55:08 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 23:14:31 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,34 @@
 
 int	main(int argc, char **argv)
 {
-	t_coding_data	coding_data;
+	t_coding_data	cd;
 
 	if (argc == 9)
 	{
-		if (parse_input(&coding_data, argv))
+		if (parse_input(&cd, argv))
 			return (1);
-		if (data_init(&coding_data))
+		if (data_init(&cd))
 		{
-			free(coding_data.coders);
-			free(coding_data.dongles);
-			heap_destroy(&coding_data);
-			clean_all(&coding_data);
+			free(cd.coders);
+			free(cd.dongles);
+			heap_destroy(&cd);
+			clean_all(&cd);
 			return (1);
 		}
 		printf("Data initialized successfully! Starting the coding simulation...\n");
-		coding_start(&coding_data);
-		clean_all(&coding_data);
+		int i = 0;
+		while(i < cd.n_coders)
+		{
+			printf("Coder %d: burn_time = %ld, compile_time = %ld, debug_time = %ld, refactor_time = %ld, n_compiles = %ld\n",
+				i + 1, cd.burn_time, cd.compile_time,
+				cd.debug_time, cd.refactor_time,
+				cd.n_compiles);
+			printf("Coder -> Dongle ID 1 %d: = %d\n", i + 1, cd.coders[i].left_dongle->dongle_id);
+			printf("Coder -> Dongle ID 2 %d: = %d\n", i + 1, cd.coders[i].right_dongle->dongle_id);
+			i++;
+		}
+		coding_start(&cd);
+		clean_all(&cd);
 	}
 	else
 	{

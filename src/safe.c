@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 16:38:53 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 22:25:27 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 23:14:25 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	malloc_safe_create(t_coding_data *cd, char c)
 {
+	// printf("Malloc Safe: Creating %c\n", c);
 	if (NULL == cd)
 		err_and_exit("Malloc Error: Coding Data is NULL in malloc_safe_create");
 	if (c != 'c' && c != 'd' && c != 'h')
@@ -37,6 +38,7 @@ int	malloc_safe_create(t_coding_data *cd, char c)
 	}
 	if ((c == 'c' && !cd->coders) || (c == 'd' && !cd->dongles))
 		return (1);
+	// printf("Malloc Safe: Created %c successfully\n", c);
 	return (0);
 }
 
@@ -99,6 +101,7 @@ static void	handle_thread_return(int status, t_pthread_ops ops)
 void	thread_safe(pthread_t *thread, t_pthread_ops ops,
 		void *(*routine)(void *), void *arg)
 {
+	printf("Thread Safe: Operation %d\n", ops);
 	if (NULL == thread)
 		err_and_exit("Thread Error: Thread is NULL");
 	if (CREATE == ops)
