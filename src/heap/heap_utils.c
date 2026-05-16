@@ -3,38 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   heap_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 16:01:46 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 17:23:18 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 21:40:32 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-void	heap_init(t_heap *heap, long capacity, t_scheduler scheduler)
+bool	heap_is_empty(t_coding_data *cd)
 {
-	if (!heap || capacity <= 0)
-		err_and_exit("heap_init: invalid args");
-	heap->arr = malloc_safe_create(sizeof(t_req) * capacity);
-	heap->size = 0;
-	heap->capacity = capacity;
-	heap->scheduler = scheduler;
-}
-
-bool	heap_is_empty(t_heap *heap)
-{
-	if (!heap)
+	if (!cd || !cd->algo_heap)
 		return (true);
-	return (heap->size == 0);
+	return (cd->algo_heap->size == 0);
 }
 
-void	heap_destroy(t_heap *heap)
+void	heap_destroy(t_coding_data *cd)
 {
-	if (!heap)
+	if (!cd || !cd->algo_heap)
 		return ;
-	free(heap->arr);
-	heap->arr = NULL;
-	heap->size = 0;
-	heap->capacity = 0;
+	free(cd->algo_heap->arr);
+	cd->algo_heap->arr = NULL;
+	free(cd->algo_heap);
+	cd->algo_heap = NULL;
 }

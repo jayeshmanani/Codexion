@@ -25,6 +25,8 @@ fclean: clean
 norm:
 	norminette $(SRCS) include/codexion.h
 
+fc: fclean
+
 re: fclean all
 
 .PHONY: all clean fclean re norm

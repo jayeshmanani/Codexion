@@ -6,20 +6,38 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 16:38:53 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 18:24:11 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 21:40:29 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-void	*malloc_safe_create(size_t bytes)
+int	malloc_safe_create(t_coding_data *cd, char c)
 {
-	void	*mem_malloced;
-
-	mem_malloced = malloc(bytes);
-	if (NULL == mem_malloced)
-		err_and_exit("Malloc Error: Memory Can not be malloced Properly");
-	return (mem_malloced);
+	if (NULL == cd)
+		err_and_exit("Malloc Error: Coding Data is NULL in malloc_safe_create");
+	if (c != 'c' && c != 'd' && c != 'h')
+		err_and_exit("Malloc Error: Wrong type for malloc_safe_create");
+	if (c == 'c')
+		cd->coders = malloc(cd->n_coders * sizeof(t_coder));
+	else if (c == 'd')
+		cd->dongles = malloc(cd->n_coders * sizeof(t_dongle));
+	else if (c == 'h')
+	{
+		cd->algo_heap = malloc(sizeof(t_heap));
+		if (!cd->algo_heap)
+			return (1);
+		cd->algo_heap->arr = malloc(cd->n_coders * sizeof(t_req));
+		if (NULL == cd->algo_heap->arr)
+		{
+			free(cd->algo_heap);
+			cd->algo_heap = NULL;
+			return (1);
+		}
+	}
+	if ((c == 'c' && !cd->coders) || (c == 'd' && !cd->dongles))
+		return (1);
+	return (0);
 }
 
 static void	handle_mutex_return(int status, t_pthread_ops ops)

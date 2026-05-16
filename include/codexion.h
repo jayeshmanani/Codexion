@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 20:22:38 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 21:40:34 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ typedef struct s_coding_data
 	bool						end_coding;
 	bool						coders_ready;
 
-	t_heap						algo_heap;
+	t_heap						*algo_heap;
 	t_coder						*coders;
 	t_dongle					*dongles;
 	t_mtx						cd_mutex;
@@ -165,7 +165,7 @@ void							updated_usleep(t_coding_data *cd,
 int								parse_input(t_coding_data *cd, char **argv);
 
 // safe.c
-void							*malloc_safe_create(size_t bytes);
+int								malloc_safe_create(t_coding_data *cd, char c);
 void							mutex_safe(t_mtx *mutex, t_pthread_ops ops);
 void							thread_safe(pthread_t *thread,
 									t_pthread_ops ops, void *(*routine)(void *),
@@ -177,7 +177,7 @@ void							cond_safe(pthread_cond_t *cond, t_mtx *mutex,
 									const struct timespec *ts);
 
 // initialize.c
-void							data_init(t_coding_data *cd);
+int								data_init(t_coding_data *cd);
 
 // coding.c
 void							coding_start(t_coding_data *cd);
@@ -220,10 +220,8 @@ long							heap_left(long i);
 long							heap_right(long i);
 
 // heap_utils.c
-void							heap_init(t_heap *heap, long capacity,
-									t_scheduler scheduler);
-void							heap_destroy(t_heap *heap);
-bool							heap_is_empty(t_heap *heap);
+void							heap_destroy(t_coding_data *cd);
+bool							heap_is_empty(t_coding_data *cd);
 
 // heap_ops.c
 void							up_shift(t_heap *heap, long index);
