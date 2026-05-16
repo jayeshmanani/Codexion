@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 18:58:22 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 21:29:11 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 22:16:14 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,16 @@ void	compile(t_coder *coder)
 	req.deadline_t = req.arrival_t + (coder->cd->burn_time);
 	mutex_safe(&coder->cd->cd_mutex, LOCK);
 	heap_push(coder->cd->algo_heap, req);
-	cond_safe(&coder->cd->arbiter_cond, NULL, BROADCAST, NULL);
+	if (cond_safe(&coder->cd->arbiter_cond, NULL, BROADCAST, NULL) != 0)
+		err_and_exit("Error: cond_safe failed in compile fn\n");
 	mutex_safe(&coder->cd->cd_mutex, UNLOCK);
 	mutex_safe(&coder->coder_mutex, LOCK);
 	while (!coder->req_pending && !coding_finished(coder->cd))
-		cond_safe(&coder->coder_req_cond, &coder->coder_mutex, WAIT, NULL);
+	{
+		if (cond_safe(&coder->coder_req_cond, &coder->coder_mutex, WAIT,
+				NULL) != 0)
+			err_and_exit("Error: cond_safe failed in compile fn\n");
+	}
 	if (coding_finished(coder->cd))
 	{
 		coder->req_pending = false;

@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:09:49 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 21:24:24 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 22:34:52 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	main(int argc, char **argv)
 			free(coding_data.coders);
 			free(coding_data.dongles);
 			heap_destroy(&coding_data);
+			clean_all(&coding_data);
 			return (1);
 		}
 		coding_start(&coding_data);

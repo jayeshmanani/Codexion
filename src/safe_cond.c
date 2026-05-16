@@ -6,13 +6,13 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 18:21:36 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 19:07:02 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 22:13:32 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-void	cond_safe(pthread_cond_t *cond, t_mtx *mutex, t_pthread_ops ops,
+int	cond_safe(pthread_cond_t *cond, t_mtx *mutex, t_pthread_ops ops,
 		const struct timespec *ts)
 {
 	int	status;
@@ -35,6 +35,6 @@ void	cond_safe(pthread_cond_t *cond, t_mtx *mutex, t_pthread_ops ops,
 	else
 		err_and_exit("Wrong Ops for Cond Handling");
 	if (0 == status || (TIMEDWAIT == ops && ETIMEDOUT == status))
-		return ;
-	err_and_exit("Cond Error: Cond Operation Failed");
+		return (0);
+	return (1);
 }

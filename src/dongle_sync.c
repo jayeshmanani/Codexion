@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 14:56:50 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 18:29:38 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 22:17:39 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,9 @@ void	acquire_dongle(t_coding_data *cd, t_dongle *dongle)
 		wait_msec = dongle->next_available_t - get_time(MILLISEC);
 		abs_usec = get_time(MICROSEC) + (wait_msec * 1e3);
 		abs_time_from_usec(abs_usec, &time_spec);
-		cond_safe(&dongle->dongle_cond, &dongle->dongle_state_mutex, TIMEDWAIT,
-			&time_spec);
+		if (cond_safe(&dongle->dongle_cond, &dongle->dongle_state_mutex,
+				TIMEDWAIT, &time_spec) != 0)
+			err_and_exit("Error: cond_safe failed in acquire_dongle\n");
 	}
 	if (coding_finished(cd))
 	{
@@ -62,7 +63,8 @@ void	release_dongle(t_coding_data *cd, t_dongle *dongle)
 		err_and_exit("release_dongle: null arg");
 	mutex_safe(&dongle->dongle_state_mutex, LOCK);
 	dongle->next_available_t = get_time(MILLISEC) + cd->cooldown_time;
-	cond_safe(&dongle->dongle_cond, NULL, BROADCAST, NULL);
+	if (cond_safe(&dongle->dongle_cond, NULL, BROADCAST, NULL) != 0)
+		err_and_exit("Error: cond_safe failed in release_dongle\n");
 	mutex_safe(&dongle->dongle_state_mutex, UNLOCK);
 	mutex_safe(&dongle->dongle_mutex, UNLOCK);
 }

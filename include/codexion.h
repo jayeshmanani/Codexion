@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 21:40:34 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 22:46:59 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,11 @@ typedef struct s_dongle
 	int							dongle_id;
 	long						next_available_t;
 
+	bool						dongle_cond_initialized;
 	pthread_cond_t				dongle_cond;
+
+	bool						dongle_mutex_initialized;
+	bool						dongle_state_mutex_initialized;
 	t_mtx						dongle_state_mutex;
 	t_mtx						dongle_mutex;
 }								t_dongle;
@@ -111,8 +115,11 @@ typedef struct s_coder
 	long						arrival_t;
 	long						deadline_t;
 
+	bool						coder_req_cond_initialized;
 	pthread_cond_t				coder_req_cond;
 	pthread_t					c_thread_id;
+
+	bool						coder_mutex_initialized;
 	t_mtx						coder_mutex;
 
 	t_dongle					*left_dongle;
@@ -141,11 +148,16 @@ typedef struct s_coding_data
 	t_heap						*algo_heap;
 	t_coder						*coders;
 	t_dongle					*dongles;
+
+	bool						cd_mutex_initialized;
+	bool						op_mutex_initialized;
 	t_mtx						cd_mutex;
 	t_mtx						op_mutex;
 
 	pthread_t					analyzer;
 	pthread_t					arbiter;
+
+	bool						arbiter_cond_initialized;
 	pthread_cond_t				arbiter_cond;
 }								t_coding_data;
 
@@ -166,13 +178,13 @@ int								parse_input(t_coding_data *cd, char **argv);
 
 // safe.c
 int								malloc_safe_create(t_coding_data *cd, char c);
-void							mutex_safe(t_mtx *mutex, t_pthread_ops ops);
+int								mutex_safe(t_mtx *mutex, t_pthread_ops ops);
 void							thread_safe(pthread_t *thread,
 									t_pthread_ops ops, void *(*routine)(void *),
 									void *arg);
 
 // safe_cond.c
-void							cond_safe(pthread_cond_t *cond, t_mtx *mutex,
+int								cond_safe(pthread_cond_t *cond, t_mtx *mutex,
 									t_pthread_ops ops,
 									const struct timespec *ts);
 

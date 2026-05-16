@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 16:38:53 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 21:40:29 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 22:25:27 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,40 +40,40 @@ int	malloc_safe_create(t_coding_data *cd, char c)
 	return (0);
 }
 
-static void	handle_mutex_return(int status, t_pthread_ops ops)
-{
-	if (0 == status)
-		return ;
-	// if (ops)
-	// 	err_and_exit("Mutex Error: Mutex Operation Failed");
-	if (EINVAL == status && (INIT == ops || UNLOCK == ops))
-		err_and_exit("Mutex Attribute is Invalid");
-	else if (EINVAL == status && (LOCK == ops || UNLOCK == ops))
-		err_and_exit("Mutex value is Invalid");
-	else if (EDEADLK == status)
-		err_and_exit("Deadlock can occur: Dongle blocked waiting for mutex");
-	else if (EPERM == status)
-		err_and_exit("Dongle is not holding the lock on Mutex");
-	else if (ENOMEM == status)
-		err_and_exit("Process can't allocate enough memory for another mutex");
-	else if (EBUSY == status)
-		err_and_exit("Mutex is already locked");
-}
+// static void	handle_mutex_return(int status, t_pthread_ops ops)
+// {
+// 	if (0 == status)
+// 		return ;
+// 	// if (ops)
+// 	// 	err_and_exit("Mutex Error: Mutex Operation Failed");
+// 	if (EINVAL == status && (INIT == ops || UNLOCK == ops))
+// 		err_and_exit("Mutex Attribute is Invalid");
+// 	else if (EINVAL == status && (LOCK == ops || UNLOCK == ops))
+// 		err_and_exit("Mutex value is Invalid");
+// 	else if (EDEADLK == status)
+// 		err_and_exit("Deadlock can occur: Dongle blocked waiting for mutex");
+// 	else if (EPERM == status)
+// 		err_and_exit("Dongle is not holding the lock on Mutex");
+// 	else if (ENOMEM == status)
+// 		err_and_exit("Process can't allocate enough memory for another mutex");
+// 	else if (EBUSY == status)
+// 		err_and_exit("Mutex is already locked");
+// }
 
-void	mutex_safe(t_mtx *mutex, t_pthread_ops ops)
+int	mutex_safe(t_mtx *mutex, t_pthread_ops ops)
 {
+	printf("Mutex Safe: Operation %d\n", ops);
 	if (NULL == mutex)
 		err_and_exit("Mutex Error: Mutex is NULL");
 	if (INIT == ops)
-		handle_mutex_return(pthread_mutex_init(mutex, NULL), ops);
+		return (pthread_mutex_init(mutex, NULL));
 	else if (LOCK == ops)
-		handle_mutex_return(pthread_mutex_lock(mutex), ops);
+		return (pthread_mutex_lock(mutex));
 	else if (UNLOCK == ops)
-		handle_mutex_return(pthread_mutex_unlock(mutex), ops);
+		return (pthread_mutex_unlock(mutex));
 	else if (DESTROY == ops)
-		handle_mutex_return(pthread_mutex_destroy(mutex), ops);
-	else
-		err_and_exit("Wrong Ops for Mutex Handling");
+		return (pthread_mutex_destroy(mutex));
+	return (1);
 }
 
 static void	handle_thread_return(int status, t_pthread_ops ops)

@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 15:09:28 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 19:21:09 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 22:14:29 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,16 @@ static void	shutdown_all(t_coding_data *cd)
 	int	j;
 
 	set_bool(&cd->cd_mutex, &cd->end_coding, true);
-	cond_safe(&cd->arbiter_cond, NULL, BROADCAST, NULL);
+	if (cond_safe(&cd->arbiter_cond, NULL, BROADCAST, NULL) != 0)
+		err_and_exit("Error: cond_safe failed in shutdown_all\n");
 	j = -1;
 	while (++j < cd->n_coders)
 	{
-		cond_safe(&cd->coders[j].coder_req_cond, NULL, BROADCAST, NULL);
-		cond_safe(&cd->dongles[j].dongle_cond, NULL, BROADCAST, NULL);
+		if (cond_safe(&cd->coders[j].coder_req_cond, NULL, BROADCAST,
+				NULL) != 0)
+			err_and_exit("Error: cond_safe failed in shutdown_all\n");
+		if (cond_safe(&cd->dongles[j].dongle_cond, NULL, BROADCAST, NULL) != 0)
+			err_and_exit("Error: cond_safe failed in shutdown_all\n");
 	}
 }
 

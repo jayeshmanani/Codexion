@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 19:20:21 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 22:17:49 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ void	coding_helper(t_coding_data *cd)
 	while (++i < cd->n_coders)
 		thread_safe(&cd->coders[i].c_thread_id, JOIN, NULL, NULL);
 	set_bool(&cd->cd_mutex, &cd->end_coding, true);
-	cond_safe(&cd->arbiter_cond, NULL, BROADCAST, NULL);
+	if (cond_safe(&cd->arbiter_cond, NULL, BROADCAST, NULL) != 0)
+		err_and_exit("Error: cond_safe failed in coding_helper\n");
 	if (cd->n_coders > 1)
 		thread_safe(&cd->arbiter, JOIN, NULL, NULL);
 	thread_safe(&cd->analyzer, JOIN, NULL, NULL);
