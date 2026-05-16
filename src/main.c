@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:09:49 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 22:34:52 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 22:55:08 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	main(int argc, char **argv)
 			clean_all(&coding_data);
 			return (1);
 		}
+		printf("Data initialized successfully! Starting the coding simulation...\n");
 		coding_start(&coding_data);
 		clean_all(&coding_data);
 	}
