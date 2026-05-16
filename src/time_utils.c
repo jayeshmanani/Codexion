@@ -37,17 +37,17 @@ void	updated_usleep(t_coding_data *cd, long millisec)
 	long	rem_t;
 
 	start_t = get_time(MICROSEC);
-	while (get_time(MICROSEC) - start_t < millisec*1e3)
+	while (get_time(MICROSEC) - start_t < millisec * 1e3)
 	{
 		if (coding_finished(cd))
 			break ;
 		elapsed_t = get_time(MICROSEC) - start_t;
-		rem_t = (millisec*1e3) - elapsed_t;
+		rem_t = (millisec * 1e3) - elapsed_t;
 		if (rem_t > 1e3)
 			usleep(rem_t / 2);
 		else
 		{
-			while (get_time(MICROSEC) - start_t < (millisec*1e3))
+			while (get_time(MICROSEC) - start_t < (millisec * 1e3))
 				;
 		}
 	}

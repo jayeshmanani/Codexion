@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 15:09:28 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 18:15:24 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 18:43:01 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,17 @@ static bool	coder_burned_out(t_coder *coder)
 	return (elapsed_time > coder->cd->burn_time);
 }
 
-static void shutdown_all(t_coding_data *cd)
+static void	shutdown_all(t_coding_data *cd)
 {
-	int j;
+	int	j;
+
 	set_bool(&cd->cd_mutex, &cd->end_coding, true);
-	pthread_cond_broadcast(&cd->arbiter_cond);
+	cond_safe(&cd->arbiter_cond, NULL, BROADCAST, NULL);
 	j = -1;
 	while (++j < cd->n_coders)
 	{
-		pthread_cond_broadcast(&cd->coders[j].coder_req_cond);
-		pthread_cond_broadcast(&cd->dongles[j].dongle_cond);
+		cond_safe(&cd->coders[j].coder_req_cond, NULL, BROADCAST, NULL);
+		cond_safe(&cd->dongles[j].dongle_cond, NULL, BROADCAST, NULL);
 	}
 }
 
@@ -57,7 +58,7 @@ void	*coding_analyser(void *args)
 				print_data(BURNED_OUT, cd->coders + i, DEBUG_MODE);
 			}
 		}
-		usleep(500);
+		usleep(100);
 	}
 	return (NULL);
 }

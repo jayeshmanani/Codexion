@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:55:33 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 18:53:38 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 19:03:36 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,12 @@ void	data_init(t_coding_data *cd)
 	heap_init(&cd->algo_heap, cd->n_coders, cd->scheduler);
 	mutex_safe(&cd->cd_mutex, INIT);
 	mutex_safe(&cd->op_mutex, INIT);
-	if (pthread_cond_init(&cd->arbiter_cond, NULL) != 0)
-		err_and_exit("Error: data_init: pthread_cond_init failed\n");
+	cond_safe(&cd->arbiter_cond, NULL, INIT, NULL);
 	while (++i < cd->n_coders)
 	{
 		mutex_safe(&cd->dongles[i].dongle_mutex, INIT);
 		mutex_safe(&cd->dongles[i].dongle_state_mutex, INIT);
-		if (pthread_cond_init(&cd->dongles[i].dongle_cond, NULL) != 0)
-			err_and_exit("Error: data_init: pthread_cond_init failed\n");
+		cond_safe(&cd->dongles[i].dongle_cond, NULL, INIT, NULL);
 		cd->dongles[i].dongle_id = i;
 		cd->dongles[i].next_available_t = 0;
 	}

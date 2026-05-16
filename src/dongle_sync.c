@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 14:56:50 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 17:50:18 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 18:29:38 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,23 @@ void	acquire_dongle(t_coding_data *cd, t_dongle *dongle)
 	long			wait_msec;
 	long			abs_usec;
 	struct timespec	time_spec;
-	int rc;
 
 	if (!cd || !dongle)
 		err_and_exit("acquire_dongle: null arg");
 	mutex_safe(&dongle->dongle_state_mutex, LOCK);
-	while (get_time(MILLISEC) < dongle->next_available_t)
+	while (!coding_finished(cd)
+		&& get_time(MILLISEC) < dongle->next_available_t)
 	{
 		wait_msec = dongle->next_available_t - get_time(MILLISEC);
 		abs_usec = get_time(MICROSEC) + (wait_msec * 1e3);
 		abs_time_from_usec(abs_usec, &time_spec);
-		rc = pthread_cond_timedwait(&dongle->dongle_cond,
-				&dongle->dongle_state_mutex, &time_spec);
-		if (rc != 0 && rc != ETIMEDOUT)
-			err_and_exit("Error: cond_timedwait failed in dongle_acquire\n");
+		cond_safe(&dongle->dongle_cond, &dongle->dongle_state_mutex, TIMEDWAIT,
+			&time_spec);
+	}
+	if (coding_finished(cd))
+	{
+		mutex_safe(&dongle->dongle_state_mutex, UNLOCK);
+		return ;
 	}
 	mutex_safe(&dongle->dongle_mutex, LOCK);
 	mutex_safe(&dongle->dongle_state_mutex, UNLOCK);
@@ -59,12 +62,7 @@ void	release_dongle(t_coding_data *cd, t_dongle *dongle)
 		err_and_exit("release_dongle: null arg");
 	mutex_safe(&dongle->dongle_state_mutex, LOCK);
 	dongle->next_available_t = get_time(MILLISEC) + cd->cooldown_time;
-	if (pthread_cond_broadcast(&dongle->dongle_cond) != 0)
-	{
-		mutex_safe(&dongle->dongle_state_mutex, UNLOCK);
-		mutex_safe(&dongle->dongle_mutex, UNLOCK);
-		err_and_exit("Error: cond_broadcast failed in release_dongle\n");
-	}
+	cond_safe(&dongle->dongle_cond, NULL, BROADCAST, NULL);
 	mutex_safe(&dongle->dongle_state_mutex, UNLOCK);
 	mutex_safe(&dongle->dongle_mutex, UNLOCK);
 }
