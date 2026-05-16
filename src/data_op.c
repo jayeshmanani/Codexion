@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 12:05:49 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 17:01:28 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 17:20:46 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	print_data(t_coder_ops ops, t_coder *coder, bool debug)
 
 	start_t = get_long(&coder->cd->cd_mutex, &coder->cd->start_coding_t);
 	elapsed_t = get_time(MILLISEC) - start_t;
-	if (get_bool(&coder->coder_mutex, coder->coder_work_done))
+	if (get_bool(&coder->coder_mutex, &coder->coder_work_done))
 		return ;
 	mutex_safe(&coder->cd->op_mutex, LOCK);
 	if (debug)

@@ -6,49 +6,51 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 14:56:50 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 17:09:45 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 17:50:18 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-static void	dongle_acquire_utils(t_dongle *dongle, long *now)
+// static void	dongle_acquire_utils(t_dongle *dongle)
+// {
+// 	long			wait_msec;
+// 	long			abs_usec;
+// 	struct timespec	time_spec;
+// 	int rc;
+
+// 	wait_msec = dongle->next_available_t - get_time(MILLISEC);
+// 	abs_usec = get_time(MICROSEC) + (wait_msec * 1e3);
+// 	abs_time_from_usec(abs_usec, &time_spec);
+// 	rc = pthread_cond_timedwait(&dongle->dongle_cond,
+// 			&dongle->dongle_state_mutex, &time_spec);
+// 	if (rc != 0 && rc != ETIMEDOUT)
+// 		err_and_exit("Error: cond_timedwait failed in dongle_acquire\n");
+// 	return ;
+// }
+
+void	acquire_dongle(t_coding_data *cd, t_dongle *dongle)
 {
 	long			wait_msec;
 	long			abs_usec;
 	struct timespec	time_spec;
 	int rc;
 
-	wait_msec = dongle->next_available_t - *now;
-	abs_usec = get_time(MICROSEC) + (wait_msec * 1e3);
-	abs_time_from_usec(abs_usec, &time_spec);
-	rc = pthread_cond_timedwait(&dongle->dongle_cond,
-			&dongle->dongle_state_mutex, &time_spec);
-	if (rc != 0 && rc != ETIMEDOUT)
-		err_and_exit("Error: cond_timedwait failed in dongle_acquire\n");
-	return ;
-}
-
-void	acquire_dongle(t_coding_data *cd, t_dongle *dongle)
-{
-	long	now;
-
 	if (!cd || !dongle)
 		err_and_exit("acquire_dongle: null arg");
-	while (1)
+	mutex_safe(&dongle->dongle_state_mutex, LOCK);
+	while (get_time(MILLISEC) < dongle->next_available_t)
 	{
-		mutex_safe(&dongle->dongle_state_mutex, LOCK);
-		now = get_time(MILLISEC);
-		if (now < dongle->next_available_t)
-		{
-			dongle_acquire_utils(dongle, &now);
-			mutex_safe(&dongle->dongle_state_mutex, UNLOCK);
-			continue ;
-		}
-		mutex_safe(&dongle->dongle_state_mutex, UNLOCK);
-		mutex_safe(&dongle->dongle_mutex, LOCK);
-		break ;
+		wait_msec = dongle->next_available_t - get_time(MILLISEC);
+		abs_usec = get_time(MICROSEC) + (wait_msec * 1e3);
+		abs_time_from_usec(abs_usec, &time_spec);
+		rc = pthread_cond_timedwait(&dongle->dongle_cond,
+				&dongle->dongle_state_mutex, &time_spec);
+		if (rc != 0 && rc != ETIMEDOUT)
+			err_and_exit("Error: cond_timedwait failed in dongle_acquire\n");
 	}
+	mutex_safe(&dongle->dongle_mutex, LOCK);
+	mutex_safe(&dongle->dongle_state_mutex, UNLOCK);
 }
 
 void	release_dongle(t_coding_data *cd, t_dongle *dongle)

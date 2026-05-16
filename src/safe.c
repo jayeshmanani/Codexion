@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   safe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 16:38:53 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 16:44:10 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 18:24:11 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static void	handle_mutex_return(int status, t_pthread_ops ops)
 {
 	if (0 == status)
 		return ;
+	// if (ops)
+	// 	err_and_exit("Mutex Error: Mutex Operation Failed");
 	if (EINVAL == status && (INIT == ops || UNLOCK == ops))
 		err_and_exit("Mutex Attribute is Invalid");
 	else if (EINVAL == status && (LOCK == ops || UNLOCK == ops))
@@ -60,6 +62,8 @@ static void	handle_thread_return(int status, t_pthread_ops ops)
 {
 	if (0 == status)
 		return ;
+	// if (ops)
+	// 	err_and_exit("Thread Error: Thread Operation Failed");
 	if (EAGAIN == status)
 		err_and_exit("Resource limits for threads exceeded");
 	else if (EPERM == status)

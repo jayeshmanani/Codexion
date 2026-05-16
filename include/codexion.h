@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 16:56:32 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 18:23:45 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,5 +233,9 @@ void							*lone_vibe_coder(void *args);
 
 // arbiter.c
 void							*arbiter_thread(void *args);
+
+// safe_cond.c
+void	cond_safe(pthread_cond_t *cond, t_mtx *mutex,
+            t_pthread_ops ops, const struct timespec *ts);
 
 #endif

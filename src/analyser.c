@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 15:09:28 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 16:49:17 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 18:15:24 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,19 @@ static bool	coder_burned_out(t_coder *coder)
 	return (elapsed_time > coder->cd->burn_time);
 }
 
+static void shutdown_all(t_coding_data *cd)
+{
+	int j;
+	set_bool(&cd->cd_mutex, &cd->end_coding, true);
+	pthread_cond_broadcast(&cd->arbiter_cond);
+	j = -1;
+	while (++j < cd->n_coders)
+	{
+		pthread_cond_broadcast(&cd->coders[j].coder_req_cond);
+		pthread_cond_broadcast(&cd->dongles[j].dongle_cond);
+	}
+}
+
 void	*coding_analyser(void *args)
 {
 	t_coding_data	*cd;
@@ -40,11 +53,11 @@ void	*coding_analyser(void *args)
 		{
 			if (coder_burned_out(cd->coders + i))
 			{
-				set_bool(&cd->cd_mutex, &cd->end_coding, true);
+				shutdown_all(cd);
 				print_data(BURNED_OUT, cd->coders + i, DEBUG_MODE);
 			}
 		}
-		usleep(1000);
+		usleep(500);
 	}
 	return (NULL);
 }
