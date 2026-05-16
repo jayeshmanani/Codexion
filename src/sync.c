@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sync.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 23:35:09 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 14:59:44 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 19:21:50 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	waiting_for_coders(t_coding_data *cd)
 {
 	while ((get_bool(&cd->cd_mutex, &cd->coders_ready)) == false)
-		;
+		usleep(100);
 }
 
 void	increase_long(t_mtx *mutex, long *val)

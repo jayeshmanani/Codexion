@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 18:29:43 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 19:15:14 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,8 +233,8 @@ t_req							heap_pop(t_heap *heap);
 
 // coding_utils.c
 void							compile(t_coder *coder);
-void							refactor(t_coder *coder);
 void							*lone_vibe_coder(void *args);
+// void							refactor(t_coder *coder);
 
 // arbiter.c
 void							*arbiter_thread(void *args);
