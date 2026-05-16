@@ -18,7 +18,7 @@ void	*coding_sim(void *args)
 
 	coder = (t_coder *)args;
 	if (NULL == coder)
-		return NULL;
+		return (NULL);
 	waiting_for_coders(coder->cd);
 	increase_long(&coder->cd->cd_mutex, &coder->cd->active_coders);
 	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));

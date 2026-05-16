@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:09:49 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 19:24:50 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 20:17:49 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	main(int argc, char **argv)
 
 	if (argc == 9)
 	{
-		parse_input(&coding_data, argv);
+		if (parse_input(&coding_data, argv))
+			return (1);
 		data_init(&coding_data);
 		coding_start(&coding_data);
 		clean_all(&coding_data);

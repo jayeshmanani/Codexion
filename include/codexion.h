@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 19:15:14 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 20:22:38 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ void							updated_usleep(t_coding_data *cd,
 									long millisec);
 
 // parsing.c
-void							parse_input(t_coding_data *cd, char **argv);
+int								parse_input(t_coding_data *cd, char **argv);
 
 // safe.c
 void							*malloc_safe_create(size_t bytes);
@@ -198,6 +198,7 @@ bool							all_coders_ready(t_mtx *mutex, long *threads,
 // data_op.c
 void							print_data(t_coder_ops ops, t_coder *coder,
 									bool debug);
+int								validate_input_reqs(t_coding_data *cd);
 
 // analyser.c
 void							*coding_analyser(void *args);

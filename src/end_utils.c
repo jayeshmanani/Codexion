@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:06:25 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 19:24:51 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 20:13:29 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	clean_all(t_coding_data *cd)
 	int	i;
 
 	i = -1;
-	if (NULL == cd || cd->n_coders <=0)
+	if (NULL == cd || cd->n_coders <= 0)
 		return ;
 	while (++i < cd->n_coders)
 	{

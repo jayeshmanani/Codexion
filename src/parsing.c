@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:14:31 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 19:26:35 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/16 20:22:59 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static long	ft_atol(const char *s)
 	return (num);
 }
 
-void	parse_input(t_coding_data *cd, char **argv)
+int	parse_input(t_coding_data *cd, char **argv)
 {
 	if (NULL == cd || NULL == argv)
 		err_and_exit("Coding Data or Input is NULL, Fix the input");
@@ -83,6 +83,7 @@ void	parse_input(t_coding_data *cd, char **argv)
 	cd->coders_ready = false;
 	cd->end_coding = false;
 	cd->active_coders = 0;
+	return (validate_input_reqs(cd));
 }
 
 // printf("%ld, %ld, %ld, %ld\n", cd->n_coders, cd->burn_time,
