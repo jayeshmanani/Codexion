@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:06:25 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 14:46:16 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 14:50:24 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,10 @@
 
 void	clean_all(t_coding_data *cd)
 {
-	int	i;
-
-	i = -1;
 	if (NULL == cd)
 		return ;
-	destroy_all_coders(&cd);
-	destroy_all_dongles(&cd);
+	destroy_all_coders(cd);
+	destroy_all_dongles(cd);
 	heap_destroy(cd);
 	if (cd->arbiter_cond_initialized)
 	{

@@ -3,3 +3,4 @@ main
 main-processes
 *.o
 codexion
+*.log

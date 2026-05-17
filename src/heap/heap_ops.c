@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 15:51:46 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 23:21:05 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 14:49:57 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	down_shift(t_heap *heap, long index)
 
 void	heap_push(t_heap *heap, t_req req)
 {
-	printf("Pushing request from coder %d with arrival time %ld and deadline
+	printf("Pushing request from coder %d with arrival time %ld and deadline\
 		%ld\n", req.coder_id, req.arrival_t, req.deadline_t);
 	if (!heap || heap->size >= heap->capacity)
 		err_and_exit("heap_push: full or invalid heap");
@@ -88,7 +88,7 @@ t_req	heap_pop(t_heap *heap)
 		heap->arr[0] = heap->arr[heap->size];
 		down_shift(heap, 0);
 	}
-	printf("Popped request from coder %d with arrival time %ld and deadline
+	printf("Popped request from coder %d with arrival time %ld and deadline\
 		%ld\n", root.coder_id, root.arrival_t, root.deadline_t);
 	return (root);
 }
