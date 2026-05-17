@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 19:28:02 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 19:57:06 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ void	*coding_sim(void *args)
 		if (!coding_finished(coder->cd))
 		{
 			increase_long(&coder->coder_mutex, &coder->debug_count);
+			print_data(DEBUGGING, coder);
 			updated_usleep(coder->cd, coder->cd->debug_time);
-			print_data(DEBUGGING, coder, DEBUG_MODE);
 			increase_long(&coder->coder_mutex, &coder->refactor_count);
-			print_data(REFACTORING, coder, DEBUG_MODE);
+			print_data(REFACTORING, coder);
 			updated_usleep(coder->cd, coder->cd->refactor_time);
 		}
 	}
@@ -71,12 +71,9 @@ int	coding_start(t_coding_data *cd)
 		thread_safe(&cd->coders[0].c_thread_id, CREATE, lone_vibe_coder,
 			&cd->coders[0]);
 	else
-	{
-		printf("Coders: %ld\n", cd->n_coders);
 		while (++i < cd->n_coders)
 			thread_safe(&cd->coders[i].c_thread_id, CREATE, coding_sim,
 				&cd->coders[i]);
-	}
 	coding_helper(cd);
 	return (0);
 }

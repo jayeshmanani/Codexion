@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 15:09:28 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 19:41:02 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 19:55:01 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	*coding_analyser(void *args)
 			if (coder_burned_out(cd->coders + i))
 			{
 				shutdown_all(cd);
-				print_data(BURNED_OUT, cd->coders + i, DEBUG_MODE);
+				print_data(BURNED_OUT, cd->coders + i);
 			}
 		}
 		usleep(100);

@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 19:19:32 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 19:54:32 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,6 @@
 # include <sys/time.h>
 # include <time.h>
 # include <unistd.h>
-
-// Define DEBUG_MODE
-# define DEBUG_MODE 0
 
 // Customized Structs
 typedef pthread_mutex_t			t_mtx;
@@ -210,8 +207,7 @@ bool							all_coders_ready(t_mtx *mutex, long *threads,
 									long coder_nbr);
 
 // data_op.c
-void							print_data(t_coder_ops ops, t_coder *coder,
-									bool debug);
+void							print_data(t_coder_ops ops, t_coder *coder);
 int								validate_input_reqs(t_coding_data *cd);
 
 // analyser.c

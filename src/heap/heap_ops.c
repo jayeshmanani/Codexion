@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 15:51:46 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 19:25:54 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 19:57:38 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	heap_push(t_heap *heap, t_req req)
 	heap->arr[heap->size] = req;
 	up_shift(heap, heap->size);
 	heap->size++;
-	printf("Heap size after push: %ld\n", heap->size);
 }
 
 t_req	heap_peek(t_heap *heap)
