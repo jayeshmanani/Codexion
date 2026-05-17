@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 18:58:22 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 15:55:29 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 16:59:43 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,10 @@ void	compile(t_coder *coder)
 	printf("Coder %d is requesting to compile.\n", coder->coder_id);
 	req.coder_id = coder->coder_id;
 	req.arrival_t = get_time(MILLISEC);
-	req.deadline_t = req.arrival_t + (coder->cd->burn_time);
+	req.deadline_t = get_long(&coder->coder_mutex, &coder->last_compile_t)
+		+ (coder->cd->burn_time);
+	// if (coder->coder_id % 2)
+	// 	req.deadline_t -= 500; // this was to verify if the edf is working properly or not
 	printf("Coder  %d asking for CD Mutex\n", coder->coder_id);
 	if (mutex_safe(&coder->cd->cd_mutex, LOCK) != 0)
 		err_and_exit("Error: mutex_safe failed in compile fn\n");

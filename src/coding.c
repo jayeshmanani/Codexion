@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 15:56:39 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 17:13:19 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	*coding_sim(void *args)
 		{
 			increase_long(&coder->coder_mutex, &coder->debug_count);
 			updated_usleep(coder->cd, coder->cd->debug_time);
+			print_data(DEBUGGING, coder, DEBUG_MODE);
 			increase_long(&coder->coder_mutex, &coder->refactor_count);
 			print_data(REFACTORING, coder, DEBUG_MODE);
 			updated_usleep(coder->cd, coder->cd->refactor_time);

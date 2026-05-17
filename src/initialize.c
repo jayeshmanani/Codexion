@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:55:33 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 16:07:59 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 18:35:24 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,6 @@ static int	coder_init_helper(t_coder *coder)
 	if (mutex_safe(&coder->coder_mutex, INIT) != 0)
 		return (1);
 	coder->coder_mutex_initialized = true;
-	if (cond_safe(&coder->coder_req_cond, NULL, INIT, NULL) != 0)
-		return (1);
-	coder->coder_req_cond_initialized = true;
-	coder->req_pending = false;
 	return (0);
 }
 
@@ -60,7 +56,7 @@ static int	coder_init(t_coding_data *cd)
 	return (0);
 }
 
-static int	dongle_init(t_coding_data *cd)
+static int	init_all_dongles(t_coding_data *cd)
 {
 	int	i;
 
@@ -75,9 +71,9 @@ static int	dongle_init(t_coding_data *cd)
 		cd->dongles[i].dongle_state_mutex_initialized = true;
 		if (cond_safe(&cd->dongles[i].dongle_cond, NULL, INIT, NULL) != 0)
 			return (1);
-		cd->dongles[i].dongle_cond_initialized = true;
+		if (init_dongle(&cd->dongles[i], cd))
+			return (1);
 		cd->dongles[i].dongle_id = i;
-		cd->dongles[i].next_available_t = 0;
 	}
 	return (0);
 }
@@ -86,22 +82,15 @@ int	data_init(t_coding_data *cd)
 {
 	if (NULL == cd || cd->n_coders <= 0)
 		return (1);
-	if (malloc_safe_create(cd, 'c') || malloc_safe_create(cd, 'h')
-		|| malloc_safe_create(cd, 'd'))
+	if (malloc_safe_create(cd, 'c') || malloc_safe_create(cd, 'd'))
 		return (1);
-	cd->algo_heap->size = 0;
-	cd->algo_heap->capacity = cd->n_coders;
-	cd->algo_heap->scheduler = cd->scheduler;
 	if (mutex_safe(&cd->cd_mutex, INIT) != 0)
 		return (1);
 	cd->cd_mutex_initialized = true;
 	if (mutex_safe(&cd->op_mutex, INIT) != 0)
 		return (1);
 	cd->op_mutex_initialized = true;
-	if (cond_safe(&cd->arbiter_cond, NULL, INIT, NULL) != 0)
-		return (1);
-	cd->arbiter_cond_initialized = true;
-	if (!dongle_init(cd))
+	if (!init_all_dongles(cd))
 		if (!coder_init(cd))
 			return (0);
 	return (1);

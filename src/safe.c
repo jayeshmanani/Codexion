@@ -17,25 +17,12 @@ int	malloc_safe_create(t_coding_data *cd, char c)
 	// printf("Malloc Safe: Creating %c\n", c);
 	if (NULL == cd)
 		err_and_exit("Malloc Error: Coding Data is NULL in malloc_safe_create");
-	if (c != 'c' && c != 'd' && c != 'h')
+	if (c != 'c' && c != 'd')
 		err_and_exit("Malloc Error: Wrong type for malloc_safe_create");
 	if (c == 'c')
 		cd->coders = malloc(cd->n_coders * sizeof(t_coder));
 	else if (c == 'd')
 		cd->dongles = malloc(cd->n_coders * sizeof(t_dongle));
-	else if (c == 'h')
-	{
-		cd->algo_heap = malloc(sizeof(t_heap));
-		if (!cd->algo_heap)
-			return (1);
-		cd->algo_heap->arr = malloc(cd->n_coders * sizeof(t_req));
-		if (NULL == cd->algo_heap->arr)
-		{
-			free(cd->algo_heap);
-			cd->algo_heap = NULL;
-			return (1);
-		}
-	}
 	if ((c == 'c' && !cd->coders) || (c == 'd' && !cd->dongles))
 		return (1);
 	// printf("Malloc Safe: Created %c successfully\n", c);

@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 14:37:54 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 14:45:21 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 18:36:39 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,28 @@ int	destroy_all_dongles(t_coding_data *cd)
 	}
 	free(cd->dongles);
 	cd->dongles = NULL;
+	return (0);
+}
+
+int	init_dongle(t_dongle *dongle, t_coding_data *cd)
+{
+	if (!dongle || !cd)
+		return (1);
+	dongle->dongle_cond_initialized = true;
+	dongle->next_available_t = 0;
+	dongle->is_taken = false;
+	dongle->access_heap = malloc(sizeof(t_heap));
+	if (!dongle->access_heap)
+		return (1);
+	dongle->access_heap->arr = malloc(cd->n_coders * sizeof(t_req));
+	if (!dongle->access_heap->arr)
+	{
+		free(dongle->access_heap);
+		dongle->access_heap = NULL;
+		return (1);
+	}
+	dongle->access_heap->size = 0;
+	dongle->access_heap->capacity = cd->n_coders;
+	dongle->access_heap->scheduler = cd->scheduler;
 	return (0);
 }

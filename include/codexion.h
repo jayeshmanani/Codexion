@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 14:39:37 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 18:36:28 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,9 @@ typedef struct s_dongle
 {
 	int							dongle_id;
 	long						next_available_t;
+	bool						is_taken;
+
+	t_heap						*access_heap;
 
 	bool						dongle_cond_initialized;
 	pthread_cond_t				dongle_cond;
@@ -109,12 +112,9 @@ typedef struct s_coder
 	long						refactor_count;
 
 	bool						coder_work_done;
-	bool						req_pending;
 
 	long						last_compile_t;
 
-	bool						coder_req_cond_initialized;
-	pthread_cond_t				coder_req_cond;
 	pthread_t					c_thread_id;
 
 	bool						coder_mutex_initialized;
@@ -144,7 +144,6 @@ typedef struct s_coding_data
 	bool						coders_ready;
 	bool						coding_failed;
 
-	t_heap						*algo_heap;
 	t_coder						*coders;
 	t_dongle					*dongles;
 
@@ -154,10 +153,6 @@ typedef struct s_coding_data
 	t_mtx						op_mutex;
 
 	pthread_t					analyzer;
-	pthread_t					arbiter;
-
-	bool						arbiter_cond_initialized;
-	pthread_cond_t				arbiter_cond;
 }								t_coding_data;
 
 // Other Prototypes
@@ -170,6 +165,8 @@ int								destroy_all_coders(t_coding_data *cd);
 
 // dongle_util.c
 int								destroy_all_dongles(t_coding_data *cd);
+int								init_dongle(t_dongle *dongle,
+									t_coding_data *cd);
 
 // time_utils.c
 void							abs_time_from_usec(long abs_usec,
@@ -250,8 +247,5 @@ t_req							heap_pop(t_heap *heap);
 // coding_utils.c
 void							compile(t_coder *coder);
 void							*lone_vibe_coder(void *args);
-
-// arbiter.c
-void							*arbiter_thread(void *args);
 
 #endif
