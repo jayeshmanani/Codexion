@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 16:38:53 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 23:14:25 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 14:00:27 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	malloc_safe_create(t_coding_data *cd, char c)
 
 int	mutex_safe(t_mtx *mutex, t_pthread_ops ops)
 {
-	printf("Mutex Safe: Operation %d\n", ops);
+	// printf("Mutex Safe: Operation %d\n", ops);
 	if (NULL == mutex)
 		err_and_exit("Mutex Error: Mutex is NULL");
 	if (INIT == ops)

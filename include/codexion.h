@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 23:13:52 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 14:39:37 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,6 @@ typedef struct s_coder
 	bool						req_pending;
 
 	long						last_compile_t;
-	long						arrival_t;
-	long						deadline_t;
 
 	bool						coder_req_cond_initialized;
 	pthread_cond_t				coder_req_cond;
@@ -144,6 +142,7 @@ typedef struct s_coding_data
 	long						start_coding_t;
 	bool						end_coding;
 	bool						coders_ready;
+	bool						coding_failed;
 
 	t_heap						*algo_heap;
 	t_coder						*coders;
@@ -162,9 +161,15 @@ typedef struct s_coding_data
 }								t_coding_data;
 
 // Other Prototypes
-// end_utils.c
+// cleanup.c
 void							err_and_exit(const char *error);
 void							clean_all(t_coding_data *cd);
+
+// coder_util.c
+int								destroy_all_coders(t_coding_data *cd);
+
+// dongle_util.c
+int								destroy_all_dongles(t_coding_data *cd);
 
 // time_utils.c
 void							abs_time_from_usec(long abs_usec,
@@ -192,7 +197,7 @@ int								cond_safe(pthread_cond_t *cond, t_mtx *mutex,
 int								data_init(t_coding_data *cd);
 
 // coding.c
-void							coding_start(t_coding_data *cd);
+int								coding_start(t_coding_data *cd);
 
 // set_get.c
 void							set_bool(t_mtx *mtx, bool *dst, bool value);
@@ -245,7 +250,6 @@ t_req							heap_pop(t_heap *heap);
 // coding_utils.c
 void							compile(t_coder *coder);
 void							*lone_vibe_coder(void *args);
-// void							refactor(t_coder *coder);
 
 // arbiter.c
 void							*arbiter_thread(void *args);

@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 23:17:00 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 13:39:19 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ void	*coding_sim(void *args)
 	t_coder	*coder;
 
 	coder = (t_coder *)args;
-	printf("Coder %d is ready to start coding.\n", coder->coder_id);
-	printf("Coder Will Need %d Dongle, %d Dongle\n",
-		coder->left_dongle->dongle_id, coder->right_dongle->dongle_id);
 	if (NULL == coder)
 		return (NULL);
+	printf("Coder %d is ready to start coding.\n", coder->coder_id);
+	printf("Coder %d Will Need %d Dongle, %d Dongle\n", coder->coder_id,
+		coder->left_dongle->dongle_id, coder->right_dongle->dongle_id);
 	waiting_for_coders(coder->cd);
 	increase_long(&coder->cd->cd_mutex, &coder->cd->active_coders);
 	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));

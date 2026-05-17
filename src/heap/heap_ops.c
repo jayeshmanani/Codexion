@@ -53,8 +53,8 @@ void	down_shift(t_heap *heap, long index)
 
 void	heap_push(t_heap *heap, t_req req)
 {
-	printf("Pushing request from coder %d with arrival time %ld and deadline %ld\n",
-		req.coder_id, req.arrival_t, req.deadline_t);
+	printf("Pushing request from coder %d with arrival time %ld and deadline
+		%ld\n", req.coder_id, req.arrival_t, req.deadline_t);
 	if (!heap || heap->size >= heap->capacity)
 		err_and_exit("heap_push: full or invalid heap");
 	heap->arr[heap->size] = req;
@@ -88,7 +88,7 @@ t_req	heap_pop(t_heap *heap)
 		heap->arr[0] = heap->arr[heap->size];
 		down_shift(heap, 0);
 	}
-	printf("Popped request from coder %d with arrival time %ld and deadline %ld\n",
-		root.coder_id, root.arrival_t, root.deadline_t);
+	printf("Popped request from coder %d with arrival time %ld and deadline
+		%ld\n", root.coder_id, root.arrival_t, root.deadline_t);
 	return (root);
 }
