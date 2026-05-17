@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:55:33 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 18:35:24 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 20:14:37 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,16 @@ static int	assign_dongles(t_coder *coder, t_dongle *dongles, int coder_pos)
 	if (!coder || !dongles)
 		return (1);
 	total_coders = coder->cd->n_coders;
-	coder->left_dongle = &dongles[coder_pos];
-	coder->right_dongle = &dongles[(coder_pos + 1) % total_coders];
+	if (coder_pos % 2 == 0)
+	{
+		coder->left_dongle = &dongles[coder_pos];
+		coder->right_dongle = &dongles[(coder_pos + 1) % total_coders];
+	}
+	else
+	{
+		coder->left_dongle = &dongles[(coder_pos + 1) % total_coders];
+		coder->right_dongle = &dongles[coder_pos];
+	}
 	return (0);
 }
 

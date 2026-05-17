@@ -26,7 +26,8 @@ void	*coding_sim(void *args)
 	{
 		if (get_bool(&coder->coder_mutex, &coder->coder_work_done))
 			break ;
-		compile(coder);
+		if (compile(coder) != 0)
+			return (NULL);
 		if (!coding_finished(coder->cd))
 		{
 			increase_long(&coder->coder_mutex, &coder->debug_count);
@@ -44,7 +45,6 @@ void	coding_helper(t_coding_data *cd)
 {
 	int	i;
 
-	i = -1;
 	if (NULL == cd || cd->n_coders <= 0)
 		return ;
 	set_long(&cd->cd_mutex, &cd->start_coding_t, get_time(MILLISEC));
@@ -68,12 +68,23 @@ int	coding_start(t_coding_data *cd)
 	if (NULL == cd || cd->n_coders <= 0)
 		return (1);
 	if (1 == cd->n_coders)
-		thread_safe(&cd->coders[0].c_thread_id, CREATE, lone_vibe_coder,
-			&cd->coders[0]);
+	{
+		if (thread_safe(&cd->coders[0].c_thread_id, CREATE, lone_vibe_coder,
+				&cd->coders[0]) != 0)
+			return (1);
+	}
 	else
+	{
 		while (++i < cd->n_coders)
-			thread_safe(&cd->coders[i].c_thread_id, CREATE, coding_sim,
-				&cd->coders[i]);
+		{
+			if (thread_safe(&cd->coders[i].c_thread_id, CREATE, coding_sim,
+					&cd->coders[i]) != 0)
+			{
+				set_bool(&cd->cd_mutex, &cd->end_coding, true);
+				break ;
+			}
+		}
+	}
 	coding_helper(cd);
 	return (0);
 }

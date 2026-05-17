@@ -12,16 +12,22 @@
 
 #include "codexion.h"
 
+static int	cond_error(const char *msg)
+{
+	print_error(msg);
+	return (1);
+}
+
 int	cond_safe(pthread_cond_t *cond, t_mtx *mutex, t_pthread_ops ops,
 		const struct timespec *ts)
 {
 	int	status;
 
 	if (NULL == cond)
-		err_and_exit("Cond Error: Cond is NULL");
+		return (cond_error("Cond Error: Cond is NULL"));
 	if ((WAIT == ops || TIMEDWAIT == ops) && NULL == mutex)
-		err_and_exit("Cond Error: Mutex is NULL");
-	status = 0;
+		return (cond_error("Cond Error: Mutex is NULL"));
+	status = 1;
 	if (INIT == ops)
 		status = pthread_cond_init(cond, NULL);
 	else if (DESTROY == ops)
@@ -33,8 +39,8 @@ int	cond_safe(pthread_cond_t *cond, t_mtx *mutex, t_pthread_ops ops,
 	else if (BROADCAST == ops)
 		status = pthread_cond_broadcast(cond);
 	else
-		err_and_exit("Wrong Ops for Cond Handling");
-	if (0 == status || (TIMEDWAIT == ops && ETIMEDOUT == status))
-		return (0);
-	return (1);
+		return (cond_error("Wrong Ops for Cond Handling"));
+	if (status != 0 && !(TIMEDWAIT == ops && ETIMEDOUT == status))
+		return (cond_error("Cond Error: Cond Operation Failed"));
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 19:54:32 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 21:23:56 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ typedef struct s_coding_data
 // Other Prototypes
 // cleanup.c
 void							err_and_exit(const char *error);
+void							print_error(const char *error);
 void							clean_all(t_coding_data *cd);
 
 // coder_util.c
@@ -178,7 +179,7 @@ int								parse_input(t_coding_data *cd, char **argv);
 // safe.c
 int								malloc_safe_create(t_coding_data *cd, char c);
 int								mutex_safe(t_mtx *mutex, t_pthread_ops ops);
-void							thread_safe(pthread_t *thread,
+int								thread_safe(pthread_t *thread,
 									t_pthread_ops ops, void *(*routine)(void *),
 									void *arg);
 
@@ -214,10 +215,9 @@ int								validate_input_reqs(t_coding_data *cd);
 void							*coding_analyser(void *args);
 
 // dongle_sync.c
-void							acquire_dongle(t_coder *coder,
+int								acquire_dongle(t_coder *coder,
 									t_dongle *dongle);
-
-void							release_dongle(t_coder *coder,
+int								release_dongle(t_coder *coder,
 									t_dongle *dongle);
 
 // heap Folder Prototypes
@@ -236,12 +236,12 @@ bool							heap_is_empty(t_heap *heap);
 // heap_ops.c
 void							up_shift(t_heap *heap, long index);
 void							down_shift(t_heap *heap, long index);
-void							heap_push(t_heap *heap, t_req req);
-t_req							heap_peek(t_heap *heap);
-t_req							heap_pop(t_heap *heap);
+int								heap_push(t_heap *heap, t_req req);
+int								heap_peek(t_heap *heap, t_req *out);
+int								heap_pop(t_heap *heap, t_req *out);
 
 // coding_utils.c
-void							compile(t_coder *coder);
+int								compile(t_coder *coder);
 void							*lone_vibe_coder(void *args);
 
 #endif

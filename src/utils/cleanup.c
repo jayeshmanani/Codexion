@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:06:25 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 18:51:47 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 21:11:12 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,11 @@ void	err_and_exit(const char *error)
 		error = "ErrorEnd: An unknown error occurred.\n";
 	printf("%s\n", error);
 	exit(EXIT_FAILURE);
+}
+
+void	print_error(const char *error)
+{
+	if (NULL == error)
+		error = "Error: An unknown error occurred.\n";
+	printf("%s\n", error);
 }

@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 14:54:11 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 16:34:53 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 21:35:36 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@ long	get_time(t_time_unit time_unit)
 	struct timeval	time_val;
 	long			time_in_unit;
 
-	if (gettimeofday(&time_val, NULL))
-		err_and_exit("Error: gettimeofday failed");
+	if (gettimeofday(&time_val, NULL) != 0)
+	{
+		print_error("Error: gettimeofday failed");
+		return (0);
+	}
 	if (time_unit == SEC)
 		time_in_unit = (time_val.tv_sec) + (time_val.tv_usec / 1e6);
 	else if (time_unit == MILLISEC)
@@ -26,7 +29,7 @@ long	get_time(t_time_unit time_unit)
 	else if (time_unit == MICROSEC)
 		time_in_unit = (time_val.tv_sec * 1e6) + (time_val.tv_usec);
 	else
-		err_and_exit("Error: Invalid time unit");
+		print_error("Error: Invalid time unit");
 	return (time_in_unit);
 }
 

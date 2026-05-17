@@ -18,7 +18,10 @@ static bool	coder_burned_out(t_coder *coder)
 	long	last_compile_time;
 
 	if (NULL == coder)
-		err_and_exit("Error: coder is NULL in coder_burned_out\n");
+	{
+		print_error("Error: coder is NULL in coder_burned_out\n");
+		return (false);
+	}
 	if (get_bool(&coder->coder_mutex, &coder->coder_work_done))
 		return (false);
 	last_compile_time = get_long(&coder->coder_mutex, &coder->last_compile_t);
@@ -37,7 +40,7 @@ static void	shutdown_all(t_coding_data *cd)
 	while (++j < cd->n_coders)
 	{
 		if (cond_safe(&cd->dongles[j].dongle_cond, NULL, BROADCAST, NULL) != 0)
-			err_and_exit("Error: cond_safe failed in shutdown_all\n");
+			print_error("Error: cond_safe failed in shutdown_all\n");
 	}
 }
 
