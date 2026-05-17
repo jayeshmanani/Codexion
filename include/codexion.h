@@ -218,11 +218,10 @@ int								validate_input_reqs(t_coding_data *cd);
 void							*coding_analyser(void *args);
 
 // dongle_sync.c
-void							acquire_dongle(t_coding_data *cd,
+void							acquire_dongle(t_coder *coder,
 									t_dongle *dongle);
 
-void							release_dongle(t_coding_data *cd,
-									t_dongle *dongle);
+void							release_dongle(t_dongle *dongle);
 
 // heap Folder Prototypes
 // heap_cmp.c
