@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 18:36:28 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 19:19:32 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,8 @@ void							*coding_analyser(void *args);
 void							acquire_dongle(t_coder *coder,
 									t_dongle *dongle);
 
-void							release_dongle(t_dongle *dongle);
+void							release_dongle(t_coder *coder,
+									t_dongle *dongle);
 
 // heap Folder Prototypes
 // heap_cmp.c

@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 15:51:46 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 14:49:57 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 19:25:54 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ void	down_shift(t_heap *heap, long index)
 
 void	heap_push(t_heap *heap, t_req req)
 {
-	printf("Pushing request from coder %d with arrival time %ld and deadline\
-		%ld\n", req.coder_id, req.arrival_t, req.deadline_t);
 	if (!heap || heap->size >= heap->capacity)
 		err_and_exit("heap_push: full or invalid heap");
 	heap->arr[heap->size] = req;
@@ -65,12 +63,8 @@ void	heap_push(t_heap *heap, t_req req)
 
 t_req	heap_peek(t_heap *heap)
 {
-	printf("Peeking at heap. Current size: %ld\n", heap ? heap->size : -1);
 	if (!heap || heap->size == 0)
 		err_and_exit("heap_peek: empty or invalid heap");
-	printf("Peek arrival time -> %ld\n", heap->arr[0].arrival_t);
-	printf("Peek deadline time -> %ld\n", heap->arr[0].deadline_t);
-	printf("Peek coder ID -> %d\n", heap->arr[0].coder_id);
 	return (heap->arr[0]);
 }
 
@@ -80,7 +74,6 @@ t_req	heap_pop(t_heap *heap)
 
 	if (!heap || heap->size == 0)
 		err_and_exit("heap_pop: empty or invalid heap");
-	printf("heap pop called. Current size: %ld\n", heap->size);
 	root = heap->arr[0];
 	heap->size--;
 	if (heap->size > 0)
@@ -88,7 +81,5 @@ t_req	heap_pop(t_heap *heap)
 		heap->arr[0] = heap->arr[heap->size];
 		down_shift(heap, 0);
 	}
-	printf("Popped request from coder %d with arrival time %ld and deadline\
-		%ld\n", root.coder_id, root.arrival_t, root.deadline_t);
 	return (root);
 }

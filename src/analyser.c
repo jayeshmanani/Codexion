@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 15:09:28 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 18:52:21 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 19:41:02 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,6 @@ static void	shutdown_all(t_coding_data *cd)
 	j = -1;
 	while (++j < cd->n_coders)
 	{
-		if (cond_safe(&cd->coders[j].coder_req_cond, NULL, BROADCAST,
-				NULL) != 0)
-			err_and_exit("Error: cond_safe failed in shutdown_all\n");
 		if (cond_safe(&cd->dongles[j].dongle_cond, NULL, BROADCAST, NULL) != 0)
 			err_and_exit("Error: cond_safe failed in shutdown_all\n");
 	}

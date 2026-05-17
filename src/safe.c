@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 16:38:53 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 14:00:27 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 19:26:47 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	malloc_safe_create(t_coding_data *cd, char c)
 {
-	// printf("Malloc Safe: Creating %c\n", c);
 	if (NULL == cd)
 		err_and_exit("Malloc Error: Coding Data is NULL in malloc_safe_create");
 	if (c != 'c' && c != 'd')
@@ -25,7 +24,6 @@ int	malloc_safe_create(t_coding_data *cd, char c)
 		cd->dongles = malloc(cd->n_coders * sizeof(t_dongle));
 	if ((c == 'c' && !cd->coders) || (c == 'd' && !cd->dongles))
 		return (1);
-	// printf("Malloc Safe: Created %c successfully\n", c);
 	return (0);
 }
 
@@ -51,7 +49,6 @@ int	malloc_safe_create(t_coding_data *cd, char c)
 
 int	mutex_safe(t_mtx *mutex, t_pthread_ops ops)
 {
-	// printf("Mutex Safe: Operation %d\n", ops);
 	if (NULL == mutex)
 		err_and_exit("Mutex Error: Mutex is NULL");
 	if (INIT == ops)
@@ -69,8 +66,6 @@ static void	handle_thread_return(int status, t_pthread_ops ops)
 {
 	if (0 == status)
 		return ;
-	// if (ops)
-	// 	err_and_exit("Thread Error: Thread Operation Failed");
 	if (EAGAIN == status)
 		err_and_exit("Resource limits for threads exceeded");
 	else if (EPERM == status)

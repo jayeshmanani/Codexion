@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 18:58:22 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 19:01:28 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 19:40:06 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,29 +38,20 @@ void	*lone_vibe_coder(void *args)
 	return (NULL);
 }
 
-// void	refactor(t_coder *coder)
-// {
-// 	if (!coder || !coder->cd || coding_finished(coder->cd))
-// 		return ;
-// 	coder->refactor_count++;
-// 	print_data(REFACTORING, coder, DEBUG_MODE);
-// 	updated_usleep(coder->cd, coder->cd->refactor_time);
-// }
-
 static void	compile_helper(t_coder *coder)
 {
 	acquire_dongle(coder, coder->left_dongle);
 	if (coding_finished(coder->cd))
 	{
-		release_dongle(coder->left_dongle);
+		release_dongle(coder, coder->left_dongle);
 		return ;
 	}
 	print_data(TOOK_DONGLE_1, coder, DEBUG_MODE);
 	acquire_dongle(coder, coder->right_dongle);
 	if (coding_finished(coder->cd))
 	{
-		release_dongle(coder->left_dongle);
-		release_dongle(coder->right_dongle);
+		release_dongle(coder, coder->left_dongle);
+		release_dongle(coder, coder->right_dongle);
 		return ;
 	}
 	print_data(TOOK_DONGLE_2, coder, DEBUG_MODE);
@@ -71,8 +62,8 @@ static void	compile_helper(t_coder *coder)
 	if (coder->cd->n_compiles > 0
 		&& coder->compile_count == coder->cd->n_compiles)
 		set_bool(&coder->coder_mutex, &coder->coder_work_done, true);
-	release_dongle(coder->left_dongle);
-	release_dongle(coder->right_dongle);
+	release_dongle(coder, coder->left_dongle);
+	release_dongle(coder, coder->right_dongle);
 }
 
 void	compile(t_coder *coder)
