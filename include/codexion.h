@@ -234,8 +234,8 @@ long							heap_left(long i);
 long							heap_right(long i);
 
 // heap_utils.c
-void							heap_destroy(t_coding_data *cd);
-bool							heap_is_empty(t_coding_data *cd);
+void							heap_destroy(t_heap *heap);
+bool							heap_is_empty(t_heap *heap);
 
 // heap_ops.c
 void							up_shift(t_heap *heap, long index);

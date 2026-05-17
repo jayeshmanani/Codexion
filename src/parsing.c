@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:14:31 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 14:06:52 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 18:49:23 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ int	parse_input(t_coding_data *cd, char **argv)
 	cd->end_coding = false;
 	cd->cd_mutex_initialized = false;
 	cd->op_mutex_initialized = false;
-	cd->arbiter_cond_initialized = false;
 	cd->coding_failed = false;
 	cd->active_coders = 0;
 	return (validate_input_reqs(cd));

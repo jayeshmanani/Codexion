@@ -34,6 +34,8 @@ static int	destroy_dongle(t_dongle *dongle)
 			return (1);
 		dongle->dongle_cond_initialized = false;
 	}
+	heap_destroy(dongle->access_heap);
+	dongle->access_heap = NULL;
 	return (0);
 }
 

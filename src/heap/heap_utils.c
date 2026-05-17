@@ -12,19 +12,19 @@
 
 #include "codexion.h"
 
-bool	heap_is_empty(t_coding_data *cd)
+bool	heap_is_empty(t_heap *heap)
 {
-	if (!cd || !cd->algo_heap)
+	if (!heap)
 		return (true);
-	return (cd->algo_heap->size == 0);
+	return (heap->size == 0);
 }
 
-void	heap_destroy(t_coding_data *cd)
+void	heap_destroy(t_heap *heap)
 {
-	if (!cd || !cd->algo_heap)
+	if (!heap)
 		return ;
-	free(cd->algo_heap->arr);
-	cd->algo_heap->arr = NULL;
-	free(cd->algo_heap);
-	cd->algo_heap = NULL;
+	if (heap->arr)
+		free(heap->arr);
+	heap->arr = NULL;
+	free(heap);
 }

@@ -65,16 +65,9 @@ void	coding_helper(t_coding_data *cd)
 			cd->coders[i].coder_id, (unsigned long)cd->coders[i].c_thread_id);
 	}
 	set_bool(&cd->cd_mutex, &cd->end_coding, true);
-	if (cond_safe(&cd->arbiter_cond, NULL, BROADCAST, NULL) != 0)
-		err_and_exit("Error: cond_safe failed in coding_helper\n");
-	if (cd->n_coders > 1)
-	{
-		printf("[HELPER] about to JOIN arbiter tid=%lu\n",
-			(unsigned long)cd->arbiter);
-		thread_safe(&cd->arbiter, JOIN, NULL, NULL);
-		printf("[HELPER] done JOIN arbiter tid=%lu\n",
-			(unsigned long)cd->arbiter);
-	}
+	i = -1;
+	while (++i < cd->n_coders)
+		cond_safe(&cd->dongles[i].dongle_cond, NULL, BROADCAST, NULL);
 	printf("[HELPER] about to JOIN analyzer tid=%lu\n",
 		(unsigned long)cd->analyzer);
 	thread_safe(&cd->analyzer, JOIN, NULL, NULL);
@@ -96,7 +89,6 @@ int	coding_start(t_coding_data *cd)
 			&cd->coders[0]);
 	else
 	{
-		thread_safe(&cd->arbiter, CREATE, arbiter_thread, cd);
 		printf("Coders: %ld\n", cd->n_coders);
 		while (++i < cd->n_coders)
 			thread_safe(&cd->coders[i].c_thread_id, CREATE, coding_sim,
