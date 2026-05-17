@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 15:09:28 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 15:18:23 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 16:07:57 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,15 @@
 static bool	coder_burned_out(t_coder *coder)
 {
 	long	elapsed_time;
-	long last_compile_time;
+	long	last_compile_time;
 
 	if (NULL == coder)
 		err_and_exit("Error: coder is NULL in coder_burned_out\n");
 	if (get_bool(&coder->coder_mutex, &coder->coder_work_done))
 		return (false);
-	
 	last_compile_time = get_long(&coder->coder_mutex, &coder->last_compile_t);
 	if (last_compile_time == 0)
-        return (false);
+		return (false);
 	elapsed_time = get_time(MILLISEC) - last_compile_time;
 	return (elapsed_time > coder->cd->burn_time);
 }

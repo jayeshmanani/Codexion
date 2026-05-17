@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 15:02:59 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 15:56:39 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,9 @@ void	*coding_sim(void *args)
 		compile(coder);
 		if (!coding_finished(coder->cd))
 		{
-			coder->debug_count++;
-			print_data(DEBUGGING, coder, DEBUG_MODE);
+			increase_long(&coder->coder_mutex, &coder->debug_count);
 			updated_usleep(coder->cd, coder->cd->debug_time);
-			coder->refactor_count++;
+			increase_long(&coder->coder_mutex, &coder->refactor_count);
 			print_data(REFACTORING, coder, DEBUG_MODE);
 			updated_usleep(coder->cd, coder->cd->refactor_time);
 		}
@@ -57,13 +56,29 @@ void	coding_helper(t_coding_data *cd)
 	thread_safe(&cd->analyzer, CREATE, coding_analyser, cd);
 	i = -1;
 	while (++i < cd->n_coders)
+	{
+		printf("[HELPER] about to JOIN coder index=%d id=%d tid=%lu\n", i,
+			cd->coders[i].coder_id, (unsigned long)cd->coders[i].c_thread_id);
 		thread_safe(&cd->coders[i].c_thread_id, JOIN, NULL, NULL);
+		printf("[HELPER] done JOIN coder index=%d id=%d tid=%lu\n", i,
+			cd->coders[i].coder_id, (unsigned long)cd->coders[i].c_thread_id);
+	}
 	set_bool(&cd->cd_mutex, &cd->end_coding, true);
 	if (cond_safe(&cd->arbiter_cond, NULL, BROADCAST, NULL) != 0)
 		err_and_exit("Error: cond_safe failed in coding_helper\n");
 	if (cd->n_coders > 1)
+	{
+		printf("[HELPER] about to JOIN arbiter tid=%lu\n",
+			(unsigned long)cd->arbiter);
 		thread_safe(&cd->arbiter, JOIN, NULL, NULL);
+		printf("[HELPER] done JOIN arbiter tid=%lu\n",
+			(unsigned long)cd->arbiter);
+	}
+	printf("[HELPER] about to JOIN analyzer tid=%lu\n",
+		(unsigned long)cd->analyzer);
 	thread_safe(&cd->analyzer, JOIN, NULL, NULL);
+	printf("[HELPER] done JOIN analyzer tid=%lu\n",
+		(unsigned long)cd->analyzer);
 	printf("Coding helper ended.\n");
 }
 
@@ -74,7 +89,7 @@ int	coding_start(t_coding_data *cd)
 	i = -1;
 	printf("Starting the coding simulation...\n");
 	if (NULL == cd || cd->n_coders <= 0)
-		return 1;
+		return (1);
 	if (1 == cd->n_coders)
 		thread_safe(&cd->coders[0].c_thread_id, CREATE, lone_vibe_coder,
 			&cd->coders[0]);

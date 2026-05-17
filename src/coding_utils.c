@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 18:58:22 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 15:04:12 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/17 15:55:29 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	compile_helper(t_coder *coder)
 	}
 	print_data(TOOK_DONGLE_2, coder, DEBUG_MODE);
 	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));
-	coder->compile_count++;
+	increase_long(&coder->coder_mutex, &coder->compile_count);
 	print_data(COMPILING, coder, DEBUG_MODE);
 	updated_usleep(coder->cd, coder->cd->compile_time);
 	if (coder->cd->n_compiles > 0
@@ -88,8 +88,6 @@ void	compile(t_coder *coder)
 	req.arrival_t = get_time(MILLISEC);
 	req.deadline_t = req.arrival_t + (coder->cd->burn_time);
 	printf("Coder  %d asking for CD Mutex\n", coder->coder_id);
-	printf("[TS %ld] Coder %d waiting on coder_req_cond (req_pending=%d)\n",
-       get_time(MILLISEC), coder->coder_id, coder->req_pending);
 	if (mutex_safe(&coder->cd->cd_mutex, LOCK) != 0)
 		err_and_exit("Error: mutex_safe failed in compile fn\n");
 	heap_push(coder->cd->algo_heap, req);
@@ -102,7 +100,9 @@ void	compile(t_coder *coder)
 	printf("Coder %d released CD Mutex\n", coder->coder_id);
 	if (mutex_safe(&coder->coder_mutex, LOCK) != 0)
 		err_and_exit("Error: mutex_safe failed in compile fn\n");
-	printf("Coder %d is locking Coder Mutex.\n", coder->coder_id);
+	printf("Coder %d has locked Coder Mutex.\n", coder->coder_id);
+	printf("[TS %ld] Coder %d waiting on coder_req_cond (req_pending=%d)\n",
+		get_time(MILLISEC), coder->coder_id, coder->req_pending);
 	while (!coder->req_pending && !coding_finished(coder->cd))
 	{
 		if (cond_safe(&coder->coder_req_cond, &coder->coder_mutex, WAIT,
@@ -110,7 +110,7 @@ void	compile(t_coder *coder)
 			err_and_exit("Error: cond_safe failed in compile fn\n");
 	}
 	printf("[TS %ld] Coder %d awoken for request (req_pending=%d)\n",
-       get_time(MILLISEC), coder->coder_id, coder->req_pending);
+		get_time(MILLISEC), coder->coder_id, coder->req_pending);
 	if (coding_finished(coder->cd))
 	{
 		coder->req_pending = false;
