@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 14:54:11 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 21:35:36 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/18 08:11:29 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ long	get_time(t_time_unit time_unit)
 	struct timeval	time_val;
 	long			time_in_unit;
 
+	time_in_unit = 0;
 	if (gettimeofday(&time_val, NULL) != 0)
 	{
 		print_error("Error: gettimeofday failed");
