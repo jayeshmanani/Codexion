@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 19:57:06 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/18 18:47:00 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,11 @@ void	coding_helper(t_coding_data *cd)
 	set_bool(&cd->cd_mutex, &cd->end_coding, true);
 	i = -1;
 	while (++i < cd->n_coders)
+	{
+		mutex_safe(&cd->dongles[i].dongle_state_mutex, LOCK);
 		cond_safe(&cd->dongles[i].dongle_cond, NULL, BROADCAST, NULL);
+		mutex_safe(&cd->dongles[i].dongle_state_mutex, UNLOCK);
+	}
 	thread_safe(&cd->analyzer, JOIN, NULL, NULL);
 }
 

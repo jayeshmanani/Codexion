@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 15:09:28 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 19:55:01 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/18 18:48:22 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,10 @@ static void	shutdown_all(t_coding_data *cd)
 	j = -1;
 	while (++j < cd->n_coders)
 	{
+		mutex_safe(&cd->dongles[j].dongle_state_mutex, LOCK);
 		if (cond_safe(&cd->dongles[j].dongle_cond, NULL, BROADCAST, NULL) != 0)
 			print_error("Error: cond_safe failed in shutdown_all\n");
+		mutex_safe(&cd->dongles[j].dongle_state_mutex, UNLOCK);
 	}
 }
 
