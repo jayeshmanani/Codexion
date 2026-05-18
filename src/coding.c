@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/18 18:47:00 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/18 20:01:52 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	*coding_sim(void *args)
 			break ;
 		if (compile(coder) != 0)
 			return (NULL);
+		if (get_bool(&coder->coder_mutex, &coder->coder_work_done))
+			break ;
 		if (!coding_finished(coder->cd))
 		{
 			increase_long(&coder->coder_mutex, &coder->debug_count);

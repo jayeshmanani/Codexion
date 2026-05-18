@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   coding_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 18:58:22 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/18 08:09:15 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/18 20:03:31 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	*lone_vibe_coder(void *args)
 			break ;
 		if (compile(coder) != 0)
 			return (NULL);
+		if (get_bool(&coder->coder_mutex, &coder->coder_work_done))
+			break ;
 		if (!coding_finished(coder->cd))
 		{
 			increase_long(&coder->coder_mutex, &coder->debug_count);
