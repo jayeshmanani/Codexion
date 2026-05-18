@@ -3,34 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   safe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 16:38:53 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 19:57:56 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/18 08:41:47 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int	malloc_safe_create(t_coding_data *cd, char c)
+void	*create_safe_malloc(size_t bytes)
 {
-	if (NULL == cd)
+	void	*mem;
+
+	mem = malloc(bytes);
+	if (!mem)
 	{
-		print_error("Malloc Error: Coding Data is NULL in malloc_safe_create");
-		return (1);
+		print_error("Malloc Error: Failed to allocate memory for dongles");
+		return (NULL);
 	}
-	if (c != 'c' && c != 'd')
-	{
-		print_error("Malloc Error: Wrong type for malloc_safe_create");
-		return (1);
-	}
-	if (c == 'c')
-		cd->coders = malloc(cd->n_coders * sizeof(t_coder));
-	else if (c == 'd')
-		cd->dongles = malloc(cd->n_coders * sizeof(t_dongle));
-	if ((c == 'c' && !cd->coders) || (c == 'd' && !cd->dongles))
-		return (1);
-	return (0);
+	return (mem);
 }
 
 int	mutex_safe(t_mtx *mutex, t_pthread_ops ops)

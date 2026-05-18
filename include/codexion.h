@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 21:23:56 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/18 08:43:41 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ void							updated_usleep(t_coding_data *cd,
 int								parse_input(t_coding_data *cd, char **argv);
 
 // safe.c
-int								malloc_safe_create(t_coding_data *cd, char c);
+void							*create_safe_malloc(size_t bytes);
 int								mutex_safe(t_mtx *mutex, t_pthread_ops ops);
 int								thread_safe(pthread_t *thread,
 									t_pthread_ops ops, void *(*routine)(void *),

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:55:33 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 20:14:37 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/18 08:43:28 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,11 @@ int	data_init(t_coding_data *cd)
 {
 	if (NULL == cd || cd->n_coders <= 0)
 		return (1);
-	if (malloc_safe_create(cd, 'c') || malloc_safe_create(cd, 'd'))
+	cd->coders = create_safe_malloc((cd->n_coders) * sizeof(t_coder));
+	if (!cd->coders)
+		return (1);
+	cd->dongles = create_safe_malloc((cd->n_coders) * sizeof(t_dongle));
+	if (!cd->dongles)
 		return (1);
 	if (mutex_safe(&cd->cd_mutex, INIT) != 0)
 		return (1);
