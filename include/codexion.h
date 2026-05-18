@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/18 08:43:41 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/18 20:13:19 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,7 @@ int								data_init(t_coding_data *cd);
 
 // coding.c
 int								coding_start(t_coding_data *cd);
+int								coding_sim_helper(t_coder *coder);
 
 // set_get.c
 void							set_bool(t_mtx *mtx, bool *dst, bool value);

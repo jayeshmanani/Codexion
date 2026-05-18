@@ -6,11 +6,22 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/18 20:01:52 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/18 20:18:28 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
+
+int	coding_sim_helper(t_coder *coder)
+{
+	increase_long(&coder->coder_mutex, &coder->debug_count);
+	print_data(DEBUGGING, coder);
+	updated_usleep(coder->cd, coder->cd->debug_time);
+	increase_long(&coder->coder_mutex, &coder->refactor_count);
+	print_data(REFACTORING, coder);
+	updated_usleep(coder->cd, coder->cd->refactor_time);
+	return (0);
+}
 
 void	*coding_sim(void *args)
 {
@@ -32,12 +43,7 @@ void	*coding_sim(void *args)
 			break ;
 		if (!coding_finished(coder->cd))
 		{
-			increase_long(&coder->coder_mutex, &coder->debug_count);
-			print_data(DEBUGGING, coder);
-			updated_usleep(coder->cd, coder->cd->debug_time);
-			increase_long(&coder->coder_mutex, &coder->refactor_count);
-			print_data(REFACTORING, coder);
-			updated_usleep(coder->cd, coder->cd->refactor_time);
+			coding_sim_helper(coder);
 		}
 	}
 	return (NULL);

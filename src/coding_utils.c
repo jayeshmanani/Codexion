@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 18:58:22 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/18 20:03:31 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/18 20:14:28 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,7 @@ void	*lone_vibe_coder(void *args)
 			break ;
 		if (!coding_finished(coder->cd))
 		{
-			increase_long(&coder->coder_mutex, &coder->debug_count);
-			print_data(DEBUGGING, coder);
-			updated_usleep(coder->cd, coder->cd->debug_time);
-			increase_long(&coder->coder_mutex, &coder->refactor_count);
-			print_data(REFACTORING, coder);
-			updated_usleep(coder->cd, coder->cd->refactor_time);
+			coding_sim_helper(coder);
 		}
 	}
 	return (NULL);
