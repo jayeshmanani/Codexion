@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 18:58:22 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 19:56:02 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/18 06:46:06 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	*lone_vibe_coder(void *args)
 	{
 		if (get_bool(&coder->coder_mutex, &coder->coder_work_done))
 			break ;
-		compile(coder);
+		if (compile(coder) != 0)
+			return (NULL);
 		if (!coding_finished(coder->cd))
 		{
 			increase_long(&coder->coder_mutex, &coder->debug_count);
@@ -38,23 +39,8 @@ void	*lone_vibe_coder(void *args)
 	return (NULL);
 }
 
-static void	compile_helper(t_coder *coder)
+static int	compile_finish(t_coder *coder)
 {
-	acquire_dongle(coder, coder->left_dongle);
-	if (coding_finished(coder->cd))
-	{
-		release_dongle(coder, coder->left_dongle);
-		return ;
-	}
-	print_data(TOOK_DONGLE_1, coder);
-	acquire_dongle(coder, coder->right_dongle);
-	if (coding_finished(coder->cd))
-	{
-		release_dongle(coder, coder->left_dongle);
-		release_dongle(coder, coder->right_dongle);
-		return ;
-	}
-	print_data(TOOK_DONGLE_2, coder);
 	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));
 	increase_long(&coder->coder_mutex, &coder->compile_count);
 	print_data(COMPILING, coder);
@@ -62,15 +48,47 @@ static void	compile_helper(t_coder *coder)
 	if (coder->cd->n_compiles > 0
 		&& coder->compile_count == coder->cd->n_compiles)
 		set_bool(&coder->coder_mutex, &coder->coder_work_done, true);
-	release_dongle(coder, coder->left_dongle);
-	release_dongle(coder, coder->right_dongle);
+	if (release_dongle(coder, coder->left_dongle))
+		return (1);
+	if (release_dongle(coder, coder->right_dongle))
+		return (1);
+	return (0);
 }
 
-void	compile(t_coder *coder)
+static int	compile_helper(t_coder *coder)
+{
+	if (acquire_dongle(coder, coder->left_dongle))
+		return (1);
+	if (coding_finished(coder->cd))
+	{
+		release_dongle(coder, coder->left_dongle);
+		return (0);
+	}
+	print_data(TOOK_DONGLE_1, coder);
+	if (acquire_dongle(coder, coder->right_dongle))
+	{
+		release_dongle(coder, coder->left_dongle);
+		return (1);
+	}
+	if (coding_finished(coder->cd))
+	{
+		release_dongle(coder, coder->left_dongle);
+		release_dongle(coder, coder->right_dongle);
+		return (0);
+	}
+	print_data(TOOK_DONGLE_2, coder);
+	return (compile_finish(coder));
+}
+
+int	compile(t_coder *coder)
 {
 	if (!coder || !coder->cd)
-		err_and_exit("Error: Null pointer in compile fn\n");
+	{
+		print_error("Error: Null pointer in compile fn\n");
+		return (1);
+	}
 	if (coding_finished(coder->cd))
-		return ;
-	compile_helper(coder);
+		return (0);
+	
+	return (compile_helper(coder));
 }
