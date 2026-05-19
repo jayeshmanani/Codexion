@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/19 08:58:37 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/19 09:09:30 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,22 +79,13 @@ int	coding_start(t_coding_data *cd)
 	i = -1;
 	if (NULL == cd || cd->n_coders <= 0)
 		return (1);
-	if (1 == cd->n_coders)
+	while (++i < cd->n_coders)
 	{
-		if (thread_safe(&cd->coders[0].c_thread_id, CREATE, lone_vibe_coder,
-				&cd->coders[0]) != 0)
-			return (1);
-	}
-	else
-	{
-		while (++i < cd->n_coders)
+		if (thread_safe(&cd->coders[i].c_thread_id, CREATE, coding_sim,
+				&cd->coders[i]) != 0)
 		{
-			if (thread_safe(&cd->coders[i].c_thread_id, CREATE, coding_sim,
-					&cd->coders[i]) != 0)
-			{
-				set_bool(&cd->cd_mutex, &cd->end_coding, true);
-				break ;
-			}
+			set_bool(&cd->cd_mutex, &cd->end_coding, true);
+			break ;
 		}
 	}
 	coding_helper(cd);

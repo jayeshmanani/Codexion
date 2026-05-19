@@ -3,38 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   coding_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 18:58:22 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/18 20:14:28 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/19 09:10:08 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-
-void	*lone_vibe_coder(void *args)
-{
-	t_coder	*coder;
-
-	coder = (t_coder *)args;
-	waiting_for_coders(coder->cd);
-	increase_long(&coder->cd->cd_mutex, &coder->cd->active_coders);
-	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));
-	while (!coding_finished(coder->cd))
-	{
-		if (get_bool(&coder->coder_mutex, &coder->coder_work_done))
-			break ;
-		if (compile(coder) != 0)
-			return (NULL);
-		if (get_bool(&coder->coder_mutex, &coder->coder_work_done))
-			break ;
-		if (!coding_finished(coder->cd))
-		{
-			coding_sim_helper(coder);
-		}
-	}
-	return (NULL);
-}
 
 static int	compile_finish(t_coder *coder)
 {

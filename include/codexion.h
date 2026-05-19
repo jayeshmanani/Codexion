@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/19 08:57:48 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/19 09:09:42 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,5 @@ int								heap_pop(t_heap *heap, t_req *out);
 
 // coding_utils.c
 int								compile(t_coder *coder);
-void							*lone_vibe_coder(void *args);
 
 #endif
