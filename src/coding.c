@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   coding.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/18 20:18:28 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/19 08:58:37 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ void	coding_helper(t_coding_data *cd)
 	i = -1;
 	while (++i < cd->n_coders)
 	{
-		mutex_safe(&cd->dongles[i].dongle_state_mutex, LOCK);
+		mutex_safe(&cd->dongles[i].dongle_mutex, LOCK);
 		cond_safe(&cd->dongles[i].dongle_cond, NULL, BROADCAST, NULL);
-		mutex_safe(&cd->dongles[i].dongle_state_mutex, UNLOCK);
+		mutex_safe(&cd->dongles[i].dongle_mutex, UNLOCK);
 	}
 	thread_safe(&cd->analyzer, JOIN, NULL, NULL);
 }

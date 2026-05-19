@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dongle_util.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 14:37:54 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 18:36:39 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/19 08:59:01 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,6 @@ static int	destroy_dongle(t_dongle *dongle)
 		if (mutex_safe(&dongle->dongle_mutex, DESTROY) != 0)
 			return (1);
 		dongle->dongle_mutex_initialized = false;
-	}
-	if (dongle->dongle_state_mutex_initialized)
-	{
-		if (mutex_safe(&dongle->dongle_state_mutex, DESTROY) != 0)
-			return (1);
-		dongle->dongle_state_mutex_initialized = false;
 	}
 	if (dongle->dongle_cond_initialized)
 	{

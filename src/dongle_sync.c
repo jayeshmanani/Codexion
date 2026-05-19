@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dongle_sync.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 14:56:50 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/18 06:45:54 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/19 08:58:40 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	dongle_wait_cond(t_dongle *dongle)
 		return (0);
 	abs_usec = get_time(MICROSEC) + (wait_msec * 1e3);
 	abs_time_from_usec(abs_usec, &time_spec);
-	if (cond_safe(&dongle->dongle_cond, &dongle->dongle_state_mutex, TIMEDWAIT,
+	if (cond_safe(&dongle->dongle_cond, &dongle->dongle_mutex, TIMEDWAIT,
 			&time_spec) != 0)
 		return (1);
 	return (0);
@@ -37,7 +37,7 @@ static int	try_acquire(t_coder *coder, t_dongle *dongle)
 		return (-1);
 	if (top_req.coder_id != coder->coder_id || dongle->is_taken)
 	{
-		if (cond_safe(&dongle->dongle_cond, &dongle->dongle_state_mutex, WAIT,
+		if (cond_safe(&dongle->dongle_cond, &dongle->dongle_mutex, WAIT,
 				NULL) != 0)
 			return (-1);
 		return (0);
@@ -65,7 +65,7 @@ int	acquire_dongle(t_coder *coder, t_dongle *dongle)
 	req.arrival_t = get_time(MILLISEC);
 	req.deadline_t = get_long(&coder->coder_mutex, &coder->last_compile_t)
 		+ coder->cd->burn_time;
-	if (mutex_safe(&dongle->dongle_state_mutex, LOCK) != 0)
+	if (mutex_safe(&dongle->dongle_mutex, LOCK) != 0)
 		return (1);
 	if (heap_push(dongle->access_heap, req) != 0)
 		return (1);
@@ -75,7 +75,7 @@ int	acquire_dongle(t_coder *coder, t_dongle *dongle)
 		if (status == -1 || status == 1)
 			break ;
 	}
-	if (mutex_safe(&dongle->dongle_state_mutex, UNLOCK) != 0)
+	if (mutex_safe(&dongle->dongle_mutex, UNLOCK) != 0)
 		return (1);
 	if (status != -1)
 		return (0);
@@ -87,16 +87,16 @@ int	release_dongle(t_coder *coder, t_dongle *dongle)
 {
 	if (!coder || !dongle)
 		return (1);
-	if (mutex_safe(&dongle->dongle_state_mutex, LOCK) != 0)
+	if (mutex_safe(&dongle->dongle_mutex, LOCK) != 0)
 		return (1);
 	dongle->is_taken = false;
 	dongle->next_available_t = get_time(MILLISEC) + coder->cd->cooldown_time;
 	if (cond_safe(&dongle->dongle_cond, NULL, BROADCAST, NULL) != 0)
 	{
-		mutex_safe(&dongle->dongle_state_mutex, UNLOCK);
+		mutex_safe(&dongle->dongle_mutex, UNLOCK);
 		return (1);
 	}
-	if (mutex_safe(&dongle->dongle_state_mutex, UNLOCK) != 0)
+	if (mutex_safe(&dongle->dongle_mutex, UNLOCK) != 0)
 		return (1);
 	return (0);
 }

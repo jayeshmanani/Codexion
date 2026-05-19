@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/18 20:13:19 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/19 08:57:48 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,6 @@ typedef struct s_dongle
 	pthread_cond_t				dongle_cond;
 
 	bool						dongle_mutex_initialized;
-	bool						dongle_state_mutex_initialized;
-	t_mtx						dongle_state_mutex;
 	t_mtx						dongle_mutex;
 }								t_dongle;
 
