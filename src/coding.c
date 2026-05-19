@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/19 09:16:03 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/19 09:29:00 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,15 @@ void	*coding_sim(void *args)
 void	coding_helper(t_coding_data *cd)
 {
 	int	i;
+	int	analyser_created;
 
+	analyser_created = 1;
 	if (NULL == cd || cd->n_coders <= 0)
 		return ;
 	set_long(&cd->cd_mutex, &cd->start_coding_t, get_time(MILLISEC));
 	set_bool(&cd->cd_mutex, &cd->coders_ready, true);
-	thread_safe(&cd->analyzer, CREATE, coding_analyser, cd);
+	if (thread_safe(&cd->analyzer, CREATE, coding_analyser, cd) != 0)
+		analyser_created = 0;
 	i = -1;
 	while (++i < cd->n_coders)
 		thread_safe(&cd->coders[i].c_thread_id, JOIN, NULL, NULL);
@@ -69,7 +72,8 @@ void	coding_helper(t_coding_data *cd)
 		cond_safe(&cd->dongles[i].dongle_cond, NULL, BROADCAST, NULL);
 		mutex_safe(&cd->dongles[i].dongle_mutex, UNLOCK);
 	}
-	thread_safe(&cd->analyzer, JOIN, NULL, NULL);
+	if (analyser_created)
+		thread_safe(&cd->analyzer, JOIN, NULL, NULL);
 }
 
 int	coding_start(t_coding_data *cd)
