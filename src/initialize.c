@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:55:33 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/19 08:58:49 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/20 20:58:26 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ static int	coder_init_helper(t_coder *coder)
 	coder->refactor_count = 0;
 	coder->coder_work_done = false;
 	coder->last_compile_t = 0;
+	coder->coder_req.coder_id = coder->coder_id;
+	coder->coder_req.arrival_t = 0;
+	coder->coder_req.deadline_t = 0;
 	if (mutex_safe(&coder->coder_mutex, INIT) != 0)
 		return (1);
 	coder->coder_mutex_initialized = true;

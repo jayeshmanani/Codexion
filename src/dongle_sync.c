@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dongle_sync.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 14:56:50 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/20 18:00:24 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/20 20:54:00 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,7 @@ int	acquire_dongle(t_coder *coder, t_dongle *dongle)
 		return (1);
 	if (mutex_safe(&dongle->dongle_mutex, LOCK) != 0)
 		return (1);
-	req.coder_id = coder->coder_id;
-	req.arrival_t = get_time(MILLISEC);
+	req = coder->coder_req;
 	req.deadline_t = get_long(&coder->coder_mutex, &coder->last_compile_t)
 		+ coder->cd->burn_time;
 	if (heap_push(dongle->access_heap, req) != 0)

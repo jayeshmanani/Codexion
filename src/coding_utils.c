@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   coding_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 18:58:22 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/20 17:40:24 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/20 20:14:04 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static int	compile_helper(t_coder *coder)
 {
 	if (acquire_dongle(coder, coder->left_dongle))
 		return (1);
+	print_data(TOOK_DONGLE_1, coder);
 	if (coding_finished(coder->cd))
 	{
 		release_dongle(coder, coder->left_dongle);
@@ -48,7 +49,6 @@ static int	compile_helper(t_coder *coder)
 		release_dongle(coder, coder->right_dongle);
 		return (0);
 	}
-	print_data(TOOK_DONGLE_1, coder);
 	print_data(TOOK_DONGLE_2, coder);
 	return (compile_finish(coder));
 }

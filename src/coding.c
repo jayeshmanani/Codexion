@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   coding.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/20 18:03:47 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/20 21:01:32 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	*coding_sim(void *args)
 	coder = (t_coder *)args;
 	if (NULL == coder)
 		return (NULL);
+	coder->coder_req.arrival_t = get_time(MILLISEC);
+	waiting_for_coders(coder->cd);
 	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));
 	while (!coding_finished(coder->cd))
 	{

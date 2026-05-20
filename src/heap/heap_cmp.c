@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heap_cmp.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 16:00:40 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/15 16:40:18 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/20 21:13:48 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,21 @@
 bool	find_preference(t_req a, t_req b, t_scheduler scheduler)
 {
 	if (scheduler == EDF)
-	{
-		if (a.deadline_t != b.deadline_t)
-			return (a.deadline_t < b.deadline_t);
-	}
-	if (a.arrival_t != b.arrival_t)
-		return (a.arrival_t < b.arrival_t);
-	return (a.coder_id < b.coder_id);
+		return (a.deadline_t < b.deadline_t);
+	return (a.arrival_t < b.arrival_t);
 }
+
+// bool	find_preference(t_req a, t_req b, t_scheduler scheduler)
+// {
+// 	if (scheduler == EDF)
+// 	{
+//      if (a.deadline_t == b.deadline_t)
+// 		return (a.deadline_t < b.deadline_t);
+// 	}
+//  if (a.arrival_t == b.arrival_t)
+// 		return (a.arrival_t < b.arrival_t);
+//  return (a.coder_id < b.coder_id);
+// }
 
 void	req_swap(t_req *a, t_req *b)
 {
