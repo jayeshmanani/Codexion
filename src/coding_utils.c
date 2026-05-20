@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 18:58:22 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/19 09:10:08 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/20 17:40:24 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static int	compile_helper(t_coder *coder)
 		release_dongle(coder, coder->left_dongle);
 		return (0);
 	}
-	print_data(TOOK_DONGLE_1, coder);
 	if (acquire_dongle(coder, coder->right_dongle))
 	{
 		release_dongle(coder, coder->left_dongle);
@@ -49,6 +48,7 @@ static int	compile_helper(t_coder *coder)
 		release_dongle(coder, coder->right_dongle);
 		return (0);
 	}
+	print_data(TOOK_DONGLE_1, coder);
 	print_data(TOOK_DONGLE_2, coder);
 	return (compile_finish(coder));
 }

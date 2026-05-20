@@ -17,39 +17,21 @@ make
 **Examples:**
 
 1. **Standard Simulation (EDF Scheduler):**
-5 coders, 800ms burnout, 200ms compile/debug/refactor, each compiles 100 times, 100ms dongle cooldown, using Earliest Deadline First scheduling. (Burn out case)
+5 coders, 800ms burnout, 200ms compile/debug/refactor, each compiles 2 times, 50ms dongle cooldown, using Earliest Deadline First scheduling.
 ```bash
-./codexion 5 800 200 200 200 100 100 edf
+./codexion 5 800 200 200 200 2 50 fifo
 ```
 
 2. **Standard Simulation (FIFO Scheduler):**
-Same parameters as above, but using First In First Out scheduling. (Burn Out case)
+Same parameters as above, but using First In First Out scheduling.
 ```bash
-./codexion 5 800 200 200 200 100 100 fifo
+./codexion 5 800 200 200 200 2 50 edf
 ```
 
 3. **Guaranteed Burnout Scenario:**
 4 coders, but the burnout time (310ms) is extremely short compared to compile/debug cycle times and dongle contention. One coder will inevitably burn out.
 ```bash
-./codexion 4 310 200 100 100 50 50 edf
-```
-
-4. **Lone Coder Edge Case:**
-A single coder environment. The coder will burn out since they cannot acquire two dongles to compile their code (only 1 dongle exists).
-```bash
-./codexion 1 800 200 200 200 5 50 edf
-```
-
-5. **No Burnout Scenario (EDF Scheduler):**
-5 coders, 800ms burnout, 200ms compile/debug/refactor, each compiles 100 times, 0ms dongle cooldown, using Earliest Deadline First scheduling. (No burn out case)
-```bash
-./codexion 5 800 200 200 200 100 0 edf
-```
-
-6. **No Burnout Scenario (FIFO Scheduler):**
-5 coders, 800ms burnout, 200ms compile/debug/refactor, each compiles 100 times, 0ms dongle cooldown, using First In First Out scheduling. (No burn out case)
-```bash
-./codexion 5 800 200 200 200 100 0 fifo
+./codexion 4 310 200 200 200 1 0 fifo
 ```
 
 ## Blocking cases handled

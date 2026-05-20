@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_op.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 12:05:49 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 19:54:34 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/20 08:39:53 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,12 @@ int	validate_input_reqs(t_coding_data *cd)
 {
 	if (cd->n_coders <= 0)
 		return (1);
-	if (cd->burn_time <= 0 || cd->compile_time <= 0 || cd->debug_time < 0
-		|| cd->refactor_time < 0 || cd->n_compiles <= 0
+	if (cd->burn_time <= 0 || cd->compile_time <= 0 || cd->debug_time <= 0
+		|| cd->refactor_time <= 0 || cd->n_compiles <= 0
 		|| cd->cooldown_time < 0)
+	{
+		print_error("input: Should be: Time values > 0, n_compiles >= 0");
 		return (1);
+	}
 	return (0);
 }

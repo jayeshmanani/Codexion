@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/19 09:34:27 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/20 18:03:47 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ void	*coding_sim(void *args)
 	coder = (t_coder *)args;
 	if (NULL == coder)
 		return (NULL);
-	waiting_for_coders(coder->cd);
 	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));
-	increase_long(&coder->cd->cd_mutex, &coder->cd->active_coders);
 	while (!coding_finished(coder->cd))
 	{
 		if (get_bool(&coder->coder_mutex, &coder->coder_work_done))
@@ -49,6 +47,32 @@ void	*coding_sim(void *args)
 	return (NULL);
 }
 
+// void	*coding_sim(void *args)
+// {
+// 	t_coder	*coder;
+
+// 	coder = (t_coder *)args;
+// 	if (NULL == coder)
+// 		return (NULL);
+// waiting_for_coders(coder->cd);
+// set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));
+// increase_long(&coder->cd->cd_mutex, &coder->cd->active_coders);
+// 	while (!coding_finished(coder->cd))
+// 	{
+// 		if (get_bool(&coder->coder_mutex, &coder->coder_work_done))
+// 			break ;
+// 		if (compile(coder) != 0)
+// 			return (NULL);
+// 		if (get_bool(&coder->coder_mutex, &coder->coder_work_done))
+// 			break ;
+// 		if (!coding_finished(coder->cd))
+// 		{
+// 			coding_sim_helper(coder);
+// 		}
+// 	}
+// 	return (NULL);
+// }
+
 void	coding_helper(t_coding_data *cd)
 {
 	int	i;
@@ -57,7 +81,6 @@ void	coding_helper(t_coding_data *cd)
 	analyser_created = 1;
 	if (NULL == cd || cd->n_coders <= 0)
 		return ;
-	set_long(&cd->cd_mutex, &cd->start_coding_t, get_time(MILLISEC));
 	set_bool(&cd->cd_mutex, &cd->coders_ready, true);
 	if (thread_safe(&cd->analyzer, CREATE, coding_analyser, cd) != 0)
 	{
@@ -87,6 +110,7 @@ int	coding_start(t_coding_data *cd)
 		return (1);
 	while (++i < cd->n_coders)
 	{
+		set_long(&cd->cd_mutex, &cd->start_coding_t, get_time(MILLISEC));
 		if (thread_safe(&cd->coders[i].c_thread_id, CREATE, coding_sim,
 				&cd->coders[i]) != 0)
 		{
