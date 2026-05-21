@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 18:58:22 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/20 20:14:04 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/21 08:35:38 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 static int	compile_finish(t_coder *coder)
 {
-	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));
 	increase_long(&coder->coder_mutex, &coder->compile_count);
 	print_data(COMPILING, coder);
 	updated_usleep(coder->cd, coder->cd->compile_time);
+	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));
 	if (coder->cd->n_compiles > 0
 		&& coder->compile_count == coder->cd->n_compiles)
 		set_bool(&coder->coder_mutex, &coder->coder_work_done, true);
