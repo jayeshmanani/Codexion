@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dongle_sync.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 14:56:50 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/20 20:54:00 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/21 08:53:43 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,15 @@ static int	try_acquire(t_coder *coder, t_dongle *dongle)
 	return (0);
 }
 
-int	acquire_dongle(t_coder *coder, t_dongle *dongle)
+int	wait_acquire_dongle(t_coder *coder, t_dongle *dongle)
 {
-	t_req	req;
-	int		status;
+	int	status;
 
 	if (!coder || !dongle)
 		return (1);
 	if (mutex_safe(&dongle->dongle_mutex, LOCK) != 0)
 		return (1);
-	req = coder->coder_req;
-	req.deadline_t = get_long(&coder->coder_mutex, &coder->last_compile_t)
-		+ coder->cd->burn_time;
-	if (heap_push(dongle->access_heap, req) != 0)
-		return (1);
+	status = 0;
 	while (!coding_finished(coder->cd))
 	{
 		status = try_acquire(coder, dongle);
@@ -78,8 +73,22 @@ int	acquire_dongle(t_coder *coder, t_dongle *dongle)
 		return (1);
 	if (status != -1)
 		return (0);
-	print_error("Error: acquire_dongle failed");
+	print_error("Error: wait_acquire_dongle failed");
 	return (1);
+}
+
+int	acquire_dongle(t_coder *coder, t_dongle *dongle)
+{
+	t_req	req;
+
+	if (!coder || !dongle)
+		return (1);
+	req = coder->coder_req;
+	req.deadline_t = get_long(&coder->coder_mutex, &coder->last_compile_t)
+		+ coder->cd->burn_time;
+	if (pre_register_dongle(coder, dongle, req) != 0)
+		return (1);
+	return (wait_acquire_dongle(coder, dongle));
 }
 
 int	release_dongle(t_coder *coder, t_dongle *dongle)

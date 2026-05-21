@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 14:37:54 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/19 08:59:01 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/21 08:53:19 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,21 @@ int	init_dongle(t_dongle *dongle, t_coding_data *cd)
 	dongle->access_heap->size = 0;
 	dongle->access_heap->capacity = cd->n_coders;
 	dongle->access_heap->scheduler = cd->scheduler;
+	return (0);
+}
+
+int	pre_register_dongle(t_coder *coder, t_dongle *dongle, t_req req)
+{
+	if (!coder || !dongle)
+		return (1);
+	if (mutex_safe(&dongle->dongle_mutex, LOCK) != 0)
+		return (1);
+	if (heap_push(dongle->access_heap, req) != 0)
+	{
+		mutex_safe(&dongle->dongle_mutex, UNLOCK);
+		return (1);
+	}
+	if (mutex_safe(&dongle->dongle_mutex, UNLOCK) != 0)
+		return (1);
 	return (0);
 }

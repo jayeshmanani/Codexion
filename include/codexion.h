@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/20 20:49:13 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/21 08:51:05 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,10 @@ int								validate_input_reqs(t_coding_data *cd);
 void							*coding_analyser(void *args);
 
 // dongle_sync.c
+int								pre_register_dongle(t_coder *coder,
+									t_dongle *dongle, t_req req);
+int								wait_acquire_dongle(t_coder *coder,
+									t_dongle *dongle);
 int								acquire_dongle(t_coder *coder,
 									t_dongle *dongle);
 int								release_dongle(t_coder *coder,
@@ -240,6 +244,7 @@ void							down_shift(t_heap *heap, long index);
 int								heap_push(t_heap *heap, t_req req);
 int								heap_peek(t_heap *heap, t_req *out);
 int								heap_pop(t_heap *heap, t_req *out);
+int								heap_remove(t_heap *heap, int coder_id);
 
 // coding_utils.c
 int								compile(t_coder *coder);

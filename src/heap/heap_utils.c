@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heap_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 16:01:46 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/16 21:40:32 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/21 09:03:41 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,28 @@ void	heap_destroy(t_heap *heap)
 		free(heap->arr);
 	heap->arr = NULL;
 	free(heap);
+}
+
+int	heap_remove(t_heap *heap, int coder_id)
+{
+	long	i;
+
+	if (!heap)
+		return (1);
+	i = -1;
+	while (++i < heap->size)
+	{
+		if (heap->arr[i].coder_id == coder_id)
+		{
+			heap->size--;
+			if (i < heap->size)
+			{
+				heap->arr[i] = heap->arr[heap->size];
+				up_shift(heap, i);
+				down_shift(heap, i);
+			}
+			return (0);
+		}
+	}
+	return (0);
 }
