@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 15:09:28 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 18:46:34 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 19:33:48 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	*coding_analyser(void *args)
 	int				i;
 
 	cd = (t_coding_data *)args;
+	if (NULL == cd)
+		return (NULL);
 	while (!all_coders_ready(&cd->cd_mutex, &cd->active_coders, cd->n_coders))
 		usleep(500);
 	while (!coding_finished(cd))

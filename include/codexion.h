@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 18:33:45 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 21:39:18 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,6 @@ typedef struct s_coder
 	int							coder_id;
 
 	long						compile_count;
-	long						debug_count;
-	long						refactor_count;
 
 	bool						coder_work_done;
 
@@ -235,10 +233,6 @@ void							*coding_analyser(void *args);
 // dongle_sync.c
 int								pre_register_dongle(t_coder *coder,
 									t_dongle *dongle, t_req req);
-int								wait_acquire_dongle(t_coder *coder,
-									t_dongle *dongle);
-int								acquire_dongle(t_coder *coder,
-									t_dongle *dongle);
 int								release_dongle(t_coder *coder,
 									t_dongle *dongle);
 int								register_global_request(t_coder *coder,

@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 18:46:34 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 19:57:26 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 int	coding_sim_helper(t_coder *coder)
 {
-	increase_long(&coder->coder_mutex, &coder->debug_count);
 	print_data(DEBUGGING, coder);
 	updated_usleep(coder->cd, coder->cd->debug_time);
-	increase_long(&coder->coder_mutex, &coder->refactor_count);
 	print_data(REFACTORING, coder);
 	updated_usleep(coder->cd, coder->cd->refactor_time);
 	return (0);

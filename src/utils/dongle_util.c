@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 14:37:54 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 18:04:56 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 20:32:47 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ int	init_dongle(t_dongle *dongle, t_coding_data *cd)
 {
 	if (!dongle || !cd)
 		return (1);
-	dongle->dongle_cond_initialized = true;
-	dongle->next_available_t = 0;
+	dongle->next_available_t = get_time(MILLISEC);
 	dongle->is_taken = false;
 	dongle->access_heap = malloc(sizeof(t_heap));
 	if (!dongle->access_heap)
@@ -98,6 +97,7 @@ int	wait_acquire_both_dongles(t_coder *coder)
 	long	wait_msec;
 	int		turn;
 
+	wait_msec = -1;
 	if (!coder || !coder->cd || !coder->cd->global_heap)
 		return (1);
 	if (mutex_safe(&coder->cd->global_mutex, LOCK) != 0)

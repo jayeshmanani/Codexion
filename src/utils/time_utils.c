@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 14:54:11 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/18 08:22:42 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 19:43:14 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,21 @@ void	updated_usleep(t_coding_data *cd, long millisec)
 	long	start_t;
 	long	elapsed_t;
 	long	rem_t;
+	long	microsec;
 
 	start_t = get_time(MICROSEC);
-	while (get_time(MICROSEC) - start_t < millisec * 1e3)
+	microsec = millisec * 1e3;
+	while (get_time(MICROSEC) - start_t < microsec)
 	{
 		if (coding_finished(cd))
 			break ;
 		elapsed_t = get_time(MICROSEC) - start_t;
-		rem_t = (millisec * 1e3) - elapsed_t;
+		rem_t = microsec - elapsed_t;
 		if (rem_t > 1e3)
 			usleep(rem_t / 2);
 		else
 		{
-			while (get_time(MICROSEC) - start_t < (millisec * 1e3))
+			while (get_time(MICROSEC) - start_t < microsec)
 				;
 		}
 	}

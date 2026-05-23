@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 16:01:46 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 18:33:58 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 20:42:17 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	heap_remove(t_heap *heap, int coder_id)
 {
 	long	i;
 
-	if (!heap)
+	if (!heap || heap->size <= 0 || coder_id <= 0)
 		return (1);
 	i = -1;
 	while (++i < heap->size)

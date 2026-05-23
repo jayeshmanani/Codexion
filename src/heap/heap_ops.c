@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heap_ops.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 15:51:46 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/18 06:47:43 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 20:16:38 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,7 @@ int	heap_push(t_heap *heap, t_req req)
 int	heap_peek(t_heap *heap, t_req *out)
 {
 	if (!heap || heap->size == 0)
-	{
-		print_error("heap_peek: empty or invalid heap");
 		return (1);
-	}
 	*out = heap->arr[0];
 	return (0);
 }

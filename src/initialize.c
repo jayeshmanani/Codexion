@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:55:33 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 13:26:51 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 19:23:59 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ static int	assign_dongles(t_coder *coder, t_dongle *dongles, int coder_pos)
 static int	coder_init_helper(t_coder *coder)
 {
 	coder->compile_count = 0;
-	coder->debug_count = 0;
-	coder->refactor_count = 0;
 	coder->coder_work_done = false;
 	coder->last_compile_t = coder->cd->start_coding_t;
 	coder->coder_req.coder_id = coder->coder_id;
@@ -79,6 +77,7 @@ static int	init_all_dongles(t_coding_data *cd)
 		cd->dongles[i].dongle_mutex_initialized = true;
 		if (cond_safe(&cd->dongles[i].dongle_cond, NULL, INIT, NULL) != 0)
 			return (1);
+		cd->dongles[i].dongle_cond_initialized = true;
 		if (init_dongle(&cd->dongles[i], cd))
 			return (1);
 		cd->dongles[i].dongle_id = i;
