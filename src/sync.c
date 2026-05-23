@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 23:35:09 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 12:57:47 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 13:49:30 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	waiting_for_coders(t_coding_data *cd)
 {
 	while ((get_bool(&cd->cd_mutex, &cd->coders_ready)) == false)
 		usleep(100);
+	set_long(&cd->cd_mutex, &cd->start_coding_t, get_time(MILLISEC));
 }
 
 void	increase_long(t_mtx *mutex, long *val)

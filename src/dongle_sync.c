@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 14:56:50 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/21 08:53:43 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 13:23:41 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,11 @@ int	release_dongle(t_coder *coder, t_dongle *dongle)
 	}
 	if (mutex_safe(&dongle->dongle_mutex, UNLOCK) != 0)
 		return (1);
+	if (coder->cd->global_cond_initialized)
+	{
+		mutex_safe(&coder->cd->global_mutex, LOCK);
+		cond_safe(&coder->cd->global_cond, NULL, BROADCAST, NULL);
+		mutex_safe(&coder->cd->global_mutex, UNLOCK);
+	}
 	return (0);
 }

@@ -1,0 +1,103 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   global_queue.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/23 12:23:37 by jmanani           #+#    #+#             */
+/*   Updated: 2026/05/23 13:53:58 by jmanani          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "codexion.h"
+
+static int	global_turn_wait(t_coder *coder, t_req *top_req)
+{
+	if (heap_peek(coder->cd->global_heap, top_req) != 0)
+	{
+		if (cond_safe(&coder->cd->global_cond, &coder->cd->global_mutex, WAIT,
+				NULL) != 0)
+			return (-1);
+		return (0);
+	}
+	if (top_req->coder_id != coder->coder_id)
+	{
+		if (cond_safe(&coder->cd->global_cond, &coder->cd->global_mutex, WAIT,
+				NULL) != 0)
+			return (-1);
+		return (0);
+	}
+	return (1);
+}
+
+static int	global_wait_time(t_coding_data *cd, long wait_msec)
+{
+	long			abs_usec;
+	struct timespec	ts;
+
+	if (wait_msec <= 0)
+		return (cond_safe(&cd->global_cond, &cd->global_mutex, WAIT, NULL));
+	abs_usec = get_time(MICROSEC) + (wait_msec * 1000);
+	abs_time_from_usec(abs_usec, &ts);
+	return (cond_safe(&cd->global_cond, &cd->global_mutex, TIMEDWAIT, &ts));
+}
+
+static int	global_take_both(t_coder *coder, t_req *top_req, long *wait_msec)
+{
+	if (take_both_if_ready(coder, wait_msec) != 0)
+		return (-1);
+	if (*wait_msec != 0)
+		return (1);
+	if (heap_pop(coder->cd->global_heap, top_req) != 0)
+	{
+		reset_dongles_pair(coder->left_dongle, coder->right_dongle);
+		return (-1);
+	}
+	mutex_safe(&coder->cd->global_mutex, UNLOCK);
+	return (0);
+}
+
+int	register_global_request(t_coder *coder, t_req req)
+{
+	if (!coder || !coder->cd || !coder->cd->global_heap)
+		return (1);
+	if (mutex_safe(&coder->cd->global_mutex, LOCK) != 0)
+		return (1);
+	if (heap_push(coder->cd->global_heap, req) != 0)
+	{
+		mutex_safe(&coder->cd->global_mutex, UNLOCK);
+		return (1);
+	}
+	cond_safe(&coder->cd->global_cond, NULL, BROADCAST, NULL);
+	if (mutex_safe(&coder->cd->global_mutex, UNLOCK) != 0)
+		return (1);
+	return (0);
+}
+
+int	wait_acquire_both_dongles(t_coder *coder)
+{
+	t_req	top_req;
+	long	wait_msec;
+	int		turn;
+
+	if (!coder || !coder->cd || !coder->cd->global_heap)
+		return (1);
+	if (mutex_safe(&coder->cd->global_mutex, LOCK) != 0)
+		return (1);
+	while (!coding_finished(coder->cd))
+	{
+		if (get_bool(&coder->coder_mutex, &coder->coder_work_done))
+			break ;
+		turn = global_turn_wait(coder, &top_req);
+		if (turn <= 0)
+			continue ;
+		if (global_take_both(coder, &top_req, &wait_msec) == 0)
+			return (0);
+		if (global_wait_time(coder->cd, wait_msec) != 0)
+			break ;
+	}
+	heap_remove(coder->cd->global_heap, coder->coder_id);
+	mutex_safe(&coder->cd->global_mutex, UNLOCK);
+	return (1);
+}

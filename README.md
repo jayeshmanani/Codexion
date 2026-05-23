@@ -37,11 +37,11 @@ Same parameters as above, but using First In First Out scheduling.
 ## Blocking cases handled
 
 **Deadlock Prevention (Coffman's Conditions):**
-Deadlocks are mathematically prevented using an **Asymmetric Allocation** strategy. To break the circular wait condition, even-numbered coders acquire their left dongle first, then the right. Odd-numbered coders acquire their right dongle first, then the left.
+Deadlocks are prevented by using a **global FIFO/EDF arbitration queue** that grants both dongles atomically. Coders only acquire dongles when they are top priority and both dongles are available, removing circular wait and hold-and-wait conditions during acquisition.
 
 **Starvation Prevention:**
-Access to dongles is strictly managed by a custom min-heap priority queue. 
-- Under **EDF**, the priority is based on urgency, the coder closest to burning out is granted access first.
+Access to dongles is strictly managed by a **global** min-heap priority queue.
+- Under **EDF**, the priority is based on urgency; the coder closest to burning out is granted access first.
 - Under **FIFO**, priority is granted strictly based on the arrival timestamp.
 
 **Cooldown Handling:**
@@ -62,7 +62,7 @@ Mutexes are utilized aggressively to encapsulate state modifications and prevent
 
 **`pthread_cond_t`:**
 Condition variables heavily optimize CPU usage.
-- Coders call `pthread_cond_wait` or `pthread_cond_timedwait` to sleep if they lack priority in the heap or if the dongle is in cooldown.
+- Coders call `pthread_cond_wait` or `pthread_cond_timedwait` to sleep if they lack priority in the global queue or if a dongle is in cooldown.
 - Upon releasing a dongle, a `pthread_cond_broadcast` is triggered to wake all waiting threads so they can re-evaluate the queue.
 
 **Safe Execution Wrappers:**

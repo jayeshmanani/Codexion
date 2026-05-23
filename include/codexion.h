@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/21 08:51:05 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 13:26:51 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,10 +136,17 @@ typedef struct s_coding_data
 	t_scheduler					scheduler;
 
 	long						active_coders;
+	long						done_coders;
 	long						start_coding_t;
 	bool						end_coding;
 	bool						coders_ready;
 	bool						coding_failed;
+
+	t_heap						*global_heap;
+	bool						global_mutex_initialized;
+	bool						global_cond_initialized;
+	t_mtx						global_mutex;
+	pthread_cond_t				global_cond;
 
 	t_coder						*coders;
 	t_dongle					*dongles;
@@ -190,6 +197,7 @@ int								cond_safe(pthread_cond_t *cond, t_mtx *mutex,
 
 // initialize.c
 int								data_init(t_coding_data *cd);
+int								init_global_queue(t_coding_data *cd);
 
 // coding.c
 int								coding_start(t_coding_data *cd);
@@ -212,6 +220,10 @@ bool							all_coders_ready(t_mtx *mutex, long *threads,
 void							print_data(t_coder_ops ops, t_coder *coder);
 int								validate_input_reqs(t_coding_data *cd);
 
+// end_condition.c
+void							signal_end(t_coding_data *cd);
+void							mark_coder_done(t_coder *coder);
+
 // analyser.c
 void							*coding_analyser(void *args);
 
@@ -224,6 +236,16 @@ int								acquire_dongle(t_coder *coder,
 									t_dongle *dongle);
 int								release_dongle(t_coder *coder,
 									t_dongle *dongle);
+int								register_global_request(t_coder *coder,
+									t_req req);
+
+// global_queue_utils.c
+int								lock_dongles_pair(t_dongle *a, t_dongle *b);
+void							unlock_dongles_pair(t_dongle *a, t_dongle *b);
+void							reset_dongles_pair(t_dongle *a, t_dongle *b);
+int								take_both_if_ready(t_coder *coder,
+									long *wait_msec);
+int								wait_acquire_both_dongles(t_coder *coder);
 
 // heap Folder Prototypes
 // heap_cmp.c

@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 18:58:22 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 12:54:23 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 13:27:00 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	compile_finish(t_coder *coder)
 	updated_usleep(coder->cd, coder->cd->compile_time);
 	if (coder->cd->n_compiles > 0
 		&& coder->compile_count == coder->cd->n_compiles)
-		set_bool(&coder->coder_mutex, &coder->coder_work_done, true);
+		mark_coder_done(coder);
 	if (release_dongle(coder, coder->left_dongle))
 		return (1);
 	if (release_dongle(coder, coder->right_dongle))
@@ -41,40 +41,6 @@ static t_req	build_req(t_coder *coder)
 	return (req);
 }
 
-static int	cancel_from_heap(t_dongle *dongle, int coder_id)
-{
-	if (mutex_safe(&dongle->dongle_mutex, LOCK) != 0)
-		return (1);
-	heap_remove(dongle->access_heap, coder_id);
-	cond_safe(&dongle->dongle_cond, NULL, BROADCAST, NULL);
-	if (mutex_safe(&dongle->dongle_mutex, UNLOCK) != 0)
-		return (1);
-	return (0);
-}
-
-static int	acquire_both_dongles(t_coder *coder)
-{
-	if (wait_acquire_dongle(coder, coder->left_dongle) != 0)
-		return (cancel_from_heap(coder->right_dongle, coder->coder_id), 1);
-	print_data(TOOK_DONGLE_1, coder);
-	if (coding_finished(coder->cd))
-	{
-		release_dongle(coder, coder->left_dongle);
-		cancel_from_heap(coder->right_dongle, coder->coder_id);
-		return (0);
-	}
-	if (wait_acquire_dongle(coder, coder->right_dongle) != 0)
-		return (release_dongle(coder, coder->left_dongle), 1);
-	if (coding_finished(coder->cd))
-	{
-		release_dongle(coder, coder->left_dongle);
-		release_dongle(coder, coder->right_dongle);
-		return (0);
-	}
-	print_data(TOOK_DONGLE_2, coder);
-	return (0);
-}
-
 int	compile(t_coder *coder)
 {
 	t_req	req;
@@ -84,13 +50,17 @@ int	compile(t_coder *coder)
 	if (coding_finished(coder->cd))
 		return (0);
 	req = build_req(coder);
-	if (pre_register_dongle(coder, coder->left_dongle, req) != 0)
+	if (register_global_request(coder, req) != 0)
 		return (1);
-	if (pre_register_dongle(coder, coder->right_dongle, req) != 0)
-		return (cancel_from_heap(coder->left_dongle, coder->coder_id), 1);
-	if (acquire_both_dongles(coder) != 0)
+	if (wait_acquire_both_dongles(coder) != 0)
 		return (1);
+	print_data(TOOK_DONGLE_1, coder);
+	print_data(TOOK_DONGLE_2, coder);
 	if (coding_finished(coder->cd))
+	{
+		release_dongle(coder, coder->left_dongle);
+		release_dongle(coder, coder->right_dongle);
 		return (0);
+	}
 	return (compile_finish(coder));
 }

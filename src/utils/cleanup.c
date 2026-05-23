@@ -3,21 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:06:25 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 21:11:12 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 13:25:30 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-void	clean_all(t_coding_data *cd)
+static void	clean_globals(t_coding_data *cd)
 {
-	if (NULL == cd)
-		return ;
-	destroy_all_coders(cd);
-	destroy_all_dongles(cd);
+	if (cd->global_cond_initialized)
+	{
+		cond_safe(&cd->global_cond, NULL, DESTROY, NULL);
+		cd->global_cond_initialized = false;
+	}
+	if (cd->global_mutex_initialized)
+	{
+		mutex_safe(&cd->global_mutex, DESTROY);
+		cd->global_mutex_initialized = false;
+	}
+	if (cd->global_heap)
+	{
+		heap_destroy(cd->global_heap);
+		cd->global_heap = NULL;
+	}
+}
+
+static void	clean_mutexes(t_coding_data *cd)
+{
 	if (cd->op_mutex_initialized)
 	{
 		mutex_safe(&cd->op_mutex, DESTROY);
@@ -28,6 +43,16 @@ void	clean_all(t_coding_data *cd)
 		mutex_safe(&cd->cd_mutex, DESTROY);
 		cd->cd_mutex_initialized = false;
 	}
+}
+
+void	clean_all(t_coding_data *cd)
+{
+	if (NULL == cd)
+		return ;
+	clean_globals(cd);
+	destroy_all_coders(cd);
+	destroy_all_dongles(cd);
+	clean_mutexes(cd);
 }
 
 void	err_and_exit(const char *error)

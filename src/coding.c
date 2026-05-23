@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 12:57:04 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 13:49:41 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ void	*coding_sim(void *args)
 	if (NULL == coder)
 		return (NULL);
 	waiting_for_coders(coder->cd);
-	set_long(&coder->cd->cd_mutex, &coder->cd->start_coding_t,
-		get_time(MILLISEC));
 	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));
 	increase_long(&coder->cd->cd_mutex, &coder->cd->active_coders);
 	while (!coding_finished(coder->cd))

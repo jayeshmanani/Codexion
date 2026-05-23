@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:55:33 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 12:52:28 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 13:26:51 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,12 @@ int	data_init(t_coding_data *cd)
 	if (mutex_safe(&cd->op_mutex, INIT) != 0)
 		return (1);
 	cd->op_mutex_initialized = true;
+	cd->global_mutex_initialized = false;
+	cd->global_cond_initialized = false;
+	cd->global_heap = NULL;
+	cd->done_coders = 0;
+	if (init_global_queue(cd) != 0)
+		return (1);
 	if (!init_all_dongles(cd))
 		if (!coder_init(cd))
 			return (0);
