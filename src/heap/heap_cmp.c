@@ -15,8 +15,17 @@
 bool	find_preference(t_req a, t_req b, t_scheduler scheduler)
 {
 	if (scheduler == EDF)
-		return (a.deadline_t < b.deadline_t);
-	return (a.arrival_t < b.arrival_t);
+	{
+		if (a.deadline_t != b.deadline_t)
+			return (a.deadline_t < b.deadline_t);
+		return (a.coder_id < b.coder_id);
+	}
+	else
+	{
+		if (a.arrival_t != b.arrival_t)
+			return (a.arrival_t < b.arrival_t);
+		return (a.coder_id < b.coder_id);
+	}
 }
 
 // bool	find_preference(t_req a, t_req b, t_scheduler scheduler)
