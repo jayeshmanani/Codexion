@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:55:33 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/20 20:58:26 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 12:52:28 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static int	init_all_dongles(t_coding_data *cd)
 
 int	data_init(t_coding_data *cd)
 {
-	if (NULL == cd || cd->n_coders <= 0)
+	if (NULL == cd || cd->n_coders <= 0 || cd->n_compiles <= 0)
 		return (1);
 	cd->coders = create_safe_malloc((cd->n_coders) * sizeof(t_coder));
 	if (!cd->coders)

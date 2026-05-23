@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analyser.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 15:09:28 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/20 20:18:14 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 12:57:36 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	*coding_analyser(void *args)
 	int				i;
 
 	cd = (t_coding_data *)args;
+	while (!all_coders_ready(&cd->cd_mutex, &cd->active_coders, cd->n_coders))
+		usleep(10);
 	while (!coding_finished(cd))
 	{
 		i = -1;

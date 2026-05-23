@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 18:58:22 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/21 08:59:10 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 12:54:23 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int	compile_finish(t_coder *coder)
 {
 	increase_long(&coder->coder_mutex, &coder->compile_count);
 	print_data(COMPILING, coder);
+	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));
 	updated_usleep(coder->cd, coder->cd->compile_time);
 	if (coder->cd->n_compiles > 0
 		&& coder->compile_count == coder->cd->n_compiles)
@@ -32,8 +33,11 @@ static t_req	build_req(t_coder *coder)
 	t_req	req;
 
 	req = coder->coder_req;
+	req.arrival_t = get_time(MILLISEC);
 	req.deadline_t = get_long(&coder->coder_mutex, &coder->last_compile_t)
 		+ coder->cd->burn_time;
+	coder->coder_req.arrival_t = req.arrival_t;
+	coder->coder_req.deadline_t = req.deadline_t;
 	return (req);
 }
 
@@ -68,7 +72,6 @@ static int	acquire_both_dongles(t_coder *coder)
 		return (0);
 	}
 	print_data(TOOK_DONGLE_2, coder);
-	set_long(&coder->coder_mutex, &coder->last_compile_t, get_time(MILLISEC));
 	return (0);
 }
 
