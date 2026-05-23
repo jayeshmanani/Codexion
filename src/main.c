@@ -6,13 +6,11 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:09:49 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 12:52:14 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 18:33:45 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-
-// Input is like ./codexion 5 800 200 200 200 2 0 edf
 
 int	main(int argc, char **argv)
 {

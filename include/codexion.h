@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 18:07:14 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 18:33:45 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,6 @@ typedef struct s_coding_data
 	long						start_coding_t;
 	bool						end_coding;
 	bool						coders_ready;
-	bool						coding_failed;
 
 	t_heap						*global_heap;
 	bool						global_mutex_initialized;
@@ -264,7 +263,6 @@ long							heap_right(long i);
 
 // heap_utils.c
 void							heap_destroy(t_heap *heap);
-bool							heap_is_empty(t_heap *heap);
 
 // heap_ops.c
 void							up_shift(t_heap *heap, long index);

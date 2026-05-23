@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/14 15:09:28 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 13:33:40 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 18:34:18 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,28 +54,3 @@ void	*coding_analyser(void *args)
 	}
 	return (NULL);
 }
-
-// void	*coding_analyser(void *args)
-// {
-// 	t_coding_data	*cd;
-// 	int				i;
-
-// 	cd = (t_coding_data *)args;
-// while (!all_coders_ready(&cd->cd_mutex, &cd->active_coders,
-// cd->n_coders))
-// 	usleep(500);
-// 	while (!coding_finished(cd))
-// 	{
-// 		i = -1;
-// 		while (++i < cd->n_coders && !coding_finished(cd))
-// 		{
-// 			if (coder_burned_out(cd->coders + i))
-// 			{
-// 				shutdown_all(cd);
-// 				print_data(BURNED_OUT, cd->coders + i);
-// 			}
-// 		}
-// 		usleep(100);
-// 	}
-// 	return (NULL);
-// }

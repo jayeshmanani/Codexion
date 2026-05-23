@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:14:31 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/17 18:49:23 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 18:33:45 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,6 @@ int	parse_input(t_coding_data *cd, char **argv)
 	cd->end_coding = false;
 	cd->cd_mutex_initialized = false;
 	cd->op_mutex_initialized = false;
-	cd->coding_failed = false;
 	cd->active_coders = 0;
 	return (validate_input_reqs(cd));
 }
-
-// printf("%ld, %ld, %ld, %ld\n", cd->n_coders, cd->burn_time,
-// 	cd->compile_time, cd->debug_time);
-// printf("%ld, %ld, %ld, %d\n", cd->refactor_time, cd->n_compiles,
-// 	cd->cooldown_time, cd->scheduler);

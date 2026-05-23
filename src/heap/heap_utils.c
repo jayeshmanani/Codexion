@@ -6,18 +6,11 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 16:01:46 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/21 09:03:41 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 18:33:58 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-
-bool	heap_is_empty(t_heap *heap)
-{
-	if (!heap)
-		return (true);
-	return (heap->size == 0);
-}
 
 void	heap_destroy(t_heap *heap)
 {
