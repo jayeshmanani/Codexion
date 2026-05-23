@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 13:26:51 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 18:07:14 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,9 @@ int								cond_safe(pthread_cond_t *cond, t_mtx *mutex,
 // initialize.c
 int								data_init(t_coding_data *cd);
 int								init_global_queue(t_coding_data *cd);
+int								global_turn_wait(t_coder *coder, t_req *top_req);
+int								global_wait_time(t_coding_data *cd, long wait_msec);
+int								global_take_both(t_coder *coder, t_req *top_req, long *wait_msec);
 
 // coding.c
 int								coding_start(t_coding_data *cd);

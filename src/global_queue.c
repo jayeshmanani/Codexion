@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/23 12:23:37 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 18:05:03 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 18:06:14 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static bool	is_coder_highest_ready(t_coder *coder)
 	return (true);
 }
 
-static int	global_turn_wait(t_coder *coder, t_req *top_req)
+int	global_turn_wait(t_coder *coder, t_req *top_req)
 {
 	if (heap_peek(coder->cd->global_heap, top_req) != 0)
 	{
@@ -59,7 +59,7 @@ static int	global_turn_wait(t_coder *coder, t_req *top_req)
 	return (1);
 }
 
-static int	global_wait_time(t_coding_data *cd, long wait_msec)
+int	global_wait_time(t_coding_data *cd, long wait_msec)
 {
 	if (wait_msec <= 0)
 		return (cond_safe(&cd->global_cond, &cd->global_mutex, WAIT, NULL));
@@ -69,7 +69,7 @@ static int	global_wait_time(t_coding_data *cd, long wait_msec)
 	return (0);
 }
 
-static int	global_take_both(t_coder *coder, t_req *top_req, long *wait_msec)
+int	global_take_both(t_coder *coder, t_req *top_req, long *wait_msec)
 {
 	(void)top_req;
 	if (take_both_if_ready(coder, wait_msec) != 0)
