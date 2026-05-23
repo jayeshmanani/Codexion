@@ -6,26 +6,11 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/23 10:25:33 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 13:53:28 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 22:03:53 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-
-static void	wake_dongles(t_coding_data *cd)
-{
-	int	i;
-
-	i = -1;
-	if (!cd || !cd->n_coders || !cd->dongles)
-		return ;
-	while (++i < cd->n_coders)
-	{
-		mutex_safe(&cd->dongles[i].dongle_mutex, LOCK);
-		cond_safe(&cd->dongles[i].dongle_cond, NULL, BROADCAST, NULL);
-		mutex_safe(&cd->dongles[i].dongle_mutex, UNLOCK);
-	}
-}
 
 static void	wake_global(t_coding_data *cd)
 {
@@ -41,7 +26,6 @@ void	signal_end(t_coding_data *cd)
 	if (!cd)
 		return ;
 	set_bool(&cd->cd_mutex, &cd->end_coding, true);
-	wake_dongles(cd);
 	wake_global(cd);
 }
 

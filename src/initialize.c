@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 15:55:33 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 19:23:59 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 22:02:53 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,6 @@ static int	init_all_dongles(t_coding_data *cd)
 		if (mutex_safe(&cd->dongles[i].dongle_mutex, INIT) != 0)
 			return (1);
 		cd->dongles[i].dongle_mutex_initialized = true;
-		if (cond_safe(&cd->dongles[i].dongle_cond, NULL, INIT, NULL) != 0)
-			return (1);
-		cd->dongles[i].dongle_cond_initialized = true;
 		if (init_dongle(&cd->dongles[i], cd))
 			return (1);
 		cd->dongles[i].dongle_id = i;

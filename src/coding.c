@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/13 18:19:42 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 19:57:26 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 22:04:14 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,6 @@ void	coding_helper(t_coding_data *cd)
 	while (++i < cd->n_coders)
 		thread_safe(&cd->coders[i].c_thread_id, JOIN, NULL, NULL);
 	set_bool(&cd->cd_mutex, &cd->end_coding, true);
-	while (--i >= 0)
-	{
-		mutex_safe(&cd->dongles[i].dongle_mutex, LOCK);
-		cond_safe(&cd->dongles[i].dongle_cond, NULL, BROADCAST, NULL);
-		mutex_safe(&cd->dongles[i].dongle_mutex, UNLOCK);
-	}
 	if (analyser_created)
 		thread_safe(&cd->analyzer, JOIN, NULL, NULL);
 }

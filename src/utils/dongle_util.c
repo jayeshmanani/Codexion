@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 14:37:54 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 21:47:46 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 22:05:07 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,6 @@ static int	destroy_dongle(t_dongle *dongle)
 			return (1);
 		dongle->dongle_mutex_initialized = false;
 	}
-	if (dongle->dongle_cond_initialized)
-	{
-		if (cond_safe(&dongle->dongle_cond, NULL, DESTROY, NULL) != 0)
-			return (1);
-		dongle->dongle_cond_initialized = false;
-	}
-	heap_destroy(dongle->access_heap);
-	dongle->access_heap = NULL;
 	return (0);
 }
 
@@ -59,19 +51,6 @@ int	init_dongle(t_dongle *dongle, t_coding_data *cd)
 		return (1);
 	dongle->next_available_t = get_time(MILLISEC);
 	dongle->is_taken = false;
-	dongle->access_heap = malloc(sizeof(t_heap));
-	if (!dongle->access_heap)
-		return (1);
-	dongle->access_heap->arr = malloc(cd->n_coders * sizeof(t_req));
-	if (!dongle->access_heap->arr)
-	{
-		free(dongle->access_heap);
-		dongle->access_heap = NULL;
-		return (1);
-	}
-	dongle->access_heap->size = 0;
-	dongle->access_heap->capacity = cd->n_coders;
-	dongle->access_heap->scheduler = cd->scheduler;
 	return (0);
 }
 
@@ -111,11 +90,6 @@ int	release_dongle(t_coder *coder, t_dongle *dongle)
 		return (1);
 	dongle->is_taken = false;
 	dongle->next_available_t = get_time(MILLISEC) + coder->cd->cooldown_time;
-	if (cond_safe(&dongle->dongle_cond, NULL, BROADCAST, NULL) != 0)
-	{
-		mutex_safe(&dongle->dongle_mutex, UNLOCK);
-		return (1);
-	}
 	if (mutex_safe(&dongle->dongle_mutex, UNLOCK) != 0)
 		return (1);
 	if (coder->cd->global_cond_initialized)

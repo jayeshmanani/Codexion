@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 21:44:41 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 22:04:22 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,6 @@ typedef struct s_dongle
 	int							dongle_id;
 	long						next_available_t;
 	bool						is_taken;
-
-	t_heap						*access_heap;
-
-	bool						dongle_cond_initialized;
-	pthread_cond_t				dongle_cond;
 
 	bool						dongle_mutex_initialized;
 	t_mtx						dongle_mutex;
