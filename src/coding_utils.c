@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   coding_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 18:58:22 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 13:27:00 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 14:21:08 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,13 @@ int	compile(t_coder *coder)
 		return (print_error("Error: Null pointer in compile fn\n"), 1);
 	if (coding_finished(coder->cd))
 		return (0);
+	if (coder->cd->n_coders == 1)
+	{
+		print_data(TOOK_DONGLE_1, coder);
+		while (!coding_finished(coder->cd))
+			usleep(500);
+		return (0);
+	}
 	req = build_req(coder);
 	if (register_global_request(coder, req) != 0)
 		return (1);
