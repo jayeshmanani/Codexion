@@ -38,7 +38,7 @@ static int	coder_init_helper(t_coder *coder)
 	coder->debug_count = 0;
 	coder->refactor_count = 0;
 	coder->coder_work_done = false;
-	coder->last_compile_t = 0;
+	coder->last_compile_t = coder->cd->start_coding_t;
 	coder->coder_req.coder_id = coder->coder_id;
 	coder->coder_req.arrival_t = 0;
 	coder->coder_req.deadline_t = 0;
@@ -99,6 +99,7 @@ int	data_init(t_coding_data *cd)
 	if (mutex_safe(&cd->cd_mutex, INIT) != 0)
 		return (1);
 	cd->cd_mutex_initialized = true;
+	cd->start_coding_t = get_time(MILLISEC);
 	if (mutex_safe(&cd->op_mutex, INIT) != 0)
 		return (1);
 	cd->op_mutex_initialized = true;

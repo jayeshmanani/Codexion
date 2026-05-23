@@ -16,7 +16,6 @@ void	waiting_for_coders(t_coding_data *cd)
 {
 	while ((get_bool(&cd->cd_mutex, &cd->coders_ready)) == false)
 		usleep(100);
-	set_long(&cd->cd_mutex, &cd->start_coding_t, get_time(MILLISEC));
 }
 
 void	increase_long(t_mtx *mutex, long *val)
