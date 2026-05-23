@@ -198,9 +198,12 @@ int								cond_safe(pthread_cond_t *cond, t_mtx *mutex,
 // initialize.c
 int								data_init(t_coding_data *cd);
 int								init_global_queue(t_coding_data *cd);
-int								global_turn_wait(t_coder *coder, t_req *top_req);
-int								global_wait_time(t_coding_data *cd, long wait_msec);
-int								global_take_both(t_coder *coder, t_req *top_req, long *wait_msec);
+int								global_turn_wait(t_coder *coder,
+									t_req *top_req);
+int								global_wait_time(t_coding_data *cd,
+									long wait_msec);
+int								global_take_both(t_coder *coder, t_req *top_req,
+									long *wait_msec);
 
 // coding.c
 int								coding_start(t_coding_data *cd);
