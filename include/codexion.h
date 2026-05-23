@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:11:48 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 21:39:18 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 21:44:41 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,8 +171,6 @@ int								init_dongle(t_dongle *dongle,
 									t_coding_data *cd);
 
 // time_utils.c
-void							abs_time_from_usec(long abs_usec,
-									struct timespec *ts);
 long							get_time(t_time_unit time_unit);
 void							updated_usleep(t_coding_data *cd,
 									long millisec);
@@ -231,8 +229,6 @@ void							mark_coder_done(t_coder *coder);
 void							*coding_analyser(void *args);
 
 // dongle_sync.c
-int								pre_register_dongle(t_coder *coder,
-									t_dongle *dongle, t_req req);
 int								release_dongle(t_coder *coder,
 									t_dongle *dongle);
 int								register_global_request(t_coder *coder,
@@ -263,7 +259,6 @@ void							up_shift(t_heap *heap, long index);
 void							down_shift(t_heap *heap, long index);
 int								heap_push(t_heap *heap, t_req req);
 int								heap_peek(t_heap *heap, t_req *out);
-int								heap_pop(t_heap *heap, t_req *out);
 int								heap_remove(t_heap *heap, int coder_id);
 
 // coding_utils.c

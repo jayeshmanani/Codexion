@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 15:51:46 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 20:16:38 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 21:44:07 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,22 +69,5 @@ int	heap_peek(t_heap *heap, t_req *out)
 	if (!heap || heap->size == 0)
 		return (1);
 	*out = heap->arr[0];
-	return (0);
-}
-
-int	heap_pop(t_heap *heap, t_req *out)
-{
-	if (!heap || heap->size == 0)
-	{
-		print_error("heap_pop: empty or invalid heap");
-		return (1);
-	}
-	*out = heap->arr[0];
-	heap->size--;
-	if (heap->size > 0)
-	{
-		heap->arr[0] = heap->arr[heap->size];
-		down_shift(heap, 0);
-	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 14:54:11 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 19:43:14 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 21:44:42 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,4 @@ void	updated_usleep(t_coding_data *cd, long millisec)
 				;
 		}
 	}
-}
-
-void	abs_time_from_usec(long abs_usec, struct timespec *ts)
-{
-	ts->tv_sec = abs_usec / 1000000;
-	ts->tv_nsec = (abs_usec % 1000000) * 1000;
 }
