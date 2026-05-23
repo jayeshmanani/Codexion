@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   coding_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmanani <jmanani@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 18:58:22 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 14:21:08 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 17:10:49 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,14 @@ static t_req	build_req(t_coder *coder)
 	return (req);
 }
 
+static int	lone_vibe_coder(t_coder *coder)
+{
+	print_data(TOOK_DONGLE_1, coder);
+	while (!coding_finished(coder->cd))
+		usleep(500);
+	return (0);
+}
+
 int	compile(t_coder *coder)
 {
 	t_req	req;
@@ -50,12 +58,7 @@ int	compile(t_coder *coder)
 	if (coding_finished(coder->cd))
 		return (0);
 	if (coder->cd->n_coders == 1)
-	{
-		print_data(TOOK_DONGLE_1, coder);
-		while (!coding_finished(coder->cd))
-			usleep(500);
-		return (0);
-	}
+		lone_vibe_coder(coder);
 	req = build_req(coder);
 	if (register_global_request(coder, req) != 0)
 		return (1);

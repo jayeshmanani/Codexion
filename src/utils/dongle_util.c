@@ -6,7 +6,7 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 14:37:54 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/21 08:53:19 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/23 18:04:56 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,31 @@ int	pre_register_dongle(t_coder *coder, t_dongle *dongle, t_req req)
 	if (mutex_safe(&dongle->dongle_mutex, UNLOCK) != 0)
 		return (1);
 	return (0);
+}
+
+int	wait_acquire_both_dongles(t_coder *coder)
+{
+	t_req	top_req;
+	long	wait_msec;
+	int		turn;
+
+	if (!coder || !coder->cd || !coder->cd->global_heap)
+		return (1);
+	if (mutex_safe(&coder->cd->global_mutex, LOCK) != 0)
+		return (1);
+	while (!coding_finished(coder->cd))
+	{
+		if (get_bool(&coder->coder_mutex, &coder->coder_work_done))
+			break ;
+		turn = global_turn_wait(coder, &top_req);
+		if (turn <= 0)
+			continue ;
+		if (global_take_both(coder, &top_req, &wait_msec) == 0)
+			return (0);
+		if (global_wait_time(coder->cd, wait_msec) != 0)
+			break ;
+	}
+	heap_remove(coder->cd->global_heap, coder->coder_id);
+	mutex_safe(&coder->cd->global_mutex, UNLOCK);
+	return (1);
 }
