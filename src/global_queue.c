@@ -6,39 +6,11 @@
 /*   By: jmanani <jmanani@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/23 12:23:37 by jmanani           #+#    #+#             */
-/*   Updated: 2026/05/23 20:41:51 by jmanani          ###   ########.fr       */
+/*   Updated: 2026/05/24 15:59:54 by jmanani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-
-static bool	is_coder_highest_ready(t_coder *coder)
-{
-	long	i;
-	t_heap	*heap;
-	t_req	req;
-	t_coder	*c;
-	long	now;
-
-	heap = coder->cd->global_heap;
-	now = get_time(MILLISEC);
-	i = -1;
-	while (++i < heap->size)
-	{
-		req = heap->arr[i];
-		if (req.coder_id == coder->coder_id)
-			continue ;
-		if (find_preference(coder->coder_req, req, heap->scheduler))
-			continue ;
-		c = &coder->cd->coders[req.coder_id - 1];
-		if (c->left_dongle->is_taken || c->right_dongle->is_taken)
-			continue ;
-		if (c->left_dongle->next_available_t <= now
-			&& c->right_dongle->next_available_t <= now)
-			return (false);
-	}
-	return (true);
-}
 
 int	global_turn_wait(t_coder *coder, t_req *top_req)
 {
